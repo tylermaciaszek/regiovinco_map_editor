@@ -1,16 +1,16 @@
 package me.data;
 
 import saf.components.AppDataComponent;
-import me.MapViewerApp;
+import me.MapEditorApp;
 
 /**
  *
  * @author Tyler Maciaszek
  */
 public class DataManager implements AppDataComponent {
-    MapViewerApp app;
+    MapEditorApp app;
     
-    public DataManager(MapViewerApp initApp) {
+    public DataManager(MapEditorApp initApp) {
         app = initApp;
     }
     

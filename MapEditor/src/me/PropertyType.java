@@ -11,5 +11,6 @@ package me;
  */
 public enum PropertyType {
     OK_PROMPT,
-    CANCEL_PROMPT
+    CANCEL_PROMPT,
+    SUBREGION_TABLE_HEADER
 }

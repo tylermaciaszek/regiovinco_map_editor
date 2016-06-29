@@ -22,7 +22,7 @@ import static javafx.application.Application.launch;
  * @author Tyler Maciaszek
  * @version 1.0
  */
-public class MapViewerApp extends AppTemplate {
+public class MapEditorApp extends AppTemplate {
     /**
      * This builder provides methods for properly setting up all
      * the custom objects needed to run this application. Note that
@@ -46,7 +46,7 @@ public class MapViewerApp extends AppTemplate {
 	     */
 	    @Override
 	    public AppDataComponent buildDataComponent() throws Exception {
-		return new DataManager(MapViewerApp.this);
+		return new DataManager(MapEditorApp.this);
 	    }
 
 	    /**
@@ -74,7 +74,7 @@ public class MapViewerApp extends AppTemplate {
 	     */
 	    @Override
 	    public AppWorkspaceComponent buildWorkspaceComponent() throws Exception {
-		return new Workspace(MapViewerApp.this);
+		return new Workspace(MapEditorApp.this);
 	    }
 	};
     }
