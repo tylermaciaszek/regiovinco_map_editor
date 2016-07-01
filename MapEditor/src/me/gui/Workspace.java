@@ -35,6 +35,7 @@ import properties_manager.PropertiesManager;
  */
 public class Workspace extends AppWorkspaceComponent {
     MapEditorApp app;
+    NewMapDialog newMapDialog;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -46,7 +47,9 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     private void layoutGUI(){
-       layoutEditToolbar();       
+       layoutEditToolbar();   
+       newMapDialog = new NewMapDialog();
+       newMapDialog.showDialog();
        layoutSplitPane();
     }
     
@@ -71,7 +74,7 @@ public class Workspace extends AppWorkspaceComponent {
        Button playSubregionAnthemButton = new Button();
        Image playImage = new Image(props.getProperty(PropertyType.PLAY_ICON));
        playSubregionAnthemButton.setGraphic(new ImageView(playImage));
-       Button changeMapNameButton = new Button(props.getProperty(PropertyType.MAP_NAME));
+       Button changeMapNameButton = new Button(props.getProperty(PropertyType.CHANGE_MAP_NAME));
        Button addImageButton = new Button(props.getProperty(PropertyType.ADD_IMAGE));
        //Image addImage = new Image(props.getProperty(PropertyType.ADD_IMAGE));
        //addImageButton.setGraphic(new ImageView(addImage));

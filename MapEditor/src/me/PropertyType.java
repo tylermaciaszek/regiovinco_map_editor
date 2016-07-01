@@ -20,4 +20,7 @@ public enum PropertyType {
     PLAY_ICON,
     MAP_NAME,
     ADD_IMAGE,
+    NEW_MAP_HEADING,
+    CHANGE_MAP_NAME,
+    CHOOSE_PARENT
 }

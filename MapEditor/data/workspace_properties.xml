@@ -23,7 +23,10 @@
         
         <property name="PLAY_ICON"                          value="file:./images/Play.png"></property>
         <property name="ADD_IMAGE"                          value="Add Image"></property> 
-        <property name="MAP_NAME"                          value="Change Map Name"></property> 
+        <property name="CHANGE_MAP_NAME"                    value="Change Map Name"></property> 
+        <property name="MAP_NAME"                           value="Map Name: "></property> 
+        <property name="NEW_MAP_HEADING"                    value="Create New Map"></property> 
+        <property name="CHOOSE_PARENT"                      value="Parent Directory"></property> 
         
 
 
