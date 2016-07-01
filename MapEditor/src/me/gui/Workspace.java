@@ -36,6 +36,7 @@ import properties_manager.PropertiesManager;
 public class Workspace extends AppWorkspaceComponent {
     MapEditorApp app;
     NewMapDialog newMapDialog;
+    SubRegionDialog subRegionDialog;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -48,8 +49,10 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void layoutGUI(){
        layoutEditToolbar();   
-       newMapDialog = new NewMapDialog();
-       newMapDialog.showDialog();
+       //newMapDialog = new NewMapDialog();
+       //newMapDialog.showDialog();
+       subRegionDialog = new SubRegionDialog();
+       subRegionDialog.showDialog();
        layoutSplitPane();
     }
     
