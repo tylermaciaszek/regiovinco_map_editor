@@ -11,7 +11,7 @@
         <property name="APP_TITLE"	    value="Map Viewer"></property>
 	<property name="APP_LOGO"	    value="MapViewer.png"></property>
 	<property name="APP_PATH_CSS"	    value="css/"></property>
-	<property name="APP_CSS"	    value="mv_style.css"></property>
+	<property name="APP_CSS"	    value="me_style.css"></property>
         
         <!-- PROGRAM ICON FILES -->
         <property name="NEW_ICON"	    value="New.png"></property>

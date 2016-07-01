@@ -16,6 +16,17 @@
 	<property name="UPDATE_ERROR_TITLE"		    value="UI Update Error"></property>
         
         <property name="SUBREGION_TABLE_HEADER"		    value="Subregion"></property>
+        <property name="MAP_BACKGROUND_COLOR"		    value="Map Background Color"></property>
+        <property name="MAP_BORDER_COLOR"		    value="Border Color"></property>        
+        <property name="MAP_THICKNESS"                      value="Border Thickness"></property>
+        <property name="SUBREGION_COLORS"                   value="Randomize Subregion Colors"></property>
+        
+        <property name="PLAY_ICON"                          value="file:./images/Play.png"></property>
+        <property name="ADD_IMAGE"                          value="Add Image"></property> 
+        <property name="MAP_NAME"                          value="Change Map Name"></property> 
+        
+
+
     </property_list>
     <property_options_list>
     </property_options_list>
