@@ -102,10 +102,14 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         JFXTreeTableView subregionTable = new JFXTreeTableView();
         subregionTable.setEditable(false);
-        
         JFXTreeTableColumn regionCol = new JFXTreeTableColumn<>(props.getProperty(PropertyType.SUBREGION_TABLE_HEADER));
-        regionCol.prefWidthProperty().bind(subregionTable.widthProperty());
-        subregionTable.getColumns().add(regionCol);
+        JFXTreeTableColumn capitalCol = new JFXTreeTableColumn<>(props.getProperty(PropertyType.CAPITAL_TABLE_HEADER));
+        JFXTreeTableColumn leaderCol = new JFXTreeTableColumn<>(props.getProperty(PropertyType.LEADER_TABLE_HEADER));
+        regionCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
+        capitalCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
+        leaderCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
+
+        subregionTable.getColumns().addAll(regionCol, capitalCol, leaderCol);
        
         
         return subregionTable;
