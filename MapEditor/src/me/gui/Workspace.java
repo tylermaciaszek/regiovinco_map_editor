@@ -26,6 +26,7 @@ import javafx.scene.layout.VBox;
 import saf.components.AppWorkspaceComponent;
 import me.MapEditorApp;
 import me.PropertyType;
+import me.controller.Controller;
 import me.data.DataManager;
 import properties_manager.PropertiesManager;
 
@@ -37,14 +38,19 @@ public class Workspace extends AppWorkspaceComponent {
     MapEditorApp app;
     NewMapDialog newMapDialog;
     SubRegionDialog subRegionDialog;
+    Button changeMapNameButton;
+    Controller controller;
+    
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
         workspace = new Pane();
-        //PropertiesManager props = PropertiesManager.getPropertiesManager();
-        //DataManager dataManager = (DataManager) app.getDataComponent();
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        DataManager dataManager = (DataManager) app.getDataComponent();
+        controller = new Controller();
 
         layoutGUI();
+        initHandlers();
     }
 
     private void layoutGUI(){
@@ -77,7 +83,7 @@ public class Workspace extends AppWorkspaceComponent {
        Button playSubregionAnthemButton = new Button();
        Image playImage = new Image(props.getProperty(PropertyType.PLAY_ICON));
        playSubregionAnthemButton.setGraphic(new ImageView(playImage));
-       Button changeMapNameButton = new Button(props.getProperty(PropertyType.CHANGE_MAP_NAME));
+       changeMapNameButton = new Button(props.getProperty(PropertyType.CHANGE_MAP_NAME));
        Button addImageButton = new Button(props.getProperty(PropertyType.ADD_IMAGE));
        //Image addImage = new Image(props.getProperty(PropertyType.ADD_IMAGE));
        //addImageButton.setGraphic(new ImageView(addImage));
@@ -116,6 +122,12 @@ public class Workspace extends AppWorkspaceComponent {
        
         
         return subregionTable;
+    }
+    
+    public void initHandlers(){
+        changeMapNameButton.setOnAction(e -> {
+            controller.launchChangeNameWindow();
+        });
     }
 
     @Override
