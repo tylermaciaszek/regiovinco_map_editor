@@ -24,7 +24,8 @@
         <property name="SUBREGION_COLORS"                   value="Randomize Subregion Colors"></property>
         
         
-        <property name="ADD_IMAGE"                          value="Add Image"></property> 
+        <property name="ADD_IMAGE"                          value="file:./images/add_image.png"></property> 
+        <property name="REMOVE_IMAGE"                       value="file:./images/remove_image.png"></property> 
         <property name="CHANGE_MAP_NAME"                    value="Change Map Name"></property> 
         <property name="MAP_NAME"                           value="Map Name: "></property> 
         <property name="NEW_MAP_HEADING"                    value="Create New Map"></property> 
@@ -34,7 +35,11 @@
 
         
         <property name="PLAY_ICON"                          value="file:./images/Play.png"></property>
+        <property name="PAUSE_ICON"                         value="file:./images/pause.png"></property>
+        <property name="ZOOM_OUT"                           value="file:./images/zoom_out.png"></property>
+        <property name="ZOOM_IN"                            value="file:./images/zoom_in.png"></property>
         <property name="PREV_ICON"                          value="file:./images/arrow-left.png"></property>
+        <property name="EXPORT_ICON"                        value="file:./images/Export.png"></property> 
         <property name="NEXT_ICON"                          value="file:./images/arrow-right.png"></property>
         <property name="SAMPLE_SUB"                         value="file:./images/sample_sub.png"></property>
         <property name="SAMPLE_SUB_FLAG"                    value="file:./images/sample_sub_flag.png"></property>

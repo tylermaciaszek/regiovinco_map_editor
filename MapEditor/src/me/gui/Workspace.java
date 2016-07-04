@@ -46,6 +46,7 @@ public class Workspace extends AppWorkspaceComponent {
     SubRegionDialog subRegionDialog;
     Button changeMapNameButton;
     Controller controller;
+    Button playSubregionAnthemButton;
     
 
     public Workspace(MapEditorApp initApp) {
@@ -71,6 +72,9 @@ public class Workspace extends AppWorkspaceComponent {
     private void layoutEditToolbar(){
        PropertiesManager props = PropertiesManager.getPropertiesManager();
        FlowPane topToolbar = (FlowPane)app.getGUI().getAppPane().getTop();
+       Button exportButton = new Button();
+       exportButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.EXPORT_ICON))));
+       topToolbar.getChildren().add(exportButton);
        HBox editToolbar = new HBox();
        editToolbar.setSpacing(20);
        Label mapColorLabel = new Label(props.getProperty(PropertyType.MAP_BACKGROUND_COLOR));
@@ -86,16 +90,27 @@ public class Workspace extends AppWorkspaceComponent {
        VBox borderThicknessHolder = new VBox();
        borderThicknessHolder.getChildren().addAll(borderThicknessLabel, changeMapBorderThickness);
        Button randomizeSubregionColorsButton = new Button(props.getProperty(PropertyType.SUBREGION_COLORS));
-       Button playSubregionAnthemButton = new Button();
+       playSubregionAnthemButton = new Button();
        Image playImage = new Image(props.getProperty(PropertyType.PLAY_ICON));
        playSubregionAnthemButton.setGraphic(new ImageView(playImage));
        changeMapNameButton = new Button(props.getProperty(PropertyType.CHANGE_MAP_NAME));
-       Button addImageButton = new Button(props.getProperty(PropertyType.ADD_IMAGE));
-       //Image addImage = new Image(props.getProperty(PropertyType.ADD_IMAGE));
-       //addImageButton.setGraphic(new ImageView(addImage));
-       editToolbar.getChildren().addAll(changeMapNameButton, addImageButton, mapBackgroundHolder, borderColorHolder, borderThicknessHolder, randomizeSubregionColorsButton, playSubregionAnthemButton);
+       Button addImageButton = new Button();
+       Button removeImageButton = new Button();
+       Image addImage = new Image(props.getProperty(PropertyType.ADD_IMAGE));
+       Image removeImage = new Image(props.getProperty(PropertyType.REMOVE_IMAGE));
+       addImageButton.setGraphic(new ImageView(addImage));
+       removeImageButton.setGraphic(new ImageView(removeImage));
+       HBox zoomIcons = new HBox();
+       VBox zoomHolder = new VBox();
+       ImageView zoomOut = new ImageView(new Image(props.getProperty(PropertyType.ZOOM_OUT)));
+       ImageView zoomIn = new ImageView(new Image(props.getProperty(PropertyType.ZOOM_IN)));
+       zoomIcons.getChildren().addAll(zoomOut, zoomIn);
+       Slider zoomBar = new Slider();
+       zoomIcons.setSpacing(80);
+       zoomHolder.getChildren().addAll(zoomIcons, zoomBar);      
+       editToolbar.getChildren().addAll(changeMapNameButton, addImageButton, removeImageButton, mapBackgroundHolder, borderColorHolder, borderThicknessHolder, randomizeSubregionColorsButton, playSubregionAnthemButton, zoomHolder);
        editToolbar.setAlignment(Pos.BOTTOM_CENTER);
-       editToolbar.setPadding(new Insets(0,0,0,200));
+       editToolbar.setPadding(new Insets(0,0,0,20));
        topToolbar.getChildren().add(editToolbar);
     }
     
@@ -150,8 +165,12 @@ public class Workspace extends AppWorkspaceComponent {
     }
     
     public void initHandlers(){
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
         changeMapNameButton.setOnAction(e -> {
             controller.launchChangeNameWindow();
+        });
+        playSubregionAnthemButton.setOnAction(e ->{
+            playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PAUSE_ICON))));
         });
     }
 

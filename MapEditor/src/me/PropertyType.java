@@ -33,4 +33,9 @@ public enum PropertyType {
     SAMPLE_SUB_FLAG,
     SAMPLE_SUB_LEADER,
     SAMPLE_WORLD,
+    EXPORT_ICON,
+    ZOOM_IN,
+    ZOOM_OUT,
+    REMOVE_IMAGE, 
+    PAUSE_ICON
 }
