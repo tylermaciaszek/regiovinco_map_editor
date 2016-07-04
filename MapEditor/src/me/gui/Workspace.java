@@ -47,6 +47,7 @@ public class Workspace extends AppWorkspaceComponent {
     Button changeMapNameButton;
     Controller controller;
     Button playSubregionAnthemButton;
+    Boolean playing;
     
 
     public Workspace(MapEditorApp initApp) {
@@ -55,6 +56,7 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         controller = new Controller();
+        playing = false;
 
         layoutGUI();
         initHandlers();
@@ -62,8 +64,8 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void layoutGUI(){
        layoutEditToolbar();   
-       //newMapDialog = new NewMapDialog();
-       //newMapDialog.showDialog();
+       newMapDialog = new NewMapDialog();
+       newMapDialog.showDialog();
        subRegionDialog = new SubRegionDialog();
        subRegionDialog.showDialog();
        layoutSplitPane();
@@ -169,8 +171,15 @@ public class Workspace extends AppWorkspaceComponent {
         changeMapNameButton.setOnAction(e -> {
             controller.launchChangeNameWindow();
         });
-        playSubregionAnthemButton.setOnAction(e ->{
-            playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PAUSE_ICON))));
+        playSubregionAnthemButton.setOnAction(e -> {
+            if (playing) {
+                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PAUSE_ICON))));
+                playing = false;
+
+            } else {
+                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PLAY_ICON))));
+                playing = true;
+            }
         });
     }
 
