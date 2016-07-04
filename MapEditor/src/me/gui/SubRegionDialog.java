@@ -9,8 +9,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -49,16 +51,31 @@ public class SubRegionDialog {
         subregionImages.getChildren().addAll(subregionFlagImage, subregionLeaderImage);
         subregionImages.setSpacing(40);
         subregionImages.setAlignment(Pos.CENTER);
+        GridPane infoHolder = new GridPane();
+        Label nameLabel = new Label("Name: ");
+        Label capitalLabel = new Label("Capital: ");
+        Label leaderLabel = new Label("Leader: ");
+        TextField nameField = new TextField();
+        TextField capitalField = new TextField();
+        TextField leaderField = new TextField(); 
+        infoHolder.add(nameLabel, 0, 0);
+        infoHolder.add(capitalLabel, 0, 1);
+        infoHolder.add(leaderLabel, 0, 2);
+        infoHolder.add(nameField, 1, 0);
+        infoHolder.add(capitalField, 1, 1);
+        infoHolder.add(leaderField, 1, 2);
+        infoHolder.setAlignment(Pos.CENTER);
+        Button okButton = new Button("OK");
         subRegionHolderTop.setSpacing(45);
         subRegionHolderTop.setAlignment(Pos.CENTER);
-        subRegionHolder.getChildren().addAll(subRegionHolderTop, subregionImage, subregionImages);
+        subRegionHolder.getChildren().addAll(subRegionHolderTop, subregionImage, subregionImages, infoHolder, okButton);
         subRegionHolder.setAlignment(Pos.TOP_CENTER);
         subRegionHolder.setSpacing(20);
         
         
         
         
-        newSubScene = new Scene(subRegionHolder, 280,450);
+        newSubScene = new Scene(subRegionHolder, 280,550);
         return newSubScene;
     }
     

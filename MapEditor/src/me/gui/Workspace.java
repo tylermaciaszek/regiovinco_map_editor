@@ -10,6 +10,8 @@ import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,6 +19,9 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
@@ -28,6 +33,7 @@ import me.MapEditorApp;
 import me.PropertyType;
 import me.controller.Controller;
 import me.data.DataManager;
+import me.data.Subregion;
 import properties_manager.PropertiesManager;
 
 /**
@@ -103,22 +109,41 @@ public class Workspace extends AppWorkspaceComponent {
     }
     
     private Pane layoutMapHolder(){
+        PropertiesManager props = PropertiesManager.getPropertiesManager();    
         Pane mapHolder = new Pane();
+        ImageView mapImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_WORLD)));
+        mapImage.setFitHeight(700);
+        mapImage.setFitWidth(1000);
+        mapHolder.getChildren().add(mapImage);
         return mapHolder;
     }
     
-    private JFXTreeTableView layoutTableView(){
+    private TableView layoutTableView(){
+        DataManager dataManager = (DataManager) app.getDataComponent();
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        JFXTreeTableView subregionTable = new JFXTreeTableView();
+        TableView subregionTable = new TableView();
         subregionTable.setEditable(false);
-        JFXTreeTableColumn regionCol = new JFXTreeTableColumn<>(props.getProperty(PropertyType.SUBREGION_TABLE_HEADER));
-        JFXTreeTableColumn capitalCol = new JFXTreeTableColumn<>(props.getProperty(PropertyType.CAPITAL_TABLE_HEADER));
-        JFXTreeTableColumn leaderCol = new JFXTreeTableColumn<>(props.getProperty(PropertyType.LEADER_TABLE_HEADER));
+        TableColumn regionCol = new TableColumn<>(props.getProperty(PropertyType.SUBREGION_TABLE_HEADER));
+        TableColumn capitalCol = new TableColumn<>(props.getProperty(PropertyType.CAPITAL_TABLE_HEADER));
+        TableColumn leaderCol = new TableColumn<>(props.getProperty(PropertyType.LEADER_TABLE_HEADER));
+        regionCol.setCellValueFactory(new PropertyValueFactory<Subregion, String>("name"));
+        capitalCol.setCellValueFactory(new PropertyValueFactory<String, String>("capital"));
+        leaderCol.setCellValueFactory(new PropertyValueFactory<String, String>("leader"));
         regionCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
         capitalCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
         leaderCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
+        Subregion testRegion = new Subregion("United States", "Washington D.C.", "Obama");
+        Subregion testRegion1 = new Subregion("TEST", "TEST", "TEST");
+        Subregion testRegion2 = new Subregion("Another Test", "Another Test", "Another Test");
+
+        
+        dataManager.addItem(testRegion);
+        dataManager.addItem(testRegion1);
+        dataManager.addItem(testRegion2);
 
         subregionTable.getColumns().addAll(regionCol, capitalCol, leaderCol);
+        subregionTable.setItems(dataManager.getData());
+        System.out.print(dataManager.getData().get(0).toString());
        
         
         return subregionTable;
