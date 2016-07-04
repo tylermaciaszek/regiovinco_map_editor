@@ -5,6 +5,7 @@
  */
 package me.gui;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -44,6 +45,7 @@ public class SubRegionDialog {
         nextButton.setGraphic(new ImageView(nextButtonImage));
         Label subRegionName = new Label("SAMPLE SUBREGION");
         subRegionHolderTop.getChildren().addAll(prevButton, subRegionName, nextButton);
+        subRegionHolderTop.setPadding(new Insets(10, 5, 0, 5));
         ImageView subregionImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB)));
         ImageView subregionFlagImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_FLAG)));
         ImageView subregionLeaderImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_LEADER)));
@@ -65,8 +67,10 @@ public class SubRegionDialog {
         infoHolder.add(capitalField, 1, 1);
         infoHolder.add(leaderField, 1, 2);
         infoHolder.setAlignment(Pos.CENTER);
+        infoHolder.setHgap(20);
+        infoHolder.setVgap(5);
         Button okButton = new Button("OK");
-        subRegionHolderTop.setSpacing(45);
+        subRegionHolderTop.setSpacing(43);
         subRegionHolderTop.setAlignment(Pos.CENTER);
         subRegionHolder.getChildren().addAll(subRegionHolderTop, subregionImage, subregionImages, infoHolder, okButton);
         subRegionHolder.setAlignment(Pos.TOP_CENTER);
@@ -75,7 +79,7 @@ public class SubRegionDialog {
         
         
         
-        newSubScene = new Scene(subRegionHolder, 280,550);
+        newSubScene = new Scene(subRegionHolder, 290,565);
         return newSubScene;
     }
     
