@@ -37,5 +37,5 @@ public enum PropertyType {
     ZOOM_IN,
     ZOOM_OUT,
     REMOVE_IMAGE, 
-    PAUSE_ICON
+    PAUSE_ICON, FOLDER_ICON
 }

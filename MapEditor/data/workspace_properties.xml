@@ -35,6 +35,7 @@
 
         
         <property name="PLAY_ICON"                          value="file:./images/Play.png"></property>
+        <property name="FOLDER_ICON"                        value="file:./images/folder.png"></property>
         <property name="PAUSE_ICON"                         value="file:./images/pause.png"></property>
         <property name="ZOOM_OUT"                           value="file:./images/zoom_out.png"></property>
         <property name="ZOOM_IN"                            value="file:./images/zoom_in.png"></property>
