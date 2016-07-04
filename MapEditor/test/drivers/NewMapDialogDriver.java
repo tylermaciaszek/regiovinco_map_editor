@@ -5,16 +5,25 @@
  */
 package drivers;
 
+import java.util.Locale;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import me.gui.NewMapDialog;
 
 /**
  *
  * @author Tyler
  */
-public class NewMapDialogDriver {
+public class NewMapDialogDriver extends Application {
 
-    public static void main(String[] args) {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         NewMapDialog testDialog = new NewMapDialog();
         testDialog.showDialog();
+    }
+    
+    public static void main(String[] args) {
+	Locale.setDefault(Locale.US);
+	launch(args);
     }
 }
