@@ -86,7 +86,7 @@ public class MapEditorApp extends AppTemplate {
      * from AppTemplate, defined in the SimpleAppFramework.
      * @param args
      */
-    public static void main(String[] args) {
+   public static void main(String[] args) {
 	Locale.setDefault(Locale.US);
 	launch(args);
     }
