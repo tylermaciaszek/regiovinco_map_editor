@@ -29,4 +29,7 @@ public enum PropertyType {
     NEXT_ICON,
     CHANGE_MAP_NAME_HEADER,
     CHANGE_MAP_NAME_CONTEXT,
+    SAMPLE_SUB,
+    SAMPLE_SUB_FLAG,
+    SAMPLE_SUB_LEADER,
 }

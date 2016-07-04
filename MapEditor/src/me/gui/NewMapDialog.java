@@ -44,8 +44,6 @@ public class NewMapDialog {
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setHgap(20);
         gridPane.setVgap(20);
-        
-        
         newMapScene = new Scene(gridPane, 300,300);
         return newMapScene;
     }

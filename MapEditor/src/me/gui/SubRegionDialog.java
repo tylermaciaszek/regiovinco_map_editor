@@ -42,14 +42,23 @@ public class SubRegionDialog {
         nextButton.setGraphic(new ImageView(nextButtonImage));
         Label subRegionName = new Label("SAMPLE SUBREGION");
         subRegionHolderTop.getChildren().addAll(prevButton, subRegionName, nextButton);
-        subRegionHolderTop.setSpacing(40);
+        ImageView subregionImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB)));
+        ImageView subregionFlagImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_FLAG)));
+        ImageView subregionLeaderImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_LEADER)));
+        HBox subregionImages = new HBox();
+        subregionImages.getChildren().addAll(subregionFlagImage, subregionLeaderImage);
+        subregionImages.setSpacing(40);
+        subregionImages.setAlignment(Pos.CENTER);
+        subRegionHolderTop.setSpacing(45);
         subRegionHolderTop.setAlignment(Pos.CENTER);
-        subRegionHolder.getChildren().add(subRegionHolderTop);
+        subRegionHolder.getChildren().addAll(subRegionHolderTop, subregionImage, subregionImages);
+        subRegionHolder.setAlignment(Pos.TOP_CENTER);
+        subRegionHolder.setSpacing(20);
         
         
         
         
-        newSubScene = new Scene(subRegionHolder, 300,300);
+        newSubScene = new Scene(subRegionHolder, 280,450);
         return newSubScene;
     }
     

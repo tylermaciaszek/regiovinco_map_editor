@@ -85,6 +85,9 @@ public class AppGUI implements AppStyleArbiter {
      */
     protected Button exitButton;
     
+    
+    protected Button exportButton;
+    
     // HERE ARE OUR DIALOGS
 
     /**
@@ -161,6 +164,7 @@ public class AppGUI implements AppStyleArbiter {
 	newButton.setDisable(false);
         loadButton.setDisable(false);
 	exitButton.setDisable(false);
+        exportButton.setDisable(false);
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
         // ARE NEVER DISABLED SO WE NEVER HAVE TO TOUCH THEM
@@ -183,6 +187,7 @@ public class AppGUI implements AppStyleArbiter {
         loadButton = initChildButton(fileToolbarPane,	LOAD_ICON.toString(),	    LOAD_TOOLTIP.toString(),	false);
         saveButton = initChildButton(fileToolbarPane,	SAVE_ICON.toString(),	    SAVE_TOOLTIP.toString(),	true);
         exitButton = initChildButton(fileToolbarPane,	EXIT_ICON.toString(),	    EXIT_TOOLTIP.toString(),	false);
+        exportButton = initChildButton(fileToolbarPane,	EXPORT_ICON.toString(),	    EXIT_TOOLTIP.toString(),	false);
 
 	// AND NOW SETUP THEIR EVENT HANDLERS
         fileController = new AppFileController(app);
@@ -281,5 +286,6 @@ public class AppGUI implements AppStyleArbiter {
 	loadButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	saveButton.getStyleClass().add(CLASS_FILE_BUTTON);
 	exitButton.getStyleClass().add(CLASS_FILE_BUTTON);
+        exportButton.getStyleClass().add(CLASS_FILE_BUTTON);
     }
 }

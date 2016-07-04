@@ -36,6 +36,9 @@
         <property name="PLAY_ICON"                          value="file:./images/Play.png"></property>
         <property name="PREV_ICON"                          value="file:./images/arrow-left.png"></property>
         <property name="NEXT_ICON"                          value="file:./images/arrow-right.png"></property>
+        <property name="SAMPLE_SUB"                         value="file:./images/sample_sub.png"></property>
+        <property name="SAMPLE_SUB_FLAG"                    value="file:./images/sample_sub_flag.png"></property>
+        <property name="SAMPLE_SUB_LEADER"                  value="file:./images/sample_sub_leader.png"></property>
         
 
 

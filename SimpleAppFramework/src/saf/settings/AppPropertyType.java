@@ -57,6 +57,7 @@ public enum AppPropertyType {
      *
      */
     EXIT_ICON,
+    EXPORT_ICON,
         
         // APPLICATION TOOLTIPS FOR BUTTONS
 
@@ -64,6 +65,7 @@ public enum AppPropertyType {
      *
      */
             NEW_TOOLTIP,
+            
 
     /**
      *
