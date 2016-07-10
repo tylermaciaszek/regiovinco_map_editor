@@ -33,6 +33,7 @@ import me.MapEditorApp;
 import me.PropertyType;
 import me.controller.Controller;
 import me.data.DataManager;
+import me.data.Map;
 import me.data.Subregion;
 import properties_manager.PropertiesManager;
 
@@ -60,6 +61,7 @@ public class Workspace extends AppWorkspaceComponent {
 
         layoutGUI();
         initHandlers();
+        generateAndorraMap();
     }
 
     private void layoutGUI(){
@@ -190,6 +192,22 @@ public class Workspace extends AppWorkspaceComponent {
 
     @Override
     public void initStyle() {
+        
+        
+    }
+    
+       public void generateAndorraMap(){        
+        DataManager dataManager = (DataManager) app.getDataComponent();
+        Map andorraMap = new Map();
+        andorraMap.setBackgroundColor("DC6E00");
+        andorraMap.setBorderColor("000000");
+        andorraMap.setBorderThickness(1.0);
+        andorraMap.getImageLocationsX().add(8);
+        andorraMap.getImageLocationsY().add(9);
+        andorraMap.getImageLocationsX().add(581);
+        andorraMap.getImageLocationsY().add(390);
+        dataManager.addMap(andorraMap);
+        
         
         
     }

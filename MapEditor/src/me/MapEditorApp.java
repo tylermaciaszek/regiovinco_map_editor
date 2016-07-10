@@ -10,6 +10,7 @@ import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
 import saf.components.AppWorkspaceComponent;
 import static javafx.application.Application.launch;
+import me.data.Map;
 
 /**
  * This class serves as the application class for our Map Editor program. 
@@ -90,4 +91,6 @@ public class MapEditorApp extends AppTemplate {
 	Locale.setDefault(Locale.US);
 	launch(args);
     }
+   
+
 }
