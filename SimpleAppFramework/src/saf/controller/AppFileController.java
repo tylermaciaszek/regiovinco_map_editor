@@ -312,6 +312,7 @@ public class AppFileController {
                 AppDataComponent dataManager = app.getDataComponent();
 		AppFileComponent fileManager = app.getFileComponent();
                 fileManager.loadData(dataManager, selectedFile.getAbsolutePath());
+                
                 app.getWorkspaceComponent().reloadWorkspace();
 
 		// MAKE SURE THE WORKSPACE IS ACTIVATED

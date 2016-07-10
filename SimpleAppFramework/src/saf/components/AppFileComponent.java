@@ -29,6 +29,8 @@ public interface AppFileComponent {
      * @throws IOException
      */
     public void loadData(AppDataComponent data, String filePath) throws IOException;
+    
+    public void loadCoords(AppDataComponent data, String filePath) throws IOException;
 
     /**
      *

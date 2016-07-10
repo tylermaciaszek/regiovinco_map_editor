@@ -1,6 +1,11 @@
 
 {
-    "Items":[
+    "Map":[
+        {
+            "backgroundColor":"DC6E00"
+        }
+    ],
+    "Edit Info":[
         {
             "backgroundColor":"DC6E00"
         }

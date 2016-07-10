@@ -10,6 +10,9 @@ import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -35,6 +38,7 @@ import me.controller.Controller;
 import me.data.DataManager;
 import me.data.Map;
 import me.data.Subregion;
+import me.file.FileManager;
 import properties_manager.PropertiesManager;
 
 /**
@@ -198,6 +202,7 @@ public class Workspace extends AppWorkspaceComponent {
     
        public void generateAndorraMap(){        
         DataManager dataManager = (DataManager) app.getDataComponent();
+        FileManager fileManager = (FileManager) app.getFileComponent();
         Map andorraMap = new Map();
         andorraMap.setBackgroundColor("DC6E00");
         andorraMap.setBorderColor("000000");
@@ -207,6 +212,11 @@ public class Workspace extends AppWorkspaceComponent {
         andorraMap.getImageLocationsX().add(581);
         andorraMap.getImageLocationsY().add(390);
         dataManager.addMap(andorraMap);
+        try {
+            fileManager.loadCoords(dataManager, "./work/Andorra.json");
+        } catch (IOException ex) {
+            Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
         

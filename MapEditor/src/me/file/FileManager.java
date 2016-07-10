@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.json.Json;
@@ -46,7 +47,7 @@ public class FileManager implements AppFileComponent {
 	JsonObject json = loadJSONFile(filePath);
 	
 	// AND NOW LOAD ALL THE ITEMS
-	JsonArray jsonItemArray = json.getJsonArray("Items");
+	JsonArray jsonItemArray = json.getJsonArray("Map");
 	for (int i = 0; i < jsonItemArray.size(); i++) {
 	    JsonObject jsonItem = jsonItemArray.getJsonObject(i);
 	    Map map = loadItem(jsonItem);
@@ -94,16 +95,26 @@ public class FileManager implements AppFileComponent {
     @Override
     public void saveData(AppDataComponent data, String filePath) throws IOException {
         DataManager dataManager = (DataManager) data;
-        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+        JsonArrayBuilder editInfoArray = Json.createArrayBuilder();
         ArrayList<Map> maps = dataManager.getMap();
         maps.stream().map((map) -> Json.createObjectBuilder()
                 .add("backgroundColor", map.getBackgroundColor())).forEach((itemJson) -> {
-                    arrayBuilder.add(itemJson);
+                    editInfoArray.add(itemJson);
         });
-        JsonArray itemsArray = arrayBuilder.build();
+        JsonArray editInfo = editInfoArray.build();
+        
+        JsonArrayBuilder mapInfoArray = Json.createArrayBuilder();
+        ArrayList<Map> mapForCords;
+        mapForCords = dataManager.getMap();
+        mapForCords.stream().map((_item) -> Json.createObjectBuilder()
+                .add("X", dataManager.getSubregionCordsX().get(0).get(0))).forEach((itemJson) -> {
+                    mapInfoArray.add(itemJson);
+        });
+        
         
         JsonObject dataManagerJSO = Json.createObjectBuilder()
-		.add("Items", itemsArray)
+		.add("Map", editInfo)
+                .add("Edit Info", editInfo)
 		.build();
         
      // AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
@@ -125,10 +136,43 @@ public class FileManager implements AppFileComponent {
 	pw.close();
     }
     
-    
-
+    @Override
+     public void loadCoords(AppDataComponent data, String filePath) throws IOException {
+        DataManager dataManager = (DataManager)data;
+        dataManager.reset();
         
-     
+        //Load JSON File
+        JsonObject json = loadJSONFile(filePath);
+        JsonArray jsonSubArray = null;
+        ArrayList<Object> subregionCordsX = new ArrayList<>();
+        ArrayList<Object> subregionCordsY = new ArrayList<>();
+        JsonArray coordinateArray = null;
+
+        // AND NOW LOAD ALL THE ITEMS
+        JsonArray jsonItemArray = json.getJsonArray("SUBREGIONS");
+        for (int i = 0; i < jsonItemArray.size(); i++) {
+            json = jsonItemArray.getJsonObject(i);
+            jsonSubArray = json.getJsonArray("SUBREGION_POLYGONS");
+            if (jsonSubArray.size() > 0) {
+                for (int j = 0; j < jsonSubArray.size(); j++) {
+                    coordinateArray = jsonSubArray.getJsonArray(j);
+                    ArrayList doubleCordsX = new ArrayList();
+                    ArrayList doubleCordsY = new ArrayList();
+                    for (int k = 0; k < coordinateArray.size(); k++) {
+                        JsonObject coordinate = coordinateArray.getJsonObject(k);
+                        double xCord = getDataAsDouble(coordinate, "X");
+                        doubleCordsX.add(xCord);
+                        double yCord = getDataAsDouble(coordinate, "Y");
+                        doubleCordsY.add(yCord);
+                        if (k == coordinateArray.size() - 1) {
+                            dataManager.addXCords(doubleCordsX);
+                            dataManager.addYCords(doubleCordsY);
+                        }
+                    }
+                }
+            }
+        }
+    } 
 
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
