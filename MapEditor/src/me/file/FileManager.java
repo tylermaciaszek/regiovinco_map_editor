@@ -27,6 +27,7 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 import me.data.DataManager;
 import me.data.Map;
+import saf.AppTemplate;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
 
@@ -35,6 +36,8 @@ import saf.components.AppFileComponent;
  * @author Tyler Maciaszek
  */
 public class FileManager implements AppFileComponent {
+
+
 
     @Override
     public void loadData(AppDataComponent data, String filePath) throws IOException {
@@ -227,6 +230,7 @@ public class FileManager implements AppFileComponent {
 
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
+        
 
     }
 

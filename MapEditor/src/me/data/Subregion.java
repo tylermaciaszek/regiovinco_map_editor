@@ -5,16 +5,22 @@
  */
 package me.data;
 
+import javafx.scene.shape.Polygon;
+
 /**
  *
  * @author Tyler
  */
 public class Subregion {
+    Polygon polygon;
     String name;
     String leader;
     String capital;
 
     
+    public Subregion(Polygon polygonIn){
+        polygon = polygonIn;
+    }
     
     public Subregion(String nameIn, String leaderIn, String capitalIn){
         name = nameIn;
@@ -38,6 +44,15 @@ public class Subregion {
     public String getCapital() {
         return capital;
     }
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
+
+    public void setPolygon(Polygon polygon) {
+        this.polygon = polygon;
+    }
+    
     
     
 }

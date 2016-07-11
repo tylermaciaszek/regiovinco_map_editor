@@ -50,7 +50,7 @@ public class PropertiesManager
     /**
      * The constructor is private because this is a singleton.
      */
-    private PropertiesManager() 
+    public PropertiesManager() 
     {
         properties = new HashMap();
         propertyOptionsLists = new HashMap();

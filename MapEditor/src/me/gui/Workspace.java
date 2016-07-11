@@ -56,6 +56,7 @@ public class Workspace extends AppWorkspaceComponent {
     Button playSubregionAnthemButton;
     Boolean playing;
     Pane mapHolder;
+    Pane subregionHolder;
     
 
     public Workspace(MapEditorApp initApp) {
@@ -131,7 +132,7 @@ public class Workspace extends AppWorkspaceComponent {
         splitPane.prefWidthProperty().bind(app.getGUI().getPrimaryScene().widthProperty());
         splitPane.prefHeightProperty().bind(app.getGUI().getPrimaryScene().heightProperty());
         splitPane.getItems().addAll(layoutMapHolder(), layoutTableView());
-        splitPane.setDividerPosition(0, .75);
+        splitPane.setDividerPosition(0, .58);
         workspace.getChildren().add(splitPane);
     }
     
@@ -139,10 +140,15 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();    
         Pane pane = new Pane();
         mapHolder = new Pane();
+        subregionHolder = new Pane();
+        subregionHolder.setPrefSize(802,536);
+        subregionHolder.setMinSize(802, 536);
+        subregionHolder.setMaxSize(800, 536);
         mapHolder.setPrefSize(802,536);
         mapHolder.setMinSize(802, 536);
         mapHolder.setMaxSize(800, 536);
         pane.getChildren().add(mapHolder);
+        mapHolder.getChildren().add(subregionHolder);
         return pane;
     }
     
@@ -208,7 +214,7 @@ public class Workspace extends AppWorkspaceComponent {
         FileManager fileManager = (FileManager) app.getFileComponent();
         Map andorraMap = new Map();
         dataManager.setMapWidth(802);
-        dataManager.setMapWidth(536);
+        dataManager.setMapHeight(536);
         andorraMap.setBackgroundColor("DC6E00");
         andorraMap.setBorderColor("ff69b4");
         andorraMap.setBorderThickness(1.0);
@@ -220,7 +226,7 @@ public class Workspace extends AppWorkspaceComponent {
         andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorraflag.png");
         dataManager.setMapName("Andorra");
         dataManager.setMapParentDirectory("test dir");
-        dataManager.setRawMapData("./work/raw_map_data/Andorra.json");
+        dataManager.setRawMapData("./work/raw_map_data/World_adm0.json");
         dataManager.setMapParentDirectory("./work/World/Europe/");
         dataManager.addMap(andorraMap);
         try {
@@ -246,10 +252,11 @@ public class Workspace extends AppWorkspaceComponent {
     }
     
           public void render(){
-        ArrayList<Polygon> polygons = controller.getXAndY();
+        ArrayList<Subregion> polygons = controller.getXAndY();
         for(int i = 0; i < polygons.size(); i++){
-            mapHolder.getChildren().add(polygons.get(i));
-        }        
+            subregionHolder.getChildren().add(polygons.get(i).getPolygon());
+            
+        }   
     }  
           
         

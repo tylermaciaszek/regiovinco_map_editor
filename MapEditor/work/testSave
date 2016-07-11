@@ -4,9 +4,9 @@
         {
             "mapName":"Andorra",
             "mapParentDirectory":"./work/World/Europe/",
-            "mapRawData":"./work/raw_map_data/Andorra.json",
-            "mapHeight":0.0,
-            "mapWidth":536.0
+            "mapRawData":"./work/World/Europe/Andorra/Andorra.json",
+            "mapHeight":536.0,
+            "mapWidth":802.0
         }
     ],
     "Edit Info":[

@@ -13,6 +13,7 @@ import me.MapEditorApp;
 import me.PropertyType;
 import me.data.DataManager;
 import me.data.Map;
+import me.data.Subregion;
 import me.gui.Workspace;
 import properties_manager.PropertiesManager;
 import saf.AppTemplate;
@@ -35,10 +36,10 @@ public class Controller extends AppTemplate {
         work = (Workspace) app.getWorkspaceComponent();
     }
 
-    public ArrayList<Polygon> getXAndY() {
+    public ArrayList<Subregion> getXAndY() {
         index = 0;
         ArrayList<Double> cords = new ArrayList<>();
-        ArrayList<Polygon> polygons = new ArrayList<>();
+        ArrayList<Subregion> polygons = new ArrayList<>();
         dataManager.convertToScreen();
         Map map = dataManager.getMap().get(0);
         for (int i = 0; i < dataManager.getSubregionCordsX().size(); i++) {
@@ -50,7 +51,8 @@ public class Controller extends AppTemplate {
                     poly.getPoints().addAll(cords);
                     poly.setFill(Color.valueOf("#4cff4c"));
                     poly.setStroke(Color.valueOf("#"+map.getBorderColor()));
-                    polygons.add(poly);
+                    Subregion subregion = new Subregion(poly);
+                    polygons.add(subregion);
                     index++;
                 }
             }

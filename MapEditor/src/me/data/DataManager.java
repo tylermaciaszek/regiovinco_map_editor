@@ -112,6 +112,7 @@ public class DataManager implements AppDataComponent {
         for (int i = 0; i < subregionCordsX.size(); i++) {
             for (int k = 0; k < subregionCordsX.get(i).size(); k++) {
                 double temp = subregionCordsX.get(i).get(k);
+               System.out.print(mapWidth);
                 double screenCord = ((temp + 180) * (mapWidth / 360));
                 subregionCordsX.get(i).set(k, screenCord);
             }
@@ -120,6 +121,7 @@ public class DataManager implements AppDataComponent {
             for (int k = 0; k < subregionCordsY.get(i).size(); k++) {
                 double temp = subregionCordsY.get(i).get(k); 
                 double screenCord =(((temp * -1) + 90) * (mapHeight /180));
+                System.out.print(mapHeight);
                 subregionCordsY.get(i).set(k, screenCord);
             }
         }
