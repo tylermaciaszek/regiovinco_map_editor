@@ -57,7 +57,7 @@ public class Workspace extends AppWorkspaceComponent {
     Boolean playing;
     Pane mapHolder;
     Pane subregionHolder;
-    
+    TableView subregionTable;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -154,7 +154,7 @@ public class Workspace extends AppWorkspaceComponent {
     private TableView layoutTableView(){
         DataManager dataManager = (DataManager) app.getDataComponent();
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        TableView subregionTable = new TableView();
+        subregionTable = new TableView();
         subregionTable.setEditable(false);
         TableColumn regionCol = new TableColumn<>(props.getProperty(PropertyType.SUBREGION_TABLE_HEADER));
         TableColumn capitalCol = new TableColumn<>(props.getProperty(PropertyType.CAPITAL_TABLE_HEADER));
@@ -165,17 +165,9 @@ public class Workspace extends AppWorkspaceComponent {
         regionCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
         capitalCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
         leaderCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
-        Subregion testRegion = new Subregion("United States", "Washington D.C.", "Obama");
-        Subregion testRegion1 = new Subregion("TEST", "TEST", "TEST");
-        Subregion testRegion2 = new Subregion("Another Test", "Another Test", "Another Test");
+        subregionTable.getColumns().addAll(regionCol, capitalCol, leaderCol);
 
         
-        dataManager.addItem(testRegion);
-        dataManager.addItem(testRegion1);
-        dataManager.addItem(testRegion2);
-
-        subregionTable.getColumns().addAll(regionCol, capitalCol, leaderCol);
-        subregionTable.setItems(dataManager.getData());
        
         
         return subregionTable;
@@ -200,6 +192,9 @@ public class Workspace extends AppWorkspaceComponent {
 
     @Override
     public void reloadWorkspace() {
+        DataManager dataManager = (DataManager)app.getDataComponent();
+        ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getSubregionList()));
+        subregionTable.setItems(observable);
         setHardCodedValues();
     }
 
