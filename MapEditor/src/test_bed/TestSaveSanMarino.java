@@ -52,10 +52,13 @@ public class TestSaveSanMarino extends Application {
             dataManager.setMapHeight(536);
             sanMarinoMap.setBackgroundColor("DC6E00");
             sanMarinoMap.setBorderColor("000000");
-            sanMarinoMap.setBorderThickness(1.0);
+            sanMarinoMap.setBorderThickness(1);
             dataManager.setMapName("San Marino");
             dataManager.setRawMapData("./work/raw_map_data/San Marino.json");
             dataManager.setMapParentDirectory("./work/World/Europe/");
+            sanMarinoMap.setScrollLocationX(0.0);
+            sanMarinoMap.setScrollLocationY(0.0);
+            sanMarinoMap.setZoomLevel(1);
             dataManager.addMap(sanMarinoMap);
             fileManager.loadCoords(dataManager, "./work/raw_map_data/San Marino.json");
             dataManager.setSubregionList(getXAndY());

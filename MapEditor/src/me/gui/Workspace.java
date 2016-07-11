@@ -69,7 +69,6 @@ public class Workspace extends AppWorkspaceComponent {
 
         layoutGUI();
         initHandlers();
-        generateAndorraMap();
         
     }
 
@@ -209,33 +208,7 @@ public class Workspace extends AppWorkspaceComponent {
         
     }
     
-    public void generateAndorraMap() {
-        DataManager dataManager = (DataManager) app.getDataComponent();
-        FileManager fileManager = (FileManager) app.getFileComponent();
-        Map andorraMap = new Map();
-        dataManager.setMapWidth(802);
-        dataManager.setMapHeight(536);
-        andorraMap.setBackgroundColor("DC6E00");
-        andorraMap.setBorderColor("ff69b4");
-        andorraMap.setBorderThickness(1.0);
-        andorraMap.getImageLocationsX().add(8);
-        andorraMap.getImageLocationsY().add(9);
-        andorraMap.getImageLocationsX().add(581);
-        andorraMap.getImageLocationsY().add(390);
-        andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorracrest.png");
-        andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorraflag.png");
-        dataManager.setMapName("Andorra");
-        dataManager.setMapParentDirectory("test dir");
-        dataManager.setRawMapData("./work/raw_map_data/World_adm0.json");
-        dataManager.setMapParentDirectory("./work/World/Europe/");
-        dataManager.addMap(andorraMap);
-        try {
-            fileManager.loadCoords(dataManager, dataManager.getRawMapData());
-        } catch (IOException ex) {
-            Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
-    }
 
       public void setHardCodedValues() {
         DataManager dataManager = (DataManager) app.getDataComponent();

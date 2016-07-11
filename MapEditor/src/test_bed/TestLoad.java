@@ -47,6 +47,9 @@ public class TestLoad extends Application {
         System.out.println("Map Background Color: " + map.getBackgroundColor());
         System.out.println("Map Border Color: " + map.getBorderColor());
         System.out.println("Map Border Thickness: " + map.getBorderThickness());
+        System.out.println("Map Scroll X: " + map.getScrollLocationX());
+        System.out.println("Map Scroll Y: " + map.getScrollLocationY());
+        System.out.println("Map Zoom: " + map.getZoomLevel());
         System.out.println("Map Image Paths: " + map.getImagePaths());
         System.out.println("Map Image X Locations: " + map.getImageLocationsX());
         System.out.println("Map Image Y Locations: " + map.getImageLocationsY());

@@ -80,16 +80,20 @@ public class FileManager implements AppFileComponent {
      public Map loadEditInfo(JsonObject jsonItem) {
 	// GET THE DATA
 	String backgroundColor = jsonItem.getString("backgroundColor");
-        //Double borderThickness = Double.parseDouble(jsonItem.getString("borderThickness"));
+        int borderThickness = jsonItem.getInt("borderThickness");
         String borderColor = jsonItem.getString("borderColor");
+     
         
 
         
 	// THEN USE THE DATA TO BUILD AN ITEM
         Map newMap = new Map();
         newMap.setBackgroundColor(backgroundColor);
-        //newMap.setBorderThickness(Double.parseDouble(borderThickness));
+        newMap.setBorderThickness(borderThickness);
         newMap.setBorderColor(borderColor);
+        newMap.setScrollLocationX(jsonItem.getInt("scrollX"));
+        newMap.setScrollLocationY(jsonItem.getInt("scrollY"));
+        newMap.setZoomLevel(jsonItem.getInt("zoom"));
         
 	// ALL DONE, RETURN IT
 	return newMap;
@@ -99,8 +103,8 @@ public class FileManager implements AppFileComponent {
          dataManager.setMapName(jsonItem.getString("mapName"));
          dataManager.setMapParentDirectory(jsonItem.getString("mapParentDirectory"));
          dataManager.setRawMapData(jsonItem.getString("mapRawData"));
-         dataManager.setMapHeight(536);
-         dataManager.setMapWidth(802); 
+         dataManager.setMapHeight(jsonItem.getInt("mapHeight"));
+         dataManager.setMapWidth(jsonItem.getInt("mapWidth")); 
      }
      
      public void loadImageInfo(JsonObject jsonItem, DataManager dataManager) {
@@ -160,7 +164,10 @@ public class FileManager implements AppFileComponent {
 	    JsonObject itemJson = Json.createObjectBuilder()
 		    .add("backgroundColor", map.getBackgroundColor())
 		    .add("borderThickness", map.getBorderThickness())
-                    .add("borderColor", map.getBorderColor()).build();
+                    .add("borderColor", map.getBorderColor())
+                    .add("scrollX", map.getScrollLocationX())
+                    .add("scrollY", map.getScrollLocationY())
+                    .add("zoom", map.getZoomLevel()).build();
                                 editInfoArray.add(itemJson);
 
             
