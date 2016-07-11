@@ -1,0 +1,95 @@
+
+{
+    "map":[
+        {
+            "mapName":"San Marino",
+            "mapParentDirectory":"./work/World/Europe/",
+            "mapRawData":"./work/raw_map_data/San Marino.json",
+            "mapHeight":536.0,
+            "mapWidth":802.0
+        }
+    ],
+    "Regions":[
+        {
+            "name":"Acquaviva",
+            "capital":"",
+            "leader":"Lucia Tamagnini",
+            "red":225,
+            "green":225,
+            "blue":225
+        },
+        {
+            "name":"Borgo Maggiore",
+            "capital":"",
+            "leader":"Sergio Nanni",
+            "red":200,
+            "green":200,
+            "blue":200
+        },
+        {
+            "name":"Chiesanuova",
+            "capital":"",
+            "leader":"Franco Santi",
+            "red":175,
+            "green":175,
+            "blue":175
+        },
+        {
+            "name":"Domagnano",
+            "capital":"",
+            "leader":"Gabriel Guidi",
+            "red":150,
+            "green":150,
+            "blue":150
+        },
+        {
+            "name":"Faetano",
+            "capital":"",
+            "leader":"Pier Mario Bedetti",
+            "red":125,
+            "green":125,
+            "blue":125
+        },
+        {
+            "name":"Fiorentino",
+            "capital":"",
+            "leader":"Gerri Fabbri",
+            "red":100,
+            "green":100,
+            "blue":100
+        },
+        {
+            "name":"Montegiardino",
+            "capital":"",
+            "leader":"Leandro Maiani",
+            "red":75,
+            "green":75,
+            "blue":75
+        },
+        {
+            "name":"City of San Marino",
+            "capital":"",
+            "leader":"",
+            "red":50,
+            "green":50,
+            "blue":50
+        },
+        {
+            "name":"Serravalle",
+            "capital":"",
+            "leader":"",
+            "red":25,
+            "green":25,
+            "blue":25
+        }
+    ],
+    "Edit Info":[
+        {
+            "backgroundColor":"DC6E00",
+            "borderThickness":1.0,
+            "borderColor":"000000"
+        }
+    ],
+    "Images":[
+    ]
+}

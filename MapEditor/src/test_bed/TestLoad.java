@@ -7,6 +7,7 @@ package test_bed;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -19,7 +20,7 @@ import me.data.DataManager;
 import me.data.Map;
 import me.file.FileManager;
 import static saf.settings.AppStartupConstants.PATH_WORK;
-import static test_bed.TestSave.app;
+import static test_bed.TestSaveAndorra.app;
 
 /**
  *
@@ -49,7 +50,17 @@ public class TestLoad extends Application {
         System.out.println("Map Image Paths: " + map.getImagePaths());
         System.out.println("Map Image X Locations: " + map.getImageLocationsX());
         System.out.println("Map Image Y Locations: " + map.getImageLocationsY());
-        System.out.println("Map Image Y Locations: " + map.getSubregionsList());
+        System.out.println("Regions: ");
+        System.out.print(printArrayList(dataManager.getSubregionList()));
+    }
+    
+    public String printArrayList(ArrayList list){
+        String print = list.get(0).toString();
+        for(int i = 1; i < list.size(); i++){
+            print += "\n" + list.get(i).toString();
+        }
+        
+        return print;
     }
 
     @Override
@@ -64,7 +75,7 @@ public class TestLoad extends Application {
                 fileManager.loadData(dataManager, selectedFile.getPath());
                 fileManager.loadCoords(dataManager, dataManager.getRawMapData());
             } catch (IOException ex) {
-                Logger.getLogger(TestSave.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(TestSaveAndorra.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         printOut();

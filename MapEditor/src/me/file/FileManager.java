@@ -27,6 +27,7 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 import me.data.DataManager;
 import me.data.Map;
+import me.data.Subregion;
 import saf.AppTemplate;
 import saf.components.AppDataComponent;
 import saf.components.AppFileComponent;
@@ -68,6 +69,12 @@ public class FileManager implements AppFileComponent {
 	    JsonObject jsonItem = imageInfoLoad.getJsonObject(i);
             loadImageInfo(jsonItem, dataManager);
 	}
+        
+        JsonArray regionInfoLoad = json.getJsonArray("Regions");
+        for(int i = 0; i < regionInfoLoad.size(); i++){
+            JsonObject jsonItem = regionInfoLoad.getJsonObject(i);
+            loadRegionInfo(jsonItem, dataManager);
+        }
     }
     
      public Map loadEditInfo(JsonObject jsonItem) {
@@ -89,7 +96,6 @@ public class FileManager implements AppFileComponent {
     }
      
      public void loadMapInfo(JsonObject jsonItem, DataManager dataManager) {
-         System.out.print(dataManager);
          dataManager.setMapName(jsonItem.getString("mapName"));
          dataManager.setMapParentDirectory(jsonItem.getString("mapParentDirectory"));
          dataManager.setRawMapData(jsonItem.getString("mapRawData"));
@@ -102,6 +108,12 @@ public class FileManager implements AppFileComponent {
          map.getImagePaths().add(jsonItem.getString("imagePath"));
          map.getImageLocationsX().add(jsonItem.getInt("X"));
          map.getImageLocationsY().add(jsonItem.getInt("Y"));
+     }
+     
+     public void loadRegionInfo(JsonObject jsonItem, DataManager dataManager) {
+         Subregion subregion = new Subregion(jsonItem.getString("name"), jsonItem.getString("leader"), jsonItem.getString("capital"));
+         dataManager.getSubregionList().add(subregion);
+         
      }
      
      
@@ -134,6 +146,7 @@ public class FileManager implements AppFileComponent {
         JsonArrayBuilder editInfoArray = Json.createArrayBuilder();
         JsonArrayBuilder imageArray = Json.createArrayBuilder();
         JsonArrayBuilder mapArray = Json.createArrayBuilder();
+        JsonArrayBuilder regionArray = Json.createArrayBuilder();
         Map map = dataManager.getMap().get(0);
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("mapName", dataManager.getMapName())
@@ -157,16 +170,29 @@ public class FileManager implements AppFileComponent {
                         .add("imagePath", map.getImagePaths().get(i))
                         .add("X", map.getImageLocationsX().get(i))
                         .add("Y", map.getImageLocationsY().get(i)).build();
-                imageArray.add(imageJson);
-                           
-        }	
+                imageArray.add(imageJson);                          
+        }
+            for(int i = 0; i < dataManager.getSubregionList().size(); i++){
+                ArrayList<Subregion> regions = dataManager.getSubregionList();
+                JsonObject regionInfoJson = Json.createObjectBuilder()
+                        .add("name", regions.get(i).getName())
+                        .add("capital", regions.get(i).getCapital())
+                        .add("leader", regions.get(i).getLeader())
+                        .add("red", regions.get(i).getRedColor())
+                        .add("green", regions.get(i).getGreenColor())
+                        .add("blue", regions.get(i).getBlueColor()).build();
+                regionArray.add(regionInfoJson);
+                        
+                        }
 
         JsonArray editInfo = editInfoArray.build();   
         JsonArray imageInfo = imageArray.build();
         JsonArray mapInfo = mapArray.build();
+        JsonArray regionInfo = regionArray.build();
         
         JsonObject dataManagerJSO = Json.createObjectBuilder()
                 .add("map", mapInfo)
+                .add("Regions", regionInfo)
                 .add("Edit Info", editInfo)
                 .add("Images", imageInfo)
 		.build();
