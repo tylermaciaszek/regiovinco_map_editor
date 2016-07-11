@@ -69,6 +69,7 @@ public class Workspace extends AppWorkspaceComponent {
         layoutGUI();
         initHandlers();
         generateAndorraMap();
+        
     }
 
     private void layoutGUI(){
@@ -170,7 +171,6 @@ public class Workspace extends AppWorkspaceComponent {
 
         subregionTable.getColumns().addAll(regionCol, capitalCol, leaderCol);
         subregionTable.setItems(dataManager.getData());
-        System.out.print(dataManager.getData().get(0).toString());
        
         
         return subregionTable;
@@ -195,14 +195,14 @@ public class Workspace extends AppWorkspaceComponent {
 
     @Override
     public void reloadWorkspace() {
-        
+        setHardCodedValues();
     }
 
     @Override
     public void initStyle() {
         
     }
-
+    
     public void generateAndorraMap() {
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = (FileManager) app.getFileComponent();
@@ -216,22 +216,22 @@ public class Workspace extends AppWorkspaceComponent {
         andorraMap.getImageLocationsY().add(9);
         andorraMap.getImageLocationsX().add(581);
         andorraMap.getImageLocationsY().add(390);
-        andorraMap.getImagePaths().add("file:./work/andorracrest.png");
-        andorraMap.getImagePaths().add("file:./work/andorraflag.png");
+        andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorracrest.png");
+        andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorraflag.png");
         dataManager.setMapName("Andorra");
         dataManager.setMapParentDirectory("test dir");
+        dataManager.setRawMapData("./work/raw_map_data/Andorra.json");
+        dataManager.setMapParentDirectory("./work/World/Europe/");
         dataManager.addMap(andorraMap);
         try {
-            fileManager.loadCoords(dataManager, "./work/Andorra.json");
+            fileManager.loadCoords(dataManager, dataManager.getRawMapData());
         } catch (IOException ex) {
             Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        setHardCodedValues();
 
     }
 
-    
-    public void setHardCodedValues() {
+      public void setHardCodedValues() {
         DataManager dataManager = (DataManager) app.getDataComponent();
         Map andorraMap = dataManager.getMap().get(0);
         mapHolder.setStyle("-fx-background-color: #" + andorraMap.getBackgroundColor());
@@ -247,9 +247,10 @@ public class Workspace extends AppWorkspaceComponent {
     
           public void render(){
         ArrayList<Polygon> polygons = controller.getXAndY();
-        System.out.println(polygons);
         for(int i = 0; i < polygons.size(); i++){
             mapHolder.getChildren().add(polygons.get(i));
         }        
-    }
+    }  
+          
+        
 }

@@ -41,33 +41,67 @@ public class FileManager implements AppFileComponent {
 	// CLEAR THE OLD DATA OUT
 	DataManager dataManager = (DataManager)data;
 	dataManager.reset();
+        Map map;
 	
 	// LOAD THE JSON FILE WITH ALL THE DATA
 	JsonObject json = loadJSONFile(filePath);
 	
 	// AND NOW LOAD ALL THE ITEMS
-	JsonArray jsonItemArray = json.getJsonArray("Map");
-	for (int i = 0; i < jsonItemArray.size(); i++) {
-	    JsonObject jsonItem = jsonItemArray.getJsonObject(i);
-	    Map map = loadItem(jsonItem);
+        JsonArray editInfoLoad = json.getJsonArray("Edit Info");
+	for (int i = 0; i < editInfoLoad.size(); i++) {
+	    JsonObject jsonItem = editInfoLoad.getJsonObject(i);
+	    map = loadEditInfo(jsonItem);
 	    dataManager.addMap(map);
 	}
-        System.out.println(dataManager.getMap().get(0).getBackgroundColor());
+        
+        JsonArray mapInfoLoad = json.getJsonArray("map");
+	for (int i = 0; i < mapInfoLoad.size(); i++) {
+	    JsonObject jsonItem = mapInfoLoad.getJsonObject(i);
+            loadMapInfo(jsonItem, dataManager);
+	}
+        
+        JsonArray imageInfoLoad = json.getJsonArray("Images");
+        for (int i = 0; i < imageInfoLoad.size(); i++) {
+	    JsonObject jsonItem = imageInfoLoad.getJsonObject(i);
+            loadImageInfo(jsonItem, dataManager);
+	}
     }
     
-     public Map loadItem(JsonObject jsonItem) {
+     public Map loadEditInfo(JsonObject jsonItem) {
 	// GET THE DATA
 	String backgroundColor = jsonItem.getString("backgroundColor");
+        //Double borderThickness = Double.parseDouble(jsonItem.getString("borderThickness"));
+        String borderColor = jsonItem.getString("borderColor");
+        
 
         
 	// THEN USE THE DATA TO BUILD AN ITEM
         Map newMap = new Map();
         newMap.setBackgroundColor(backgroundColor);
-        System.out.println(backgroundColor);
+        //newMap.setBorderThickness(Double.parseDouble(borderThickness));
+        newMap.setBorderColor(borderColor);
         
 	// ALL DONE, RETURN IT
 	return newMap;
     }
+     
+     public void loadMapInfo(JsonObject jsonItem, DataManager dataManager) {
+         System.out.print(dataManager);
+         dataManager.setMapName(jsonItem.getString("mapName"));
+         dataManager.setMapParentDirectory(jsonItem.getString("mapParentDirectory"));
+         dataManager.setRawMapData(jsonItem.getString("mapRawData"));
+         dataManager.setMapHeight(536);
+         dataManager.setMapWidth(802); 
+     }
+     
+     public void loadImageInfo(JsonObject jsonItem, DataManager dataManager) {
+         Map map = dataManager.getMap().get(0);
+         map.getImagePaths().add(jsonItem.getString("imagePath"));
+         map.getImageLocationsX().add(jsonItem.getInt("X"));
+         map.getImageLocationsY().add(jsonItem.getInt("Y"));
+     }
+     
+     
     
     public double getDataAsDouble(JsonObject json, String dataName) {
 	JsonValue value = json.get(dataName);
@@ -97,34 +131,39 @@ public class FileManager implements AppFileComponent {
         JsonArrayBuilder editInfoArray = Json.createArrayBuilder();
         JsonArrayBuilder imageArray = Json.createArrayBuilder();
         JsonArrayBuilder mapArray = Json.createArrayBuilder();
-        ArrayList<Map> maps = dataManager.getMap();
-        for (Map map : maps) {	
+        Map map = dataManager.getMap().get(0);
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("mapName", dataManager.getMapName())
                     .add("mapParentDirectory", dataManager.getMapParentDirectory())
+                    .add("mapRawData", dataManager.getRawMapData())
                     .add("mapHeight", dataManager.getMapHeight())
                     .add("mapWidth", dataManager.getMapWidth()).build();
             mapArray.add(mapJson);
+        
+            
 	    JsonObject itemJson = Json.createObjectBuilder()
 		    .add("backgroundColor", map.getBackgroundColor())
 		    .add("borderThickness", map.getBorderThickness())
                     .add("borderColor", map.getBorderColor()).build();
+                                editInfoArray.add(itemJson);
+
+            
+          
             for (int i = 0; i < map.getImagePaths().size(); i++) {
                 JsonObject imageJson = Json.createObjectBuilder()
                         .add("imagePath", map.getImagePaths().get(i))
                         .add("X", map.getImageLocationsX().get(i))
                         .add("Y", map.getImageLocationsY().get(i)).build();
                 imageArray.add(imageJson);
-            }     
-                    editInfoArray.add(itemJson);
-                    
+                           
         }	
+
         JsonArray editInfo = editInfoArray.build();   
         JsonArray imageInfo = imageArray.build();
         JsonArray mapInfo = mapArray.build();
         
         JsonObject dataManagerJSO = Json.createObjectBuilder()
-                .add("Map Info", mapInfo)
+                .add("map", mapInfo)
                 .add("Edit Info", editInfo)
                 .add("Images", imageInfo)
 		.build();

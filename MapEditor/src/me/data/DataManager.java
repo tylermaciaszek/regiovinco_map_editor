@@ -20,6 +20,7 @@ public class DataManager implements AppDataComponent {
    double mapHeight;
    String mapName;
    String mapParentDirectory;
+   String rawMapData;
 
     
     public DataManager(MapEditorApp initApp) {
@@ -32,8 +33,17 @@ public class DataManager implements AppDataComponent {
         mapHeight = 0.0;
         mapName = "";
         mapParentDirectory = "";
+        rawMapData = "";
     }
 
+    public String getRawMapData() {
+        return rawMapData;
+    }
+
+    public void setRawMapData(String rawMapData) {
+        this.rawMapData = rawMapData;
+    }
+    
     public String getMapName() {
         return mapName;
     }
@@ -84,7 +94,6 @@ public class DataManager implements AppDataComponent {
     
     public void addXCords(ArrayList data){
         subregionCordsX.add(data);
-        System.out.println(data);
     }
     
     public void addYCords(ArrayList data){
@@ -103,7 +112,6 @@ public class DataManager implements AppDataComponent {
         for (int i = 0; i < subregionCordsX.size(); i++) {
             for (int k = 0; k < subregionCordsX.get(i).size(); k++) {
                 double temp = subregionCordsX.get(i).get(k);
-                System.out.print(mapWidth);
                 double screenCord = ((temp + 180) * (mapWidth / 360));
                 subregionCordsX.get(i).set(k, screenCord);
             }
