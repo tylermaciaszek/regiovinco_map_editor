@@ -1,0 +1,29 @@
+
+{
+    "Map":[
+        {
+            "imagePath":"file:./work/andorracrest.png"
+        },
+        {
+            "imagePath":"file:./work/andorraflag.png"
+        },
+        {
+            "backgroundColor":"DC6E00",
+            "borderThickness":1.0,
+            "borderColor":"ff69b4"
+        }
+    ],
+    "Edit Info":[
+        {
+            "imagePath":"file:./work/andorracrest.png"
+        },
+        {
+            "imagePath":"file:./work/andorraflag.png"
+        },
+        {
+            "backgroundColor":"DC6E00",
+            "borderThickness":1.0,
+            "borderColor":"ff69b4"
+        }
+    ]
+}

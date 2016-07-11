@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.json.Json;
@@ -96,25 +95,38 @@ public class FileManager implements AppFileComponent {
     public void saveData(AppDataComponent data, String filePath) throws IOException {
         DataManager dataManager = (DataManager) data;
         JsonArrayBuilder editInfoArray = Json.createArrayBuilder();
+        JsonArrayBuilder imageArray = Json.createArrayBuilder();
+        JsonArrayBuilder mapArray = Json.createArrayBuilder();
         ArrayList<Map> maps = dataManager.getMap();
-        maps.stream().map((map) -> Json.createObjectBuilder()
-                .add("backgroundColor", map.getBackgroundColor())).forEach((itemJson) -> {
+        for (Map map : maps) {	
+            JsonObject mapJson = Json.createObjectBuilder()
+                    .add("mapName", dataManager.getMapName())
+                    .add("mapParentDirectory", dataManager.getMapParentDirectory())
+                    .add("mapHeight", dataManager.getMapHeight())
+                    .add("mapWidth", dataManager.getMapWidth()).build();
+            mapArray.add(mapJson);
+	    JsonObject itemJson = Json.createObjectBuilder()
+		    .add("backgroundColor", map.getBackgroundColor())
+		    .add("borderThickness", map.getBorderThickness())
+                    .add("borderColor", map.getBorderColor()).build();
+            for (int i = 0; i < map.getImagePaths().size(); i++) {
+                JsonObject imageJson = Json.createObjectBuilder()
+                        .add("imagePath", map.getImagePaths().get(i))
+                        .add("X", map.getImageLocationsX().get(i))
+                        .add("Y", map.getImageLocationsY().get(i)).build();
+                imageArray.add(imageJson);
+            }     
                     editInfoArray.add(itemJson);
-        });
-        JsonArray editInfo = editInfoArray.build();
-        
-        JsonArrayBuilder mapInfoArray = Json.createArrayBuilder();
-        ArrayList<Map> mapForCords;
-        mapForCords = dataManager.getMap();
-        mapForCords.stream().map((_item) -> Json.createObjectBuilder()
-                .add("X", dataManager.getSubregionCordsX().get(0).get(0))).forEach((itemJson) -> {
-                    mapInfoArray.add(itemJson);
-        });
-        
+                    
+        }	
+        JsonArray editInfo = editInfoArray.build();   
+        JsonArray imageInfo = imageArray.build();
+        JsonArray mapInfo = mapArray.build();
         
         JsonObject dataManagerJSO = Json.createObjectBuilder()
-		.add("Map", editInfo)
+                .add("Map Info", mapInfo)
                 .add("Edit Info", editInfo)
+                .add("Images", imageInfo)
 		.build();
         
      // AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING

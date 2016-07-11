@@ -233,6 +233,8 @@ public class AppGUI implements AppStyleArbiter {
 
         // NOW TIE THE SCENE TO THE WINDOW AND OPEN THE WINDOW
         primaryStage.setScene(primaryScene);
+        primaryStage.setHeight(650);
+        primaryStage.setWidth(1400);
         primaryStage.show();
     }
     

@@ -1,13 +1,30 @@
 
 {
-    "Map":[
+    "Map Info":[
         {
-            "backgroundColor":"DC6E00"
+            "mapName":"Andorra",
+            "mapParentDirectory":"test dir",
+            "mapHeight":0.0,
+            "mapWidth":536.0
         }
     ],
     "Edit Info":[
         {
-            "backgroundColor":"DC6E00"
+            "backgroundColor":"DC6E00",
+            "borderThickness":1.0,
+            "borderColor":"ff69b4"
+        }
+    ],
+    "Images":[
+        {
+            "imagePath":"file:./work/andorracrest.png",
+            "X":8,
+            "Y":9
+        },
+        {
+            "imagePath":"file:./work/andorraflag.png",
+            "X":581,
+            "Y":390
         }
     ]
 }

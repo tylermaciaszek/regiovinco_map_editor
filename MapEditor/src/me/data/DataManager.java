@@ -16,6 +16,10 @@ public class DataManager implements AppDataComponent {
    ArrayList<Map> mapData;
    ArrayList<ArrayList<Double>> subregionCordsX;
    ArrayList<ArrayList<Double>> subregionCordsY;
+   double mapWidth;
+   double mapHeight;
+   String mapName;
+   String mapParentDirectory;
 
     
     public DataManager(MapEditorApp initApp) {
@@ -24,7 +28,44 @@ public class DataManager implements AppDataComponent {
         mapData = new ArrayList<>();
         this.subregionCordsX = new ArrayList<>();
         this.subregionCordsY = new ArrayList<>();
+        mapWidth = 0.0;
+        mapHeight = 0.0;
+        mapName = "";
+        mapParentDirectory = "";
     }
+
+    public String getMapName() {
+        return mapName;
+    }
+
+    public void setMapName(String mapName) {
+        this.mapName = mapName;
+    }
+
+    public String getMapParentDirectory() {
+        return mapParentDirectory;
+    }
+
+    public void setMapParentDirectory(String mapParentDirectory) {
+        this.mapParentDirectory = mapParentDirectory;
+    }
+    
+    public double getMapWidth() {
+        return mapWidth;
+    }
+
+    public void setMapWidth(double mapWidth) {
+        this.mapWidth = mapWidth;
+    }
+
+    public double getMapHeight() {
+        return mapHeight;
+    }
+
+    public void setMapHeight(double mapHeight) {
+        this.mapHeight = mapHeight;
+    }
+    
     
     public void addItem(Object item){
         data.add(item);
@@ -62,14 +103,15 @@ public class DataManager implements AppDataComponent {
         for (int i = 0; i < subregionCordsX.size(); i++) {
             for (int k = 0; k < subregionCordsX.get(i).size(); k++) {
                 double temp = subregionCordsX.get(i).get(k);
-                double screenCord = ((temp + 180) * (app.getGUI().getPrimaryScene().getWidth() / 360));
+                System.out.print(mapWidth);
+                double screenCord = ((temp + 180) * (mapWidth / 360));
                 subregionCordsX.get(i).set(k, screenCord);
             }
         }
         for (int i = 0; i < subregionCordsY.size(); i++) {
             for (int k = 0; k < subregionCordsY.get(i).size(); k++) {
                 double temp = subregionCordsY.get(i).get(k); 
-                double screenCord =(((temp * -1) + 90) * ((app.getGUI().getPrimaryScene().getHeight() - app.getGUI().getAppPane().getTop().getLayoutBounds().getHeight()) /180));
+                double screenCord =(((temp * -1) + 90) * (mapHeight /180));
                 subregionCordsY.get(i).set(k, screenCord);
             }
         }

@@ -11,6 +11,7 @@ import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
@@ -31,6 +32,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Polygon;
 import saf.components.AppWorkspaceComponent;
 import me.MapEditorApp;
 import me.PropertyType;
@@ -53,6 +55,7 @@ public class Workspace extends AppWorkspaceComponent {
     Controller controller;
     Button playSubregionAnthemButton;
     Boolean playing;
+    Pane mapHolder;
     
 
     public Workspace(MapEditorApp initApp) {
@@ -60,7 +63,7 @@ public class Workspace extends AppWorkspaceComponent {
         workspace = new Pane();
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
-        controller = new Controller();
+        controller = new Controller(app);
         playing = false;
 
         layoutGUI();
@@ -71,9 +74,9 @@ public class Workspace extends AppWorkspaceComponent {
     private void layoutGUI(){
        layoutEditToolbar();   
        newMapDialog = new NewMapDialog();
-       newMapDialog.showDialog();
+       //newMapDialog.showDialog();
        subRegionDialog = new SubRegionDialog();
-       subRegionDialog.showDialog();
+       //subRegionDialog.showDialog();
        layoutSplitPane();
     }
     
@@ -133,12 +136,13 @@ public class Workspace extends AppWorkspaceComponent {
     
     private Pane layoutMapHolder(){
         PropertiesManager props = PropertiesManager.getPropertiesManager();    
-        Pane mapHolder = new Pane();
-        ImageView mapImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_WORLD)));
-        mapImage.setFitHeight(700);
-        mapImage.setFitWidth(1000);
-        mapHolder.getChildren().add(mapImage);
-        return mapHolder;
+        Pane pane = new Pane();
+        mapHolder = new Pane();
+        mapHolder.setPrefSize(802,536);
+        mapHolder.setMinSize(802, 536);
+        mapHolder.setMaxSize(800, 536);
+        pane.getChildren().add(mapHolder);
+        return pane;
     }
     
     private TableView layoutTableView(){
@@ -197,28 +201,55 @@ public class Workspace extends AppWorkspaceComponent {
     @Override
     public void initStyle() {
         
-        
     }
-    
-       public void generateAndorraMap(){        
+
+    public void generateAndorraMap() {
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = (FileManager) app.getFileComponent();
         Map andorraMap = new Map();
+        dataManager.setMapWidth(802);
+        dataManager.setMapWidth(536);
         andorraMap.setBackgroundColor("DC6E00");
-        andorraMap.setBorderColor("000000");
+        andorraMap.setBorderColor("ff69b4");
         andorraMap.setBorderThickness(1.0);
         andorraMap.getImageLocationsX().add(8);
         andorraMap.getImageLocationsY().add(9);
         andorraMap.getImageLocationsX().add(581);
         andorraMap.getImageLocationsY().add(390);
+        andorraMap.getImagePaths().add("file:./work/andorracrest.png");
+        andorraMap.getImagePaths().add("file:./work/andorraflag.png");
+        dataManager.setMapName("Andorra");
+        dataManager.setMapParentDirectory("test dir");
         dataManager.addMap(andorraMap);
         try {
             fileManager.loadCoords(dataManager, "./work/Andorra.json");
         } catch (IOException ex) {
             Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+        setHardCodedValues();
+
+    }
+
+    
+    public void setHardCodedValues() {
+        DataManager dataManager = (DataManager) app.getDataComponent();
+        Map andorraMap = dataManager.getMap().get(0);
+        mapHolder.setStyle("-fx-background-color: #" + andorraMap.getBackgroundColor());
+        for (int i = 0; i < andorraMap.getImagePaths().size(); i++) {
+            Image image = new Image(andorraMap.getImagePaths().get(i));
+            ImageView imageView = new ImageView(image);
+            mapHolder.getChildren().add(imageView);
+            imageView.setX(andorraMap.getImageLocationsX().get(i));
+            imageView.setY(andorraMap.getImageLocationsY().get(i));           
+        }
+        render();
+    }
+    
+          public void render(){
+        ArrayList<Polygon> polygons = controller.getXAndY();
+        System.out.println(polygons);
+        for(int i = 0; i < polygons.size(); i++){
+            mapHolder.getChildren().add(polygons.get(i));
+        }        
     }
 }
