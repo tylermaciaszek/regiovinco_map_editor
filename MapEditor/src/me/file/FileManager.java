@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.json.Json;
@@ -116,7 +117,11 @@ public class FileManager implements AppFileComponent {
      
      public void loadRegionInfo(JsonObject jsonItem, DataManager dataManager) {
          Subregion subregion = new Subregion(jsonItem.getString("name"), jsonItem.getString("leader"), jsonItem.getString("capital"));
+         subregion.setRedColor(jsonItem.getInt("red"));
+         subregion.setGreenColor(jsonItem.getInt("green"));
+         subregion.setBlueColor(jsonItem.getInt("blue"));
          dataManager.getSubregionList().add(subregion);
+         System.out.print(subregion);
          
      }
      
@@ -226,7 +231,6 @@ public class FileManager implements AppFileComponent {
     @Override
      public void loadCoords(AppDataComponent data, String filePath) throws IOException {
         DataManager dataManager = (DataManager)data;
-        dataManager.reset();
         
         //Load JSON File
         JsonObject json = loadJSONFile(filePath);
@@ -259,11 +263,58 @@ public class FileManager implements AppFileComponent {
                 }
             }
         }
-    } 
+    }
 
     @Override
     public void exportData(AppDataComponent data, String filePath) throws IOException {
+        DataManager dataManager = (DataManager) data;
+        JsonArrayBuilder regionArray = Json.createArrayBuilder();
+        ArrayList<Subregion> regions = dataManager.getSubregionList();
         
+        for(int j = 0; j < dataManager.getSubregionList().size(); j++) {
+            if("".equals(dataManager.getSubregionList().get(j).getCapital()))
+                dataManager.setHasCapitals(false);
+            if("".equals(dataManager.getSubregionList().get(j).getLeader()))
+                dataManager.setHasLeaders(false);
+        }
+        
+        for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            JsonObject mapJson = Json.createObjectBuilder()
+                    .add("name", regions.get(i).getName())
+                    .add("capital", regions.get(i).getCapital())
+                    .add("leader", regions.get(i).getLeader())
+                    .add("red", regions.get(i).getRedColor())
+                    .add("green", regions.get(i).getGreenColor())
+                    .add("blue", regions.get(i).getBlueColor()).build();
+            
+ 
+            regionArray.add(mapJson);
+        }
+         JsonObject dataManagerJSO = Json.createObjectBuilder()
+                 .add("name", dataManager.getMapName())
+                 .add("subregions_have_capitals", dataManager.isHasCapitals())
+                 .add("subregions_have_flags", dataManager.isHasFlags())
+                 .add("subregions_have_leaders", dataManager.isHasLeaders())
+                .add("subregions", regionArray)
+		.build();
+        
+     // AND NOW OUTPUT IT TO A JSON FILE WITH PRETTY PRINTING
+	java.util.Map<String, Object> properties = new HashMap<>(1);
+	properties.put(JsonGenerator.PRETTY_PRINTING, true);
+	JsonWriterFactory writerFactory = Json.createWriterFactory(properties);
+	StringWriter sw = new StringWriter();
+	JsonWriter jsonWriter = writerFactory.createWriter(sw);
+	jsonWriter.writeObject(dataManagerJSO);
+	jsonWriter.close();
+
+	// INIT THE WRITER
+	OutputStream os = new FileOutputStream(filePath);
+	JsonWriter jsonFileWriter = Json.createWriter(os);
+	jsonFileWriter.writeObject(dataManagerJSO);
+	String prettyPrinted = sw.toString();
+	PrintWriter pw = new PrintWriter(filePath);
+	pw.write(prettyPrinted);
+	pw.close();
 
     }
 

@@ -22,6 +22,9 @@ public class DataManager implements AppDataComponent {
    String mapName;
    String mapParentDirectory;
    String rawMapData;
+   boolean hasCapitals;
+   boolean hasLeaders;
+   boolean hasFlags;
 
     
     public DataManager(MapEditorApp initApp) {
@@ -36,7 +39,36 @@ public class DataManager implements AppDataComponent {
         mapParentDirectory = "";
         rawMapData = "";
         subregionList = new ArrayList();
+        hasCapitals = true;
+        hasLeaders = true;
+        hasFlags = true;
     }
+
+    public boolean isHasCapitals() {
+        return hasCapitals;
+    }
+
+    public void setHasCapitals(boolean hasCapitals) {
+        this.hasCapitals = hasCapitals;
+    }
+
+    public boolean isHasLeaders() {
+        return hasLeaders;
+    }
+
+    public void setHasLeaders(boolean hasLeaders) {
+        this.hasLeaders = hasLeaders;
+    }
+
+    public boolean isHasFlags() {
+        return hasFlags;
+    }
+
+    public void setHasFlags(boolean hasFlags) {
+        this.hasFlags = hasFlags;
+    }
+    
+    
 
     public ArrayList<Subregion> getSubregionList() {
         return subregionList;
@@ -135,9 +167,10 @@ public class DataManager implements AppDataComponent {
         }
 
     }
-    
+ 
     @Override
     public void reset() {
-        
+        subregionList.clear();
+      
     }
 }

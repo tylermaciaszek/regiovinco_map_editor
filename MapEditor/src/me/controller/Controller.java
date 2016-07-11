@@ -58,7 +58,6 @@ public class Controller extends AppTemplate {
             }
             cords.clear();
         }
-        dataManager.setSubregionList(polygons);
         return polygons;
     }
 

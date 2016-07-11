@@ -168,13 +168,13 @@ public class AppFileController {
 		FileChooser fc = new FileChooser();
 		fc.setInitialDirectory(new File(PATH_WORK));
 		fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
-		fc.getExtensionFilters().addAll(
-		new ExtensionFilter(props.getProperty(WORK_FILE_EXT_DESC), props.getProperty(WORK_FILE_EXT)));
-
-		File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
-		if (selectedFile != null) {
-		    saveWork(selectedFile);
-		}
+		//FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                //fc.getExtensionFilters().add(extFilter);
+                
+                File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+                if (selectedFile != null) {
+                    saveWork(selectedFile);
+                }
 	    }
         } catch (IOException ioe) {
 	    AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();

@@ -79,8 +79,8 @@ public class TestSaveSanMarino extends Application {
             subregions.get(4).setLeader("Pier Mario Bedetti");
             subregions.get(5).setLeader("Gerri Fabbri");
             subregions.get(6).setLeader("Marta Fabbri");
-            subregions.get(6).setLeader("Maria Teresa Beccari");
-            subregions.get(6).setLeader("Leandro Maiani");
+            subregions.get(7).setLeader("Maria Teresa Beccari");
+            subregions.get(8).setLeader("Leandro Maiani");
             subregions.get(0).setRedColor(225);
             subregions.get(1).setRedColor(200);
             subregions.get(2).setRedColor(175);

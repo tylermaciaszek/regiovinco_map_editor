@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -33,6 +34,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Polygon;
+import javafx.stage.FileChooser;
 import saf.components.AppWorkspaceComponent;
 import me.MapEditorApp;
 import me.PropertyType;
@@ -42,6 +44,8 @@ import me.data.Map;
 import me.data.Subregion;
 import me.file.FileManager;
 import properties_manager.PropertiesManager;
+import static saf.settings.AppPropertyType.SAVE_WORK_TITLE;
+import static saf.settings.AppStartupConstants.PATH_WORK;
 
 /**
  *
@@ -58,6 +62,7 @@ public class Workspace extends AppWorkspaceComponent {
     Pane mapHolder;
     Pane subregionHolder;
     TableView subregionTable;
+    Button exportButton;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -84,7 +89,7 @@ public class Workspace extends AppWorkspaceComponent {
     private void layoutEditToolbar(){
        PropertiesManager props = PropertiesManager.getPropertiesManager();
        FlowPane topToolbar = (FlowPane)app.getGUI().getAppPane().getTop();
-       Button exportButton = new Button();
+       exportButton = new Button();
        exportButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.EXPORT_ICON))));
        topToolbar.getChildren().add(exportButton);
        HBox editToolbar = new HBox();
@@ -175,6 +180,7 @@ public class Workspace extends AppWorkspaceComponent {
     
     public void initHandlers(){
         PropertiesManager props = PropertiesManager.getPropertiesManager();
+        FileManager fileManager = new FileManager();
         changeMapNameButton.setOnAction(e -> {
             controller.launchChangeNameWindow();
         });
@@ -188,14 +194,34 @@ public class Workspace extends AppWorkspaceComponent {
                 playing = true;
             }
         });
+        exportButton.setOnAction(e ->{
+            try {
+                DataManager dataManager = (DataManager) app.getDataComponent();
+                FileChooser fc = new FileChooser();
+                fc.setInitialDirectory(new File(PATH_WORK));
+                fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
+                
+                File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
+                fileManager.exportData(dataManager, selectedFile.getPath());
+            } catch (IOException ex) {
+                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     @Override
     public void reloadWorkspace() {
-        DataManager dataManager = (DataManager)app.getDataComponent();
+        FileManager fileManager = new FileManager();
+        DataManager dataManager = (DataManager) app.getDataComponent();
+        try {
+            fileManager.loadCoords(dataManager, dataManager.getRawMapData());
+        } catch (IOException ex) {
+            Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getSubregionList()));
         subregionTable.setItems(observable);
         setHardCodedValues();
+        System.out.println("Size:" + dataManager.getSubregionList());
     }
 
     @Override
@@ -206,8 +232,10 @@ public class Workspace extends AppWorkspaceComponent {
 
 
       public void setHardCodedValues() {
+        int t = 0;
         DataManager dataManager = (DataManager) app.getDataComponent();
-        Map andorraMap = dataManager.getMap().get(0);
+        Map andorraMap = dataManager.getMap().get(t);
+        System.out.print(dataManager.getMap().size());
         mapHolder.setStyle("-fx-background-color: #" + andorraMap.getBackgroundColor());
         for (int i = 0; i < andorraMap.getImagePaths().size(); i++) {
             Image image = new Image(andorraMap.getImagePaths().get(i));
@@ -216,6 +244,7 @@ public class Workspace extends AppWorkspaceComponent {
             imageView.setX(andorraMap.getImageLocationsX().get(i));
             imageView.setY(andorraMap.getImageLocationsY().get(i));           
         }
+        t++;
         render();
     }
     
