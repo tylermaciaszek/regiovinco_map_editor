@@ -5,6 +5,7 @@
  */
 package me.file;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -276,20 +277,59 @@ public class FileManager implements AppFileComponent {
                 dataManager.setHasCapitals(false);
             if("".equals(dataManager.getSubregionList().get(j).getLeader()))
                 dataManager.setHasLeaders(false);
+            if(!(new File("./work/export/The World/Europe/" + dataManager.getMapName() + "/" + regions.get(j).getName() + " Flag").exists())){
+                System.out.print(false);
+                dataManager.setHasFlags(false);
+        }
         }
         
-        for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+        if(!dataManager.isHasCapitals()&&!dataManager.isHasLeaders()){
+            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            JsonObject mapJson = Json.createObjectBuilder()
+                    .add("name", regions.get(i).getName()) 
+                    .add("red", regions.get(i).getRedColor())
+                    .add("green", regions.get(i).getGreenColor())
+                    .add("blue", regions.get(i).getBlueColor()).build();
+
+                regionArray.add(mapJson);
+            }
+        }else if(!dataManager.isHasCapitals()){
+            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            JsonObject mapJson = Json.createObjectBuilder()
+                    .add("name", regions.get(i).getName())
+                    .add("leader", regions.get(i).getLeader())
+                    .add("red", regions.get(i).getRedColor())
+                    .add("green", regions.get(i).getGreenColor())
+                     .add("blue", regions.get(i).getBlueColor()).build();
+
+                regionArray.add(mapJson);
+            }
+        }else if(!dataManager.isHasLeaders()){
+            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            JsonObject mapJson = Json.createObjectBuilder()
+                    .add("name", regions.get(i).getName())
+                    .add("capital", regions.get(i).getCapital())
+                    .add("red", regions.get(i).getRedColor())
+                    .add("green", regions.get(i).getGreenColor())
+                    .add("blue", regions.get(i).getBlueColor()).build();
+
+                regionArray.add(mapJson);
+            }
+        }else{
+            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("name", regions.get(i).getName())
                     .add("capital", regions.get(i).getCapital())
                     .add("leader", regions.get(i).getLeader())
                     .add("red", regions.get(i).getRedColor())
                     .add("green", regions.get(i).getGreenColor())
-                    .add("blue", regions.get(i).getBlueColor()).build();
-            
- 
-            regionArray.add(mapJson);
+                        .add("blue", regions.get(i).getBlueColor()).build();
+
+                regionArray.add(mapJson);
+            }
         }
+
+            
          JsonObject dataManagerJSO = Json.createObjectBuilder()
                  .add("name", dataManager.getMapName())
                  .add("subregions_have_capitals", dataManager.isHasCapitals())

@@ -51,6 +51,7 @@ public class Controller extends AppTemplate {
                     poly.getPoints().addAll(cords);
                     poly.setFill(Color.valueOf("#4cff4c"));
                     poly.setStroke(Color.valueOf("#"+map.getBorderColor()));
+                    poly.setStrokeWidth(1/100);
                     Subregion subregion = new Subregion(poly);
                     polygons.add(subregion);
                     index++;

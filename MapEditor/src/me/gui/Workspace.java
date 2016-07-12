@@ -19,6 +19,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -63,6 +64,7 @@ public class Workspace extends AppWorkspaceComponent {
     Pane subregionHolder;
     TableView subregionTable;
     Button exportButton;
+    Group polygonGroup;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -71,6 +73,7 @@ public class Workspace extends AppWorkspaceComponent {
         DataManager dataManager = (DataManager) app.getDataComponent();
         controller = new Controller(app);
         playing = false;
+        polygonGroup = new Group();
 
         layoutGUI();
         initHandlers();
@@ -152,7 +155,7 @@ public class Workspace extends AppWorkspaceComponent {
         mapHolder.setMinSize(802, 536);
         mapHolder.setMaxSize(800, 536);
         pane.getChildren().add(mapHolder);
-        mapHolder.getChildren().add(subregionHolder);
+        mapHolder.getChildren().add(polygonGroup);
         return pane;
     }
     
@@ -249,11 +252,14 @@ public class Workspace extends AppWorkspaceComponent {
     }
     
           public void render(){
+              
         ArrayList<Subregion> polygons = controller.getXAndY();
         for(int i = 0; i < polygons.size(); i++){
-            subregionHolder.getChildren().add(polygons.get(i).getPolygon());
+            polygonGroup.getChildren().add(polygons.get(i).getPolygon());
             
-        }   
+        }
+        polygonGroup.setScaleX(100);
+        polygonGroup.setScaleY(100);
     }  
           
         

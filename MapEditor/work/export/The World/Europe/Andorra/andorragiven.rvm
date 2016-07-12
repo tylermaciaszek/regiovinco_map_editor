@@ -1,18 +1,13 @@
 
 {
-    "map":[
-        {
-            "mapName":"Andorra",
-            "mapParentDirectory":"./work/World/Europe/",
-            "mapRawData":"./work/raw_map_data/Andorra.json",
-            "mapHeight":536.0,
-            "mapWidth":802.0
-        }
-    ],
-    "Regions":[
+    "name":"Andorra",
+    "subregions_have_capitals":true,
+    "subregions_have_flags":true,
+    "subregions_have_leaders":true,
+    "subregions":[
         {
             "name":"Ordino",
-            "capital":"Ordino",
+            "capital":"Ordino (town)",
             "leader":"Ventura Espot",
             "red":200,
             "green":200,
@@ -20,7 +15,7 @@
         },
         {
             "name":"Canillo",
-            "capital":"Canillo",
+            "capital":"Canillo (town)",
             "leader":"Enric Casadevall Medrano",
             "red":198,
             "green":198,
@@ -28,7 +23,7 @@
         },
         {
             "name":"Encamp",
-            "capital":"Encamp",
+            "capital":"Encamp (town)",
             "leader":"Miquel Alís Font",
             "red":196,
             "green":196,
@@ -36,15 +31,15 @@
         },
         {
             "name":"Escaldes-Engordany",
-            "capital":"Escaldes-Engordany",
+            "capital":"Escaldes-Engordany (town)",
             "leader":"Montserrat Capdevila Pallarés",
             "red":194,
             "green":194,
             "blue":194
         },
         {
-            "name":"La Massanna",
-            "capital":"La Massanna",
+            "name":"La Massana",
+            "capital":"La Massana (town)",
             "leader":"Josep Areny",
             "red":192,
             "green":192,
@@ -52,41 +47,19 @@
         },
         {
             "name":"Andorra la Vella",
-            "capital":"Andorra la Vella",
+            "capital":"Andorra la Vella (city)",
             "leader":"Maria Rosa Ferrer Obiols",
             "red":190,
             "green":190,
             "blue":190
         },
         {
-            "name":"Julia de Loria",
-            "capital":"Julia de Loria",
+            "name":"Sant Julia de Loria",
+            "capital":"Sant Julia de Loria (town)",
             "leader":"Josep Pintat Forné",
             "red":188,
             "green":188,
             "blue":188
-        }
-    ],
-    "Edit Info":[
-        {
-            "backgroundColor":"DC6E00",
-            "borderThickness":1,
-            "borderColor":"000000",
-            "scrollX":0.0,
-            "scrollY":0.0,
-            "zoom":1.0
-        }
-    ],
-    "Images":[
-        {
-            "imagePath":"file:./work/World/Europe/Andorra/andorracrest.png",
-            "X":8,
-            "Y":9
-        },
-        {
-            "imagePath":"file:./work/World/Europe/Andorra/andorraflag.png",
-            "X":581,
-            "Y":390
         }
     ]
 }

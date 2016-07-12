@@ -171,6 +171,9 @@ public class DataManager implements AppDataComponent {
     @Override
     public void reset() {
         subregionList.clear();
+        hasCapitals = true;
+        hasLeaders = true;
+        hasFlags = true;
       
     }
 }

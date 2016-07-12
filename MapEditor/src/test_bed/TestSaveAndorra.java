@@ -68,7 +68,7 @@ public class TestSaveAndorra extends Application {
             dataManager.setSubregionList(getXAndY());
             ArrayList<Subregion> subregions = dataManager.getSubregionList();
             subregions.get(0).setName("Ordino");
-            subregions.get(1).setName("Canillo");
+            subregions.get(1).setName("Carillo");
             subregions.get(2).setName("Encamp");
             subregions.get(3).setName("Escaldes-Engordany");
             subregions.get(4).setName("La Massanna");
@@ -125,6 +125,7 @@ public class TestSaveAndorra extends Application {
         }
         
     }
+    
     
         
     public static ArrayList<Subregion> getXAndY() {
