@@ -95,7 +95,7 @@ public class TestSaveSlovakia extends Application {
             subregions.get(0).setBlueColor(250);
             subregions.get(1).setBlueColor(249);
             subregions.get(2).setBlueColor(248);
-            subregions.get(3).setBlueColor(247);
+            subregions.get(3).setBlueColor(249);
             subregions.get(4).setBlueColor(246);
             subregions.get(5).setBlueColor(245);
             subregions.get(6).setBlueColor(244);

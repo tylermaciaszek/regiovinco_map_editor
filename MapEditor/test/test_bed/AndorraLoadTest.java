@@ -53,16 +53,16 @@ public class AndorraLoadTest {
     public void testAndorra() {
                 FileManager fileManager = new FileManager();
         try {
-                fileManager.loadData(dataManager, "./work/testAnd.rvme");
+                fileManager.loadData(dataManager, "./work/testAndorra.json");
                 fileManager.loadCoords(dataManager, dataManager.getRawMapData());
             } catch (IOException ex) {
                 Logger.getLogger(TestSaveAndorra.class.getName()).log(Level.SEVERE, null, ex);
             }
         
         Assert.assertEquals("Map Name", "Andorra", dataManager.getMapName());
-        Assert.assertEquals("Map Name", "Andorra", dataManager.getMapName());
-        Assert.assertEquals("Map Name", "Andorra", dataManager.getMapName());
-        Assert.assertEquals("Map Name", "Andorra", dataManager.getMapName());
+        Assert.assertEquals(536.0, dataManager.getMapHeight());
+        Assert.assertEquals(802, dataManager.getMapWidth());
+        Assert.assertEquals(8, dataManager.getSubregionCordsX().get(0));
         Assert.assertEquals("Map Name", "Andorra", dataManager.getMapName());
         
     }
