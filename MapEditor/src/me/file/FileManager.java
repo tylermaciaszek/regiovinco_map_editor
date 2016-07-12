@@ -277,10 +277,11 @@ public class FileManager implements AppFileComponent {
                 dataManager.setHasCapitals(false);
             if("".equals(dataManager.getSubregionList().get(j).getLeader()))
                 dataManager.setHasLeaders(false);
-            if(!(new File("./work/export/The World/Europe/" + dataManager.getMapName() + "/" + regions.get(j).getName() + " Flag").exists())){
-                System.out.print(false);
+            File check = new File(("./work/export/The World/Europe/" + dataManager.getMapName() + "/" + regions.get(j).getName() + " Flag.png"));
+            if(check.exists()){
+            } else {
                 dataManager.setHasFlags(false);
-        }
+            }
         }
         
         if(!dataManager.isHasCapitals()&&!dataManager.isHasLeaders()){

@@ -73,7 +73,7 @@ public class TestSaveAndorra extends Application {
             subregions.get(3).setName("Escaldes-Engordany");
             subregions.get(4).setName("La Massanna");
             subregions.get(5).setName("Andorra la Vella");
-            subregions.get(6).setName("Julia de Loria");
+            subregions.get(6).setName("Sant Julia de Loria");
             subregions.get(0).setCapital("Ordino");
             subregions.get(1).setCapital("Canillo");
             subregions.get(2).setCapital("Encamp");
