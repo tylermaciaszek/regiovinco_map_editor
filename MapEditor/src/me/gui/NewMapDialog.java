@@ -5,6 +5,10 @@
  */
 package me.gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -13,9 +17,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import me.MapEditorApp;
 import me.PropertyType;
+import me.data.DataManager;
+import me.file.FileManager;
 import properties_manager.PropertiesManager;
+import saf.AppTemplate;
+import static saf.settings.AppPropertyType.SAVE_WORK_TITLE;
+import static saf.settings.AppStartupConstants.PATH_WORK;
 
 /**
  *
@@ -26,6 +38,12 @@ public class NewMapDialog {
     Button okButton;
     Label dataLabel;
     Label parentLabel;
+    Button chooseParentDirectory;
+    Button chooseDataDirectory;
+    AppTemplate app;
+    TextField mapNameField;
+    String parentDir;
+    String dataFile;
 
     public NewMapDialog() {
         newMapStage = new Stage();
@@ -35,17 +53,19 @@ public class NewMapDialog {
     
     private Scene layoutGUI(){
         PropertiesManager props = PropertiesManager.getPropertiesManager();
+        parentDir = "";
+        dataFile = "";
         Scene newMapScene;
         GridPane gridPane = new GridPane();
         Label mapNameLabel = new Label(props.getProperty(PropertyType.MAP_NAME));
-        TextField mapNameField = new TextField();
+        mapNameField = new TextField();
         mapNameField.setPrefWidth(10);
         Label chooseParentLabel = new Label("Choose Parent Directory: ");
-        Button chooseParentDirectory = new Button();
+        chooseParentDirectory = new Button();
         chooseParentDirectory.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.FOLDER_ICON))));
         parentLabel = new Label();
-        Label chooseDataLabel = new Label("Choose Data Directory: ");
-        Button chooseDataDirectory = new Button();
+        Label chooseDataLabel = new Label("Choose Data File: ");
+        chooseDataDirectory = new Button();
         chooseDataDirectory.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.FOLDER_ICON))));
         dataLabel = new Label();
         okButton = new Button("OK");
@@ -66,10 +86,34 @@ public class NewMapDialog {
     }
     
     public void initHandlers(){
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        FileManager fileManager = new FileManager();
+        chooseParentDirectory.setOnAction(e -> {
+            DataManager dataManager = new DataManager((MapEditorApp) app);
+            DirectoryChooser fc = new DirectoryChooser();
+            fc.setInitialDirectory(new File("./work/World/"));
+            fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
+            File selectedFile = fc.showDialog(newMapStage);
+            parentLabel.setText(selectedFile.getPath());
+            parentDir = selectedFile.getPath();
+        });
         
+        chooseDataDirectory.setOnAction(e -> {
+            DataManager dataManager = new DataManager((MapEditorApp) app);
+            FileChooser fc = new FileChooser();
+            fc.setInitialDirectory(new File("./work/World/"));
+            fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
+            File selectedFile = fc.showOpenDialog(newMapStage);
+            dataLabel.setText(selectedFile.getPath());
+            dataFile = selectedFile.getPath();
+        });
         
         okButton.setOnAction(e ->{
-            //createNewMap();
+            DataManager dataManager = new DataManager((MapEditorApp) app);
+            dataManager.setMapName(mapNameField.getText());
+            dataManager.setMapParentDirectory(parentDir);
+            dataManager.setRawMapData(dataFile);
+            System.out.print(dataManager.getMapName() + " " + dataManager.getMapParentDirectory() + " " + dataManager.getRawMapData());
             newMapStage.close();
         });
     }
