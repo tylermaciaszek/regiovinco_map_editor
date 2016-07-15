@@ -23,10 +23,14 @@ import properties_manager.PropertiesManager;
  */
 public class NewMapDialog {
     Stage newMapStage;
+    Button okButton;
+    Label dataLabel;
+    Label parentLabel;
 
     public NewMapDialog() {
         newMapStage = new Stage();
         newMapStage.setScene(layoutGUI());
+        initHandlers();
     }
     
     private Scene layoutGUI(){
@@ -39,12 +43,12 @@ public class NewMapDialog {
         Label chooseParentLabel = new Label("Choose Parent Directory: ");
         Button chooseParentDirectory = new Button();
         chooseParentDirectory.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.FOLDER_ICON))));
-        Label parentLabel = new Label(".test/dir/folder/file");
+        parentLabel = new Label();
         Label chooseDataLabel = new Label("Choose Data Directory: ");
         Button chooseDataDirectory = new Button();
         chooseDataDirectory.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.FOLDER_ICON))));
-        Label dataLabel = new Label(".test/dir/folder/file");
-        Button okButton = new Button("OK");
+        dataLabel = new Label();
+        okButton = new Button("OK");
         gridPane.add(mapNameLabel, 0, 1);
         gridPane.add(mapNameField, 1, 1);
         gridPane.add(chooseParentLabel, 0, 2);
@@ -59,6 +63,19 @@ public class NewMapDialog {
         gridPane.setVgap(20);
         newMapScene = new Scene(gridPane, 300,200);
         return newMapScene;
+    }
+    
+    public void initHandlers(){
+        
+        
+        okButton.setOnAction(e ->{
+            //createNewMap();
+            newMapStage.close();
+        });
+    }
+    
+    public void createNewMap(){
+        
     }
     
     public void showDialog(){
