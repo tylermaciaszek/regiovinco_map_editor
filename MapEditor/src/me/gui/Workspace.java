@@ -264,6 +264,7 @@ public class Workspace extends AppWorkspaceComponent {
             protected Void call() throws Exception {
                 for (int i = 0; i < N_ITERATIONS; i++) {
                     updateProgress(i + 1, N_ITERATIONS);
+                    Thread.sleep(10);
                 }
 
                 return null;
@@ -274,7 +275,6 @@ public class Workspace extends AppWorkspaceComponent {
         progress.progressProperty().bind(
                 task.progressProperty()
         );
-        // color the bar green when the work is complete.
         progress.progressProperty().addListener(observable -> {
             if (progress.getProgress() >= 1 - EPSILON) {
                 progress.setStyle("-fx-accent: forestgreen;");
