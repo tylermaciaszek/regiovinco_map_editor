@@ -112,6 +112,8 @@ public class AppFileController {
 
                 // TELL THE USER NEW WORK IS UNDERWAY               
 		//dialog.show(props.getProperty(NEW_COMPLETED_TITLE), props.getProperty(NEW_COMPLETED_MESSAGE));
+                
+                
             }
         } catch (IOException ioe) {
             // SOMETHING WENT WRONG, PROVIDE FEEDBACK
