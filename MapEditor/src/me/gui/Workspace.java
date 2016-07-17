@@ -19,6 +19,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -48,6 +49,8 @@ import me.data.Map;
 import me.data.Subregion;
 import me.file.FileManager;
 import properties_manager.PropertiesManager;
+import static saf.settings.AppPropertyType.NEW_ERROR_MESSAGE;
+import static saf.settings.AppPropertyType.NEW_ERROR_TITLE;
 import static saf.settings.AppPropertyType.SAVE_WORK_TITLE;
 import static saf.settings.AppStartupConstants.PATH_WORK;
 
@@ -72,6 +75,7 @@ public class Workspace extends AppWorkspaceComponent {
     ProgressBar progressBar;
     SimpleDoubleProperty prop;
     private static final double EPSILON = 0.0000005;
+    FlowPane topToolbar;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -100,7 +104,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void layoutEditToolbar() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        FlowPane topToolbar = (FlowPane) app.getGUI().getAppPane().getTop();
+        topToolbar = (FlowPane) app.getGUI().getAppPane().getTop();
         exportButton = new Button();
         exportButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.EXPORT_ICON))));
         topToolbar.getChildren().add(exportButton);
@@ -190,6 +194,12 @@ public class Workspace extends AppWorkspaceComponent {
     public void initHandlers() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         FileManager fileManager = new FileManager();
+        Button newButton = (Button)topToolbar.getChildren().get(0);
+        newButton.addEventHandler(ActionEvent.ACTION, (e)-> {
+            NewMapDialog newDialog = new NewMapDialog();
+            newDialog.showDialog();
+        });
+        
         changeMapNameButton.setOnAction(e -> {
             controller.launchChangeNameWindow();
         });
@@ -220,7 +230,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     @Override
     public void reloadWorkspace() {
-        FileManager fileManager = new FileManager();
+        /*FileManager fileManager = new FileManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         try {
             fileManager.loadCoords(dataManager, dataManager.getRawMapData());
@@ -230,7 +240,7 @@ public class Workspace extends AppWorkspaceComponent {
         ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getSubregionList()));
         subregionTable.setItems(observable);
         setHardCodedValues();
-        System.out.println("Size:" + dataManager.getSubregionList());
+        System.out.println("Size:" + dataManager.getSubregionList());*/
     }
 
     @Override
