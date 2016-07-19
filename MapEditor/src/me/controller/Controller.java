@@ -60,22 +60,31 @@ public class Controller extends AppTemplate {
         }
         return polygons;
     }
-    
-    public void setPolygonColors(){
+
+    public void generateColors() {
         Map map = dataManager.getMap();
         int colorIncr = 254 / dataManager.getMap().getSubregionsList().size();
         int red = 254;
         int green = 254;
         int blue = 254;
-        for(int i = 0; i < map.getSubregionsList().size(); i++){
+        for (int i = 0; i < map.getSubregionsList().size(); i++) {
             red = red - colorIncr;
             green = green - colorIncr;
             blue = blue - colorIncr;
             map.getColorList().add(red);
-            map.getSubregionsList().get(i).setBlueColor(blue);
-            map.getSubregionsList().get(i).setGreenColor(green);
-            map.getSubregionsList().get(i).setRedColor(red);
-            map.getSubregionsList().get(i).getPolygon().setFill(Color.rgb(red, green, blue));
+        }
+    }
+    
+    public void setPolygonColors(){
+        Map map = dataManager.getMap();
+        int color;
+        generateColors();
+        for(int i = 0; i < map.getSubregionsList().size(); i++){
+            color = map.getColorList().get(i);
+            map.getSubregionsList().get(i).setBlueColor(color);
+            map.getSubregionsList().get(i).setGreenColor(color);
+            map.getSubregionsList().get(i).setRedColor(color);
+            map.getSubregionsList().get(i).getPolygon().setFill(Color.rgb(color, color, color));
         }        
     }
     

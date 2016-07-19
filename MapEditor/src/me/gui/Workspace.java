@@ -87,6 +87,7 @@ public class Workspace extends AppWorkspaceComponent {
     ColorPicker changeMapBorderColor;
     Slider changeMapBorderThickness;
     Button randomizeSubregionColorsButton;
+    boolean isFocused;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -214,12 +215,7 @@ public class Workspace extends AppWorkspaceComponent {
                 changeMapBorderThickness.setValue((double) newValue);
                 dataManager.getMap().getSubregionsList().get(i).getPolygon().setStrokeWidth(changeMapBorderThickness.getValue()/dataManager.getMap().getZoomLevel());
             }
-            polygonGroup.getChildren().clear();
-            ArrayList<Subregion> polygons = dataManager.getMap().getSubregionsList();
-            for (int i = 0; i < polygons.size(); i++) {
-                polygonGroup.getChildren().add(polygons.get(i).getPolygon());
-            }
-            setScale();
+            renderAfter();
         });
         
         changeMapBorderColor.setOnAction(e ->{
@@ -243,6 +239,7 @@ public class Workspace extends AppWorkspaceComponent {
             render();
 
         });
+      
         
         randomizeSubregionColorsButton.setOnAction(e ->{
             controller.randomizeColors();
@@ -312,6 +309,16 @@ public class Workspace extends AppWorkspaceComponent {
         t++;
         render();
     }*/
+    public void renderAfter() {
+        DataManager dataManager = (DataManager) app.getDataComponent();
+
+        polygonGroup.getChildren().clear();
+        ArrayList<Subregion> polygons = dataManager.getMap().getSubregionsList();
+        for (int i = 0; i < polygons.size(); i++) {
+            polygonGroup.getChildren().add(polygons.get(i).getPolygon());
+        }
+        setScale();
+    }
 
     public void render() {
         DataManager dataManager = (DataManager) app.getDataComponent();
@@ -349,19 +356,32 @@ public class Workspace extends AppWorkspaceComponent {
         final Thread thread = new Thread(task, "task-thread");
         thread.setDaemon(true);
         thread.start();*/
-        
-        controller.setPolygonColors(); 
+
+        controller.setPolygonColors();
         setScale();
         for (int i = 0; i < polygons.size(); i++) {
-            polygons.get(i).getPolygon().setStrokeWidth(1/dataManager.getMap().getZoomLevel());
-            polygonGroup.getChildren().add(polygons.get(i).getPolygon());            
+            polygons.get(i).getPolygon().setStrokeWidth(1 / dataManager.getMap().getZoomLevel());
+            polygonGroup.getChildren().add(polygons.get(i).getPolygon());
         }
-        for(int i = 0; i< dataManager.getMap().getSubregionsList().size(); i++){
-            int subregionNumber = i+1;
+        for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
+            int subregionNumber = i + 1;
             dataManager.getMap().getSubregionsList().get(i).setName("Subregion " + subregionNumber);
         }
         ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getMap().getSubregionsList()));
         subregionTable.setItems(observable);
+        for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
+            Polygon polygon = dataManager.getMap().getSubregionsList().get(i).getPolygon();
+            polygon.setOnMouseClicked(e -> {
+                if (isFocused) {
+                    controller.setPolygonColors();
+                    isFocused = false;
+                }
+                    polygon.setFill(Color.valueOf("#FFFF00"));
+                    renderAfter();
+                    isFocused = true;
+                
+            });
+        }
     }
     
     public void setScale(){
