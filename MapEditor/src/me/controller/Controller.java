@@ -49,7 +49,6 @@ public class Controller extends AppTemplate {
                 if (k == dataManager.getSubregionCordsX().get(i).size() - 1) {
                     Polygon poly = new Polygon();
                     poly.getPoints().addAll(cords);
-                    poly.setFill(Color.valueOf("#4cff4c"));
                     //poly.setStroke(Color.valueOf("#"+map.getBorderColor()));
                     poly.setStrokeWidth(1/100);
                     Subregion subregion = new Subregion(poly);
@@ -61,6 +60,21 @@ public class Controller extends AppTemplate {
         }
         return polygons;
     }
+    
+    public void setPolygonColors(){
+        Map map = dataManager.getMap();
+        int colorIncr = 254 / dataManager.getMap().getSubregionsList().size();
+        int red = 254;
+        int green = 254;
+        int blue = 254;
+        for(int i = 0; i < map.getSubregionsList().size(); i++){
+            red = red - colorIncr;
+            green = green - colorIncr;
+            blue = blue - colorIncr;
+            map.getSubregionsList().get(i).getPolygon().setFill(Color.rgb(red, green, blue));
+        }        
+    }
+    
 
     @Override
     public AppComponentsBuilder makeAppBuilderHook() {

@@ -40,6 +40,7 @@ public class Subregion {
         greenColor = 0;
     }
 
+
     @Override
     public String toString() {
         return "Subregion{" + "name=" + name + ", leader=" + leader + ", capital=" + capital + '}';

@@ -34,9 +34,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -68,7 +72,7 @@ public class Workspace extends AppWorkspaceComponent {
     Controller controller;
     Button playSubregionAnthemButton;
     Boolean playing;
-    Pane mapHolder;
+    StackPane mapHolder;
     Pane subregionHolder;
     TableView subregionTable;
     Button exportButton;
@@ -77,6 +81,7 @@ public class Workspace extends AppWorkspaceComponent {
     SimpleDoubleProperty prop;
     private static final double EPSILON = 0.0000005;
     FlowPane topToolbar;
+    ColorPicker changeMapBackgroundColor;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -114,7 +119,7 @@ public class Workspace extends AppWorkspaceComponent {
         Label mapColorLabel = new Label(props.getProperty(PropertyType.MAP_BACKGROUND_COLOR));
         Label borderColorLabel = new Label(props.getProperty(PropertyType.MAP_BORDER_COLOR));
         Label borderThicknessLabel = new Label(props.getProperty(PropertyType.MAP_THICKNESS));
-        ColorPicker changeMapBackgroundColor = new ColorPicker();
+        changeMapBackgroundColor = new ColorPicker();
         ColorPicker changeMapBorderColor = new ColorPicker();
         Slider changeMapBorderThickness = new Slider();
         VBox mapBackgroundHolder = new VBox();
@@ -160,11 +165,7 @@ public class Workspace extends AppWorkspaceComponent {
     private Pane layoutMapHolder() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         Pane pane = new Pane();
-        mapHolder = new Pane();
-        subregionHolder = new Pane();
-        subregionHolder.setPrefSize(802, 536);
-        subregionHolder.setMinSize(802, 536);
-        subregionHolder.setMaxSize(800, 536);
+        mapHolder = new StackPane();
         mapHolder.setPrefSize(802, 536);
         mapHolder.setMinSize(802, 536);
         mapHolder.setMaxSize(800, 536);
@@ -197,6 +198,10 @@ public class Workspace extends AppWorkspaceComponent {
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
         Button newButton = (Button)topToolbar.getChildren().get(0);
+        
+        changeMapBackgroundColor.setOnAction(e ->{
+            mapHolder.setBackground(new Background(new BackgroundFill(changeMapBackgroundColor.getValue(), CornerRadii.EMPTY, Insets.EMPTY)));
+        });
         
         newButton.addEventHandler(ActionEvent.ACTION, (e)-> {
             NewMapDialog newDialog = new NewMapDialog();
@@ -275,6 +280,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     public void render() {
         DataManager dataManager = (DataManager) app.getDataComponent();
+        Controller controller = new Controller(app);
         ArrayList<Subregion> polygons = controller.getXAndY();
         dataManager.getMap().setSubregionsList(polygons);
         /*final Task<Void> task = new Task<Void>() {
@@ -308,22 +314,36 @@ public class Workspace extends AppWorkspaceComponent {
         final Thread thread = new Thread(task, "task-thread");
         thread.setDaemon(true);
         thread.start();*/
+        
+        controller.setPolygonColors();
 
         for (int i = 0; i < polygons.size(); i++) {
             polygonGroup.getChildren().add(polygons.get(i).getPolygon());
         }
-        double xDiff = dataManager.getMaxX() - dataManager.getSmallestX();
-        double xScale = dataManager.getMapWidth() / xDiff;
-        polygonGroup.setScaleX(xScale);
-        double yDiff = dataManager.getMaxY() - dataManager.getSmallestY();
-        double yScale = dataManager.getMapHeight() / yDiff;
-        polygonGroup.setScaleY(yScale);
+        setScale();
         for(int i = 0; i< dataManager.getMap().getSubregionsList().size(); i++){
             int subregionNumber = i+1;
             dataManager.getMap().getSubregionsList().get(i).setName("Subregion " + subregionNumber);
         }
         ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getMap().getSubregionsList()));
         subregionTable.setItems(observable);
+    }
+    
+    public void setScale(){
+        DataManager dataManager = (DataManager) app.getDataComponent();
+        double xDiff = dataManager.getMaxX() - dataManager.getSmallestX();
+        double xScale = dataManager.getMapWidth() / xDiff;
+        double yDiff = dataManager.getMaxY() - dataManager.getSmallestY();
+        double yScale = dataManager.getMapHeight() / yDiff;
+        
+        if(xScale < yScale){
+            polygonGroup.setScaleX(xScale);
+            polygonGroup.setScaleY(xScale);
+        }else{
+            polygonGroup.setScaleX(yScale);
+            polygonGroup.setScaleY(yScale);
+        }
+
     }
 
 }
