@@ -269,12 +269,12 @@ public class FileManager implements AppFileComponent {
     public void exportData(AppDataComponent data, String filePath) throws IOException {
         DataManager dataManager = (DataManager) data;
         JsonArrayBuilder regionArray = Json.createArrayBuilder();
-        ArrayList<Subregion> regions = dataManager.getSubregionList();
+        ArrayList<Subregion> regions = dataManager.getMap().getSubregionsList();
         
-        for(int j = 0; j < dataManager.getSubregionList().size(); j++) {
-            if("".equals(dataManager.getSubregionList().get(j).getCapital()))
+        for(int j = 0; j < dataManager.getMap().getSubregionsList().size(); j++) {
+            if("".equals(dataManager.getMap().getSubregionsList().get(j).getCapital()))
                 dataManager.setHasCapitals(false);
-            if("".equals(dataManager.getSubregionList().get(j).getLeader()))
+            if("".equals(dataManager.getMap().getSubregionsList().get(j).getLeader()))
                 dataManager.setHasLeaders(false);
             File check = new File(("./work/export/The World/Europe/" + dataManager.getMapName() + "/" + regions.get(j).getName() + " Flag.png"));
             if(check.exists()){
@@ -284,7 +284,7 @@ public class FileManager implements AppFileComponent {
         }
         
         if(!dataManager.isHasCapitals()&&!dataManager.isHasLeaders()){
-            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("name", regions.get(i).getName()) 
                     .add("red", regions.get(i).getRedColor())
@@ -294,7 +294,7 @@ public class FileManager implements AppFileComponent {
                 regionArray.add(mapJson);
             }
         }else if(!dataManager.isHasCapitals()){
-            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("name", regions.get(i).getName())
                     .add("leader", regions.get(i).getLeader())
@@ -305,7 +305,7 @@ public class FileManager implements AppFileComponent {
                 regionArray.add(mapJson);
             }
         }else if(!dataManager.isHasLeaders()){
-            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("name", regions.get(i).getName())
                     .add("capital", regions.get(i).getCapital())
@@ -316,7 +316,7 @@ public class FileManager implements AppFileComponent {
                 regionArray.add(mapJson);
             }
         }else{
-            for (int i = 0; i < dataManager.getSubregionList().size(); i++) {
+            for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("name", regions.get(i).getName())
                     .add("capital", regions.get(i).getCapital())

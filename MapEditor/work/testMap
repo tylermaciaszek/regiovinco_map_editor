@@ -1,0 +1,26 @@
+
+{
+    "map":[
+        {
+            "mapName":"Slovakia",
+            "mapParentDirectory":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\World\\Europe",
+            "mapRawData":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\raw_map_data\\Slovakia.json",
+            "mapHeight":536.0,
+            "mapWidth":802.0
+        }
+    ],
+    "Regions":[
+    ],
+    "Edit Info":[
+        {
+            "backgroundColor":"",
+            "borderThickness":1,
+            "borderColor":"",
+            "scrollX":0.0,
+            "scrollY":0.0,
+            "zoom":0.0
+        }
+    ],
+    "Images":[
+    ]
+}

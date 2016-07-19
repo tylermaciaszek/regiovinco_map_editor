@@ -45,6 +45,7 @@ public class NewMapDialog {
     TextField mapNameField;
     String parentDir;
     String dataFile;
+    String name;
 
     public NewMapDialog() {
         newMapStage = new Stage();
@@ -110,12 +111,8 @@ public class NewMapDialog {
         });
         
         okButton.setOnAction(e ->{
-            Map map = new Map();
-            //DataManager dataManager = (DataManager)app.getDataComponent();
-            //dataManager.setMap(map);
-            //dataManager.setMapName(mapNameField.getText());
-            //dataManager.setMapParentDirectory(parentDir);
-           // dataManager.setRawMapData(dataFile);            
+            Map map = new Map();   
+            name = mapNameField.getText();
             newMapStage.close();
             
         });
@@ -124,6 +121,16 @@ public class NewMapDialog {
     public String getRawData(){
         return dataFile;
     }
+    
+     public String getParentDir(){
+        return parentDir;
+    }
+     
+      public String getName(){
+        return name;
+    }
+    
+    
     
     public void showDialog(){
         newMapStage.setTitle("Create A New Map");

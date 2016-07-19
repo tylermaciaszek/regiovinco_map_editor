@@ -235,9 +235,10 @@ public class Workspace extends AppWorkspaceComponent {
             NewMapDialog newDialog = new NewMapDialog();
             newDialog.showDialog();
             dataManager.setRawMapData(newDialog.getRawData());
+            dataManager.setMapParentDirectory(newDialog.getParentDir());
+            dataManager.setMapName(newDialog.getName());
             reloadWorkspace();
             render();
-            //System.out.print(dataManager.getMap().getSubregionsList());
 
         });
         

@@ -1,0 +1,63 @@
+
+{
+    "name":"",
+    "subregions_have_capitals":false,
+    "subregions_have_flags":false,
+    "subregions_have_leaders":false,
+    "subregions":[
+        {
+            "name":"Subregion 1",
+            "red":226,
+            "green":226,
+            "blue":226
+        },
+        {
+            "name":"Subregion 2",
+            "red":198,
+            "green":198,
+            "blue":198
+        },
+        {
+            "name":"Subregion 3",
+            "red":170,
+            "green":170,
+            "blue":170
+        },
+        {
+            "name":"Subregion 4",
+            "red":142,
+            "green":142,
+            "blue":142
+        },
+        {
+            "name":"Subregion 5",
+            "red":114,
+            "green":114,
+            "blue":114
+        },
+        {
+            "name":"Subregion 6",
+            "red":86,
+            "green":86,
+            "blue":86
+        },
+        {
+            "name":"Subregion 7",
+            "red":58,
+            "green":58,
+            "blue":58
+        },
+        {
+            "name":"Subregion 8",
+            "red":30,
+            "green":30,
+            "blue":30
+        },
+        {
+            "name":"Subregion 9",
+            "red":2,
+            "green":2,
+            "blue":2
+        }
+    ]
+}

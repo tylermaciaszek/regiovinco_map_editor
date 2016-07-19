@@ -70,6 +70,9 @@ public class Controller extends AppTemplate {
             red = red - colorIncr;
             green = green - colorIncr;
             blue = blue - colorIncr;
+            map.getSubregionsList().get(i).setBlueColor(blue);
+            map.getSubregionsList().get(i).setGreenColor(green);
+            map.getSubregionsList().get(i).setRedColor(red);
             map.getSubregionsList().get(i).getPolygon().setFill(Color.rgb(red, green, blue));
         }        
     }
