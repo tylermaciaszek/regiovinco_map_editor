@@ -86,6 +86,7 @@ public class Workspace extends AppWorkspaceComponent {
     ColorPicker changeMapBackgroundColor;
     ColorPicker changeMapBorderColor;
     Slider changeMapBorderThickness;
+    Button randomizeSubregionColorsButton;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -137,7 +138,7 @@ public class Workspace extends AppWorkspaceComponent {
         borderColorHolder.getChildren().addAll(borderColorLabel, changeMapBorderColor);
         VBox borderThicknessHolder = new VBox();
         borderThicknessHolder.getChildren().addAll(borderThicknessLabel, changeMapBorderThickness);
-        Button randomizeSubregionColorsButton = new Button(props.getProperty(PropertyType.SUBREGION_COLORS));
+        randomizeSubregionColorsButton = new Button(props.getProperty(PropertyType.SUBREGION_COLORS));
         playSubregionAnthemButton = new Button();
         Image playImage = new Image(props.getProperty(PropertyType.PLAY_ICON));
         playSubregionAnthemButton.setGraphic(new ImageView(playImage));
@@ -206,7 +207,7 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
-        Button newButton = (Button)topToolbar.getChildren().get(0);
+        Button newButton = (Button)topToolbar.getChildren().get(0);       
         
         changeMapBorderThickness.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
@@ -241,6 +242,10 @@ public class Workspace extends AppWorkspaceComponent {
             reloadWorkspace();
             render();
 
+        });
+        
+        randomizeSubregionColorsButton.setOnAction(e ->{
+            controller.randomizeColors();
         });
         
         changeMapNameButton.setOnAction(e -> {

@@ -16,6 +16,7 @@ public class Map {
     ArrayList<String> imagePaths;
     ArrayList<Integer> imageLocationsX;
     ArrayList<Integer> imageLocationsY;
+    ArrayList<Integer> colorList;
     String backgroundColor;
     String borderColor;
     int borderThickness;
@@ -24,6 +25,7 @@ public class Map {
     double zoomLevel;
 
     public Map() {
+        colorList = new ArrayList<>();
         subregionsList = new ArrayList<>();
         imagePaths = new ArrayList<>();
         imageLocationsX = new ArrayList<>();
@@ -36,6 +38,15 @@ public class Map {
         zoomLevel = 0.0;
     }
 
+    public ArrayList<Integer> getColorList() {
+        return colorList;
+    }
+
+    public void setColorList(ArrayList<Integer> colorList) {
+        this.colorList = colorList;
+    }
+
+    
     public double getZoomLevel() {
         return zoomLevel;
     }

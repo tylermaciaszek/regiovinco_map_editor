@@ -6,6 +6,7 @@
 package me.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -70,6 +71,7 @@ public class Controller extends AppTemplate {
             red = red - colorIncr;
             green = green - colorIncr;
             blue = blue - colorIncr;
+            map.getColorList().add(red);
             map.getSubregionsList().get(i).setBlueColor(blue);
             map.getSubregionsList().get(i).setGreenColor(green);
             map.getSubregionsList().get(i).setRedColor(red);
@@ -77,6 +79,19 @@ public class Controller extends AppTemplate {
         }        
     }
     
+    public void randomizeColors() {
+        Map map = dataManager.getMap();
+        Collections.shuffle(map.getColorList());
+        int color;
+        for (int i = 0; i < map.getSubregionsList().size(); i++) {
+            color = map.getColorList().get(i);
+            map.getSubregionsList().get(i).setBlueColor(color);
+            map.getSubregionsList().get(i).setGreenColor(color);
+            map.getSubregionsList().get(i).setRedColor(color);
+            map.getSubregionsList().get(i).getPolygon().setFill(Color.rgb(color, color, color));
+        }
+    }
+
 
     @Override
     public AppComponentsBuilder makeAppBuilderHook() {
