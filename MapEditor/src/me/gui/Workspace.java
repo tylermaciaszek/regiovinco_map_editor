@@ -38,6 +38,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import saf.components.AppWorkspaceComponent;
@@ -193,11 +194,18 @@ public class Workspace extends AppWorkspaceComponent {
 
     public void initHandlers() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
+        DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
         Button newButton = (Button)topToolbar.getChildren().get(0);
+        
         newButton.addEventHandler(ActionEvent.ACTION, (e)-> {
             NewMapDialog newDialog = new NewMapDialog();
             newDialog.showDialog();
+            dataManager.setRawMapData(newDialog.getRawData());
+            reloadWorkspace();
+            render();
+            //System.out.print(dataManager.getMap().getSubregionsList());
+
         });
         
         changeMapNameButton.setOnAction(e -> {
@@ -215,7 +223,7 @@ public class Workspace extends AppWorkspaceComponent {
         });
         exportButton.setOnAction(e -> {
             try {
-                DataManager dataManager = (DataManager) app.getDataComponent();
+                //DataManager dataManager = (DataManager) app.getDataComponent();
                 FileChooser fc = new FileChooser();
                 fc.setInitialDirectory(new File(PATH_WORK));
                 fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
@@ -230,17 +238,17 @@ public class Workspace extends AppWorkspaceComponent {
 
     @Override
     public void reloadWorkspace() {
-        /*FileManager fileManager = new FileManager();
+        FileManager fileManager = new FileManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
+        mapHolder.setStyle("-fx-background-color: #ffffff");
         try {
             fileManager.loadCoords(dataManager, dataManager.getRawMapData());
         } catch (IOException ex) {
             Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getSubregionList()));
-        subregionTable.setItems(observable);
-        setHardCodedValues();
-        System.out.println("Size:" + dataManager.getSubregionList());*/
+        
+        //setHardCodedValues();
+        //System.out.println("Size:" + dataManager.getSubregionList());*/
     }
 
     @Override
@@ -248,7 +256,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     }
 
-    public void setHardCodedValues() {
+    /*public void setHardCodedValues() {
         int t = 0;
         DataManager dataManager = (DataManager) app.getDataComponent();
         Map andorraMap = dataManager.getMap().get(t);
@@ -263,11 +271,13 @@ public class Workspace extends AppWorkspaceComponent {
         }
         t++;
         render();
-    }
+    }*/
 
     public void render() {
+        DataManager dataManager = (DataManager) app.getDataComponent();
         ArrayList<Subregion> polygons = controller.getXAndY();
-        final Task<Void> task = new Task<Void>() {
+        dataManager.getMap().setSubregionsList(polygons);
+        /*final Task<Void> task = new Task<Void>() {
             final int N_ITERATIONS = 30;
 
             @Override
@@ -297,14 +307,23 @@ public class Workspace extends AppWorkspaceComponent {
         mapHolder.getChildren().add(progress);
         final Thread thread = new Thread(task, "task-thread");
         thread.setDaemon(true);
-        thread.start();
+        thread.start();*/
 
         for (int i = 0; i < polygons.size(); i++) {
             polygonGroup.getChildren().add(polygons.get(i).getPolygon());
         }
-
-        polygonGroup.setScaleX(100);
-        polygonGroup.setScaleY(100);
+        double xDiff = dataManager.getMaxX() - dataManager.getSmallestX();
+        double xScale = dataManager.getMapWidth() / xDiff;
+        polygonGroup.setScaleX(xScale);
+        double yDiff = dataManager.getMaxY() - dataManager.getSmallestY();
+        double yScale = dataManager.getMapHeight() / yDiff;
+        polygonGroup.setScaleY(yScale);
+        for(int i = 0; i< dataManager.getMap().getSubregionsList().size(); i++){
+            int subregionNumber = i+1;
+            dataManager.getMap().getSubregionsList().get(i).setName("Subregion " + subregionNumber);
+        }
+        ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getMap().getSubregionsList()));
+        subregionTable.setItems(observable);
     }
 
 }

@@ -110,7 +110,7 @@ public class FileManager implements AppFileComponent {
      }
      
      public void loadImageInfo(JsonObject jsonItem, DataManager dataManager) {
-         Map map = dataManager.getMap().get(0);
+         Map map = dataManager.getMap();
          map.getImagePaths().add(jsonItem.getString("imagePath"));
          map.getImageLocationsX().add(jsonItem.getInt("X"));
          map.getImageLocationsY().add(jsonItem.getInt("Y"));
@@ -122,7 +122,6 @@ public class FileManager implements AppFileComponent {
          subregion.setGreenColor(jsonItem.getInt("green"));
          subregion.setBlueColor(jsonItem.getInt("blue"));
          dataManager.getSubregionList().add(subregion);
-         System.out.print(subregion);
          
      }
      
@@ -157,7 +156,7 @@ public class FileManager implements AppFileComponent {
         JsonArrayBuilder imageArray = Json.createArrayBuilder();
         JsonArrayBuilder mapArray = Json.createArrayBuilder();
         JsonArrayBuilder regionArray = Json.createArrayBuilder();
-        Map map = dataManager.getMap().get(0);
+        Map map = dataManager.getMap();
             JsonObject mapJson = Json.createObjectBuilder()
                     .add("mapName", dataManager.getMapName())
                     .add("mapParentDirectory", dataManager.getMapParentDirectory())

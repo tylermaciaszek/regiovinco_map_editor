@@ -41,7 +41,7 @@ public class Controller extends AppTemplate {
         ArrayList<Double> cords = new ArrayList<>();
         ArrayList<Subregion> polygons = new ArrayList<>();
         dataManager.convertToScreen();
-        Map map = dataManager.getMap().get(0);
+        Map map = dataManager.getMap();
         for (int i = 0; i < dataManager.getSubregionCordsX().size(); i++) {
             for (int k = 0; k < dataManager.getSubregionCordsX().get(i).size(); k++) {
                 cords.add(dataManager.getSubregionCordsX().get(i).get(k));
@@ -50,7 +50,7 @@ public class Controller extends AppTemplate {
                     Polygon poly = new Polygon();
                     poly.getPoints().addAll(cords);
                     poly.setFill(Color.valueOf("#4cff4c"));
-                    poly.setStroke(Color.valueOf("#"+map.getBorderColor()));
+                    //poly.setStroke(Color.valueOf("#"+map.getBorderColor()));
                     poly.setStrokeWidth(1/100);
                     Subregion subregion = new Subregion(poly);
                     polygons.add(subregion);

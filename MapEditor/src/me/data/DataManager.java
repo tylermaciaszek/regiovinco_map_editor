@@ -13,6 +13,7 @@ import me.MapEditorApp;
 public class DataManager implements AppDataComponent {
    MapEditorApp app;
    ObservableList data; 
+   Map map;
    ArrayList<Map> mapData;
    ArrayList<ArrayList<Double>> subregionCordsX;
    ArrayList<ArrayList<Double>> subregionCordsY;
@@ -25,16 +26,21 @@ public class DataManager implements AppDataComponent {
    boolean hasCapitals;
    boolean hasLeaders;
    boolean hasFlags;
+   double maxX = 0;
+   double smallestX = 10000000;
+   double maxY = 0;
+   double smallestY = 10000000;
 
     
     public DataManager(MapEditorApp initApp) {
         app = initApp;
         data = FXCollections.observableArrayList();
+        map = new Map();
         mapData = new ArrayList<>();
         this.subregionCordsX = new ArrayList<>();
         this.subregionCordsY = new ArrayList<>();
-        mapWidth = 0.0;
-        mapHeight = 0.0;
+        mapWidth = 802;
+        mapHeight = 536;
         mapName = "";
         mapParentDirectory = "";
         rawMapData = "";
@@ -42,6 +48,28 @@ public class DataManager implements AppDataComponent {
         hasCapitals = true;
         hasLeaders = true;
         hasFlags = true;
+    }
+
+    public double getMaxX() {
+        return maxX;
+    }
+
+    public double getSmallestX() {
+        return smallestX;
+    }
+
+    public double getMaxY() {
+        return maxY;
+    }
+
+    public double getSmallestY() {
+        return smallestY;
+    }
+    
+    
+    
+    public void setMap(Map mapIn){
+        map = mapIn;
     }
 
     public boolean isHasCapitals() {
@@ -127,8 +155,8 @@ public class DataManager implements AppDataComponent {
         mapData.add(item);
     }
     
-    public ArrayList<Map> getMap(){
-        return mapData;
+    public Map getMap(){
+        return map;
     }
     public ObservableList getData(){
         return data;  
@@ -156,6 +184,12 @@ public class DataManager implements AppDataComponent {
                 double temp = subregionCordsX.get(i).get(k);
                 double screenCord = ((temp + 180) * (mapWidth / 360));
                 subregionCordsX.get(i).set(k, screenCord);
+                if(screenCord > maxX){
+                    maxX = screenCord;
+                }
+                if(screenCord < smallestX){
+                    smallestX = screenCord;
+                }
             }
         }
         for (int i = 0; i < subregionCordsY.size(); i++) {
@@ -163,8 +197,15 @@ public class DataManager implements AppDataComponent {
                 double temp = subregionCordsY.get(i).get(k); 
                 double screenCord =(((temp * -1) + 90) * (mapHeight /180));
                 subregionCordsY.get(i).set(k, screenCord);
+                if(screenCord > maxY){
+                    maxY = screenCord;
+                }
+                if(screenCord < smallestY){
+                    smallestY = screenCord;
+                }
             }
         }
+        System.out.println(maxX + " " + maxY);
 
     }
  

@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 import me.MapEditorApp;
 import me.PropertyType;
 import me.data.DataManager;
+import me.data.Map;
 import me.file.FileManager;
 import properties_manager.PropertiesManager;
 import saf.AppTemplate;
@@ -109,22 +110,24 @@ public class NewMapDialog {
         });
         
         okButton.setOnAction(e ->{
-            DataManager dataManager = new DataManager((MapEditorApp) app);
-            dataManager.setMapName(mapNameField.getText());
-            dataManager.setMapParentDirectory(parentDir);
-            dataManager.setRawMapData(dataFile);
-            System.out.print(dataManager.getMapName() + " " + dataManager.getMapParentDirectory() + " " + dataManager.getRawMapData());
+            Map map = new Map();
+            //DataManager dataManager = (DataManager)app.getDataComponent();
+            //dataManager.setMap(map);
+            //dataManager.setMapName(mapNameField.getText());
+            //dataManager.setMapParentDirectory(parentDir);
+           // dataManager.setRawMapData(dataFile);            
             newMapStage.close();
+            
         });
     }
     
-    public void createNewMap(){
-        
+    public String getRawData(){
+        return dataFile;
     }
     
     public void showDialog(){
         newMapStage.setTitle("Create A New Map");
-        newMapStage.show();
+        newMapStage.showAndWait();
         
     }
 }
