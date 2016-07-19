@@ -32,6 +32,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -368,20 +369,38 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.getMap().getSubregionsList().get(i).setName("Subregion " + subregionNumber);
         }
         ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getMap().getSubregionsList()));
+        
         subregionTable.setItems(observable);
         for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
+            Subregion subregion = dataManager.getMap().getSubregionsList().get(i);
             Polygon polygon = dataManager.getMap().getSubregionsList().get(i).getPolygon();
             polygon.setOnMouseClicked(e -> {
                 if (isFocused) {
                     controller.setPolygonColors();
                     isFocused = false;
                 }
-                    polygon.setFill(Color.valueOf("#FFFF00"));
-                    renderAfter();
+                    subregion.getPolygon().setFill(Color.valueOf("#FFFF00"));
+                    subregionTable.getSelectionModel().select(subregion);
                     isFocused = true;
                 
             });
         }
+        
+         subregionTable.setRowFactory(e->{
+            TableRow<Subregion> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 1 && !row.isEmpty()) {
+                 if (isFocused) {
+                    controller.setPolygonColors();
+                    isFocused = false;
+                }
+               row.getItem().getPolygon().setFill(Color.valueOf("#FFFF00"));
+               isFocused = true;
+            }
+        });
+            return row;
+            
+        });
     }
     
     public void setScale(){
