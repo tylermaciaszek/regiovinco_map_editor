@@ -114,6 +114,7 @@ public class Workspace extends AppWorkspaceComponent {
 
     private void layoutEditToolbar() {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
+        DataManager dataManager = (DataManager)app.getDataComponent();
         topToolbar = (FlowPane) app.getGUI().getAppPane().getTop();
         exportButton = new Button();
         exportButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.EXPORT_ICON))));
@@ -126,15 +127,10 @@ public class Workspace extends AppWorkspaceComponent {
         changeMapBackgroundColor = new ColorPicker();
         changeMapBorderColor = new ColorPicker();
         changeMapBorderThickness = new Slider();
-        changeMapBorderThickness = new Slider(1, 100, 7.5);
-         changeMapBorderThickness.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-        });
-
+        changeMapBorderThickness = new Slider(0, 20, 1);
+        changeMapBorderThickness.setMajorTickUnit(1);
+        changeMapBorderThickness.setMinorTickCount(0);
+        changeMapBorderThickness.setSnapToTicks(true);
         VBox mapBackgroundHolder = new VBox();
         mapBackgroundHolder.getChildren().addAll(mapColorLabel, changeMapBackgroundColor);
         VBox borderColorHolder = new VBox();
@@ -212,12 +208,17 @@ public class Workspace extends AppWorkspaceComponent {
         FileManager fileManager = new FileManager();
         Button newButton = (Button)topToolbar.getChildren().get(0);
         
-        changeMapBorderThickness.setOnMouseDragged(e-> {
-            Map map = dataManager.getMap();
-             for(int i = 0; i < map.getSubregionsList().size(); i++){
-                System.out.print(changeMapBorderThickness.getValue());
-                map.getSubregionsList().get(i).getPolygon().setStrokeWidth(changeMapBorderThickness.getValue());
+        changeMapBorderThickness.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
+                changeMapBorderThickness.setValue((double) newValue);
+                dataManager.getMap().getSubregionsList().get(i).getPolygon().setStrokeWidth(changeMapBorderThickness.getValue()/dataManager.getMap().getZoomLevel());
             }
+            polygonGroup.getChildren().clear();
+            ArrayList<Subregion> polygons = dataManager.getMap().getSubregionsList();
+            for (int i = 0; i < polygons.size(); i++) {
+                polygonGroup.getChildren().add(polygons.get(i).getPolygon());
+            }
+            setScale();
         });
         
         changeMapBorderColor.setOnAction(e ->{
@@ -344,12 +345,12 @@ public class Workspace extends AppWorkspaceComponent {
         thread.setDaemon(true);
         thread.start();*/
         
-        controller.setPolygonColors();
-
-        for (int i = 0; i < polygons.size(); i++) {
-            polygonGroup.getChildren().add(polygons.get(i).getPolygon());
-        }
+        controller.setPolygonColors(); 
         setScale();
+        for (int i = 0; i < polygons.size(); i++) {
+            polygons.get(i).getPolygon().setStrokeWidth(1/dataManager.getMap().getZoomLevel());
+            polygonGroup.getChildren().add(polygons.get(i).getPolygon());            
+        }
         for(int i = 0; i< dataManager.getMap().getSubregionsList().size(); i++){
             int subregionNumber = i+1;
             dataManager.getMap().getSubregionsList().get(i).setName("Subregion " + subregionNumber);
@@ -360,17 +361,23 @@ public class Workspace extends AppWorkspaceComponent {
     
     public void setScale(){
         DataManager dataManager = (DataManager) app.getDataComponent();
-        double xDiff = dataManager.getMaxX() - dataManager.getSmallestX();
-        double xScale = dataManager.getMapWidth() / xDiff;
-        double yDiff = dataManager.getMaxY() - dataManager.getSmallestY();
-        double yScale = dataManager.getMapHeight() / yDiff;
+        double xDiff = 0;
+        double xScale = 0;
+        double yDiff = 0;
+        double yScale = 0;
+        xDiff = dataManager.getMaxX() - dataManager.getSmallestX();
+        xScale = dataManager.getMapWidth() / xDiff;
+        yDiff = dataManager.getMaxY() - dataManager.getSmallestY();
+        yScale = dataManager.getMapHeight() / yDiff;
         
         if(xScale < yScale){
             polygonGroup.setScaleX(xScale);
             polygonGroup.setScaleY(xScale);
+            dataManager.getMap().setZoomLevel(xScale);
         }else{
             polygonGroup.setScaleX(yScale);
             polygonGroup.setScaleY(yScale);
+            dataManager.getMap().setZoomLevel(yScale);
         }
 
     }
