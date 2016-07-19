@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -82,6 +84,8 @@ public class Workspace extends AppWorkspaceComponent {
     private static final double EPSILON = 0.0000005;
     FlowPane topToolbar;
     ColorPicker changeMapBackgroundColor;
+    ColorPicker changeMapBorderColor;
+    Slider changeMapBorderThickness;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -120,8 +124,17 @@ public class Workspace extends AppWorkspaceComponent {
         Label borderColorLabel = new Label(props.getProperty(PropertyType.MAP_BORDER_COLOR));
         Label borderThicknessLabel = new Label(props.getProperty(PropertyType.MAP_THICKNESS));
         changeMapBackgroundColor = new ColorPicker();
-        ColorPicker changeMapBorderColor = new ColorPicker();
-        Slider changeMapBorderThickness = new Slider();
+        changeMapBorderColor = new ColorPicker();
+        changeMapBorderThickness = new Slider();
+        changeMapBorderThickness = new Slider(1, 100, 7.5);
+         changeMapBorderThickness.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+        });
+
         VBox mapBackgroundHolder = new VBox();
         mapBackgroundHolder.getChildren().addAll(mapColorLabel, changeMapBackgroundColor);
         VBox borderColorHolder = new VBox();
@@ -198,6 +211,21 @@ public class Workspace extends AppWorkspaceComponent {
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
         Button newButton = (Button)topToolbar.getChildren().get(0);
+        
+        changeMapBorderThickness.setOnMouseDragged(e-> {
+            Map map = dataManager.getMap();
+             for(int i = 0; i < map.getSubregionsList().size(); i++){
+                System.out.print(changeMapBorderThickness.getValue());
+                map.getSubregionsList().get(i).getPolygon().setStrokeWidth(changeMapBorderThickness.getValue());
+            }
+        });
+        
+        changeMapBorderColor.setOnAction(e ->{
+            Map map = dataManager.getMap();
+            for(int i = 0; i < map.getSubregionsList().size(); i++){
+                map.getSubregionsList().get(i).getPolygon().setStroke(changeMapBorderColor.getValue());
+            }
+        });
         
         changeMapBackgroundColor.setOnAction(e ->{
             mapHolder.setBackground(new Background(new BackgroundFill(changeMapBackgroundColor.getValue(), CornerRadii.EMPTY, Insets.EMPTY)));

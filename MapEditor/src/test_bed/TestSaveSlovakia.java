@@ -122,7 +122,7 @@ public class TestSaveSlovakia extends Application {
         ArrayList<Double> cords = new ArrayList<>();
         ArrayList<Subregion> polygons = new ArrayList<>();
         dataManager.convertToScreen();
-        Map map = dataManager.getMap().get(0);
+        Map map = dataManager.getMap();
         for (int i = 0; i < dataManager.getSubregionCordsX().size(); i++) {
             for (int k = 0; k < dataManager.getSubregionCordsX().get(i).size(); k++) {
                 cords.add(dataManager.getSubregionCordsX().get(i).get(k));

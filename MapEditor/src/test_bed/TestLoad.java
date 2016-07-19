@@ -36,7 +36,7 @@ public class TestLoad extends Application {
     }
     
     public void printOut(){
-        Map map = dataManager.getMap().get(0);
+        Map map = dataManager.getMap();
         System.out.println("Map Info :");
         System.out.println("Map Name: " + dataManager.getMapName());
         System.out.println("Map Parent Directory: " + dataManager.getMapParentDirectory());
