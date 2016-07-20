@@ -3,6 +3,7 @@ package me.data;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.ImageView;
 import saf.components.AppDataComponent;
 import me.MapEditorApp;
 
@@ -18,6 +19,7 @@ public class DataManager implements AppDataComponent {
    ArrayList<ArrayList<Double>> subregionCordsX;
    ArrayList<ArrayList<Double>> subregionCordsY;
    ArrayList<Subregion> subregionList;
+   ArrayList<ImageView> imageList;
    double mapWidth;
    double mapHeight;
    String mapName;
@@ -39,6 +41,7 @@ public class DataManager implements AppDataComponent {
         mapData = new ArrayList<>();
         this.subregionCordsX = new ArrayList<>();
         this.subregionCordsY = new ArrayList<>();
+        imageList = new ArrayList<>();
         mapWidth = 802;
         mapHeight = 536;
         mapName = "";
@@ -49,6 +52,16 @@ public class DataManager implements AppDataComponent {
         hasLeaders = true;
         hasFlags = true;
     }
+
+    public ArrayList<ImageView> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<ImageView> imageList) {
+        this.imageList = imageList;
+    }
+    
+    
 
     public double getMaxX() {
         return maxX;

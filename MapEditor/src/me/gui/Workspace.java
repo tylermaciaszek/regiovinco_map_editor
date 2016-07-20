@@ -12,6 +12,7 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,6 +93,7 @@ public class Workspace extends AppWorkspaceComponent {
     Slider zoomBar;
     double zoom = 0;
     double initialZoom = 0;
+    Button addImageButton;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -148,7 +150,7 @@ public class Workspace extends AppWorkspaceComponent {
         Image playImage = new Image(props.getProperty(PropertyType.PLAY_ICON));
         playSubregionAnthemButton.setGraphic(new ImageView(playImage));
         changeMapNameButton = new Button(props.getProperty(PropertyType.CHANGE_MAP_NAME));
-        Button addImageButton = new Button();
+        addImageButton = new Button();
         Button removeImageButton = new Button();
         Image addImage = new Image(props.getProperty(PropertyType.ADD_IMAGE));
         Image removeImage = new Image(props.getProperty(PropertyType.REMOVE_IMAGE));
@@ -280,6 +282,31 @@ public class Workspace extends AppWorkspaceComponent {
                 playing = true;
             }
         });
+        
+        addImageButton.setOnAction((ActionEvent e) ->{
+
+            FileChooser fc = new FileChooser();
+            fc.setInitialDirectory(new File(PATH_WORK));
+            fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
+            File selectedFile = fc.showOpenDialog(app.getGUI().getWindow());
+            ImageView image = null;
+            
+            try {
+                image = new ImageView(new Image(selectedFile.toURI().toURL().toString()));
+                dataManager.getImageList().add(image);
+                for (ImageView imageList : dataManager.getImageList()) {
+                    imageList.setOnMouseDragExited(k ->{
+                        imageList.setTranslateX(k.getX());
+                        imageList.setTranslateY(k.getY());
+                    });
+                }
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            mapHolder.getChildren().add(image);
+            
+        });
+        
         exportButton.setOnAction(e -> {
             try {
                 //DataManager dataManager = (DataManager) app.getDataComponent();
@@ -453,5 +480,6 @@ public class Workspace extends AppWorkspaceComponent {
         polygonGroup.setScaleX(dataManager.getMap().getZoomLevel());
         polygonGroup.setScaleY(dataManager.getMap().getZoomLevel());
     }
+
 
 }
