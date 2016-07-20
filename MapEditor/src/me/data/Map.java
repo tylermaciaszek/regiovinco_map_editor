@@ -31,11 +31,11 @@ public class Map {
         imageLocationsX = new ArrayList<>();
         imageLocationsY = new ArrayList<>();
         backgroundColor = "";
-        borderColor = "";
+        borderColor = "000000";
         borderThickness = 1;
         scrollLocationX = 0.0;
         scrollLocationY = 0.0;
-        zoomLevel = 0.0;
+        zoomLevel = 1.0;
     }
 
     public ArrayList<Integer> getColorList() {

@@ -103,7 +103,7 @@ public class NewMapDialog {
         chooseDataDirectory.setOnAction(e -> {
             DataManager dataManager = new DataManager((MapEditorApp) app);
             FileChooser fc = new FileChooser();
-            fc.setInitialDirectory(new File("./work/World/"));
+            fc.setInitialDirectory(new File("./work/raw_map_data/"));
             fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
             File selectedFile = fc.showOpenDialog(newMapStage);
             dataLabel.setText(selectedFile.getPath());

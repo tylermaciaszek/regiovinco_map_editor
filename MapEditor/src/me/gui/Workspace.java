@@ -89,6 +89,9 @@ public class Workspace extends AppWorkspaceComponent {
     Slider changeMapBorderThickness;
     Button randomizeSubregionColorsButton;
     boolean isFocused;
+    Slider zoomBar;
+    double zoom = 0;
+    double initialZoom = 0;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -156,7 +159,10 @@ public class Workspace extends AppWorkspaceComponent {
         ImageView zoomOut = new ImageView(new Image(props.getProperty(PropertyType.ZOOM_OUT)));
         ImageView zoomIn = new ImageView(new Image(props.getProperty(PropertyType.ZOOM_IN)));
         zoomIcons.getChildren().addAll(zoomOut, zoomIn);
-        Slider zoomBar = new Slider();
+        zoomBar = new Slider(0, 250, 1);
+        zoomBar.setMajorTickUnit(1);
+        zoomBar.setMinorTickCount(0);
+        zoomBar.setSnapToTicks(true);
         zoomIcons.setSpacing(80);
         zoomHolder.getChildren().addAll(zoomIcons, zoomBar);
         editToolbar.getChildren().addAll(changeMapNameButton, addImageButton, removeImageButton, mapBackgroundHolder, borderColorHolder, borderThicknessHolder, randomizeSubregionColorsButton, playSubregionAnthemButton, zoomHolder);
@@ -209,20 +215,34 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
-        Button newButton = (Button)topToolbar.getChildren().get(0);       
+        Button newButton = (Button)topToolbar.getChildren().get(0);     
         
+        zoomBar.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            if (newValue.longValue() > oldValue.longValue()) {
+                zoom = (dataManager.getMap().getZoomLevel() + newValue.doubleValue() - oldValue.doubleValue() );
+            }else if(newValue.longValue() < oldValue.longValue()){
+                zoom = (dataManager.getMap().getZoomLevel() - (oldValue.longValue()-newValue.longValue()));
+            }
+            polygonGroup.setScaleX(zoom);
+            polygonGroup.setScaleY(zoom);
+            dataManager.getMap().setZoomLevel(zoom);
+            renderAfter();
+        });
+
         changeMapBorderThickness.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
                 changeMapBorderThickness.setValue((double) newValue);
                 dataManager.getMap().getSubregionsList().get(i).getPolygon().setStrokeWidth(changeMapBorderThickness.getValue()/dataManager.getMap().getZoomLevel());
             }
             renderAfter();
+            setScale();
         });
         
         changeMapBorderColor.setOnAction(e ->{
             Map map = dataManager.getMap();
             for(int i = 0; i < map.getSubregionsList().size(); i++){
                 map.getSubregionsList().get(i).getPolygon().setStroke(changeMapBorderColor.getValue());
+                map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness()/map.getZoomLevel());
             }
         });
         
@@ -238,6 +258,7 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.setMapName(newDialog.getName());
             reloadWorkspace();
             render();
+            setScaleInitial();
 
         });
       
@@ -318,7 +339,6 @@ public class Workspace extends AppWorkspaceComponent {
         for (int i = 0; i < polygons.size(); i++) {
             polygonGroup.getChildren().add(polygons.get(i).getPolygon());
         }
-        setScale();
     }
 
     public void render() {
@@ -359,7 +379,7 @@ public class Workspace extends AppWorkspaceComponent {
         thread.start();*/
 
         controller.setPolygonColors();
-        setScale();
+        setScaleInitial();
         for (int i = 0; i < polygons.size(); i++) {
             polygons.get(i).getPolygon().setStrokeWidth(1 / dataManager.getMap().getZoomLevel());
             polygonGroup.getChildren().add(polygons.get(i).getPolygon());
@@ -403,7 +423,7 @@ public class Workspace extends AppWorkspaceComponent {
         });
     }
     
-    public void setScale(){
+    public void setScaleInitial(){
         DataManager dataManager = (DataManager) app.getDataComponent();
         double xDiff = 0;
         double xScale = 0;
@@ -415,15 +435,23 @@ public class Workspace extends AppWorkspaceComponent {
         yScale = dataManager.getMapHeight() / yDiff;
         
         if(xScale < yScale){
+            dataManager.getMap().setZoomLevel(xScale);
             polygonGroup.setScaleX(xScale);
             polygonGroup.setScaleY(xScale);
-            dataManager.getMap().setZoomLevel(xScale);
+            initialZoom = xScale;
         }else{
+            dataManager.getMap().setZoomLevel(yScale);
             polygonGroup.setScaleX(yScale);
             polygonGroup.setScaleY(yScale);
-            dataManager.getMap().setZoomLevel(yScale);
+            initialZoom = yScale;
         }
 
+    }
+
+    private void setScale() {
+        DataManager dataManager = (DataManager) app.getDataComponent();
+        polygonGroup.setScaleX(dataManager.getMap().getZoomLevel());
+        polygonGroup.setScaleY(dataManager.getMap().getZoomLevel());
     }
 
 }

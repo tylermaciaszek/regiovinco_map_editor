@@ -50,7 +50,8 @@ public class Controller extends AppTemplate {
                 if (k == dataManager.getSubregionCordsX().get(i).size() - 1) {
                     Polygon poly = new Polygon();
                     poly.getPoints().addAll(cords);
-                    poly.setStrokeWidth(1);
+                    poly.setStroke(Color.valueOf("#"+map.getBorderColor()));
+                    poly.setStrokeWidth(map.getBorderThickness()/map.getZoomLevel());
                     Subregion subregion = new Subregion(poly);
                     polygons.add(subregion);
                     index++;
