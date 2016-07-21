@@ -43,6 +43,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -111,6 +112,7 @@ public class Workspace extends AppWorkspaceComponent {
     private ImageView removeImageView;
     Button removeImageButton;
     static boolean loading = false;
+    DropShadow ds = new DropShadow( 20, Color.AQUA );
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -297,6 +299,11 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.setWorkDir("./work/"+dataManager.getMapName()+"/");
             new File(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName()).mkdirs();
             dataManager.setExpDir(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName());
+             try {                
+                audioManager.loadAudio("anthem", dataManager.getWorkDir()+dataManager.getMapName()+" National Anthem.mid");
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
+                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+            }
             reloadWorkspace();
             render();
             setScaleInitial();
@@ -312,11 +319,6 @@ public class Workspace extends AppWorkspaceComponent {
             controller.launchChangeNameWindow();
         });
         playSubregionAnthemButton.setOnAction(e -> {
-            try {                
-                audioManager.loadAudio("anthem", dataManager.getWorkDir()+dataManager.getMapName()+" National Anthem.mid");
-            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
-                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
-            }
             if (playing) {
                 audioManager.stop("anthem");
                 playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PLAY_ICON))));
@@ -347,6 +349,7 @@ public class Workspace extends AppWorkspaceComponent {
                     });
                     imageList.setOnMouseClicked(l ->{
                         removeImageView = imageList;
+                        imageList.setEffect(ds);
                 });
                 }
             } catch (MalformedURLException ex) {
