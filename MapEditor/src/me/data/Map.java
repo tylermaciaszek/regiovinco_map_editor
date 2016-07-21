@@ -19,7 +19,7 @@ public class Map {
     ArrayList<Integer> colorList;
     String backgroundColor;
     String borderColor;
-    int borderThickness;
+    double borderThickness;
     double scrollLocationX;
     double scrollLocationY;
     double zoomLevel;
@@ -124,11 +124,13 @@ public class Map {
         this.borderColor = borderColor;
     }
 
-    public int getBorderThickness() {
-        return borderThickness;
+    public double getBorderThickness() {
+        return (int) borderThickness;
     }
+    
 
-    public void setBorderThickness(int borderThickness) {
+
+    public void setBorderThickness(double borderThickness) {
         this.borderThickness = borderThickness;
     }
     

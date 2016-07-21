@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -23,6 +24,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -47,6 +49,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
 import saf.components.AppWorkspaceComponent;
@@ -94,10 +97,14 @@ public class Workspace extends AppWorkspaceComponent {
     double zoom = 0;
     double initialZoom = 0;
     Button addImageButton;
+    boolean loading = false;
+    ObservableList<Subregion> observable;
+    ArrayList colList;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
         workspace = new Pane();
+        colList = new ArrayList<>();
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         controller = new Controller(app);
@@ -209,6 +216,10 @@ public class Workspace extends AppWorkspaceComponent {
         capitalCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
         leaderCol.prefWidthProperty().bind(subregionTable.widthProperty().divide(3.0));
         subregionTable.getColumns().addAll(regionCol, capitalCol, leaderCol);
+        colList.add(regionCol);
+        colList.add(capitalCol);
+        colList.add(leaderCol);
+        
 
         return subregionTable;
     }
@@ -217,7 +228,13 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
-        Button newButton = (Button)topToolbar.getChildren().get(0);     
+        Button newButton = (Button)topToolbar.getChildren().get(0);    
+        
+        Button loadButton = (Button)topToolbar.getChildren().get(1);
+     
+        loadButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+            loading = true;
+        });
         
         zoomBar.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (newValue.longValue() > oldValue.longValue()) {
@@ -235,6 +252,7 @@ public class Workspace extends AppWorkspaceComponent {
             for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
                 changeMapBorderThickness.setValue((double) newValue);
                 dataManager.getMap().getSubregionsList().get(i).getPolygon().setStrokeWidth(changeMapBorderThickness.getValue()/dataManager.getMap().getZoomLevel());
+                dataManager.getMap().setBorderThickness(dataManager.getMap().getZoomLevel()/((double) newValue));
             }
             renderAfter();
             setScale();
@@ -245,11 +263,13 @@ public class Workspace extends AppWorkspaceComponent {
             for(int i = 0; i < map.getSubregionsList().size(); i++){
                 map.getSubregionsList().get(i).getPolygon().setStroke(changeMapBorderColor.getValue());
                 map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness()/map.getZoomLevel());
+                map.setBorderColor(toRGBCode(changeMapBorderColor.getValue()));
             }
         });
         
         changeMapBackgroundColor.setOnAction(e ->{
             mapHolder.setBackground(new Background(new BackgroundFill(changeMapBackgroundColor.getValue(), CornerRadii.EMPTY, Insets.EMPTY)));
+            dataManager.getMap().setBackgroundColor(toRGBCode(changeMapBackgroundColor.getValue()));
         });
         
         newButton.addEventHandler(ActionEvent.ACTION, (e)-> {
@@ -295,7 +315,7 @@ public class Workspace extends AppWorkspaceComponent {
                 image = new ImageView(new Image(selectedFile.toURI().toURL().toString()));
                 dataManager.getImageList().add(image);
                 for (ImageView imageList : dataManager.getImageList()) {
-                    imageList.setOnMouseDragExited(k ->{
+                    imageList.setOnMouseDragged(k ->{
                         imageList.setTranslateX(k.getX());
                         imageList.setTranslateY(k.getY());
                     });
@@ -326,15 +346,25 @@ public class Workspace extends AppWorkspaceComponent {
     public void reloadWorkspace() {
         FileManager fileManager = new FileManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
-        mapHolder.setStyle("-fx-background-color: #ffffff");
         try {
             fileManager.loadCoords(dataManager, dataManager.getRawMapData());
         } catch (IOException ex) {
             Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        //setHardCodedValues();
-        //System.out.println("Size:" + dataManager.getSubregionList());*/
+        if(loading){
+            render();
+            loading = false;
+            Map map = dataManager.getMap();
+            polygonGroup.setScaleX(map.getZoomLevel());
+            polygonGroup.setScaleY(map.getZoomLevel());
+            for (int i = 0; i < map.getSubregionsList().size(); i++) {
+                map.getSubregionsList().get(i).getPolygon().setStroke(Color.valueOf("#" + map.getBorderColor()));
+                map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness() / map.getZoomLevel());
+            }
+            changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
+            //mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));       
+        }
+
     }
 
     @Override
@@ -342,22 +372,6 @@ public class Workspace extends AppWorkspaceComponent {
 
     }
 
-    /*public void setHardCodedValues() {
-        int t = 0;
-        DataManager dataManager = (DataManager) app.getDataComponent();
-        Map andorraMap = dataManager.getMap().get(t);
-        System.out.print(dataManager.getMap().size());
-        mapHolder.setStyle("-fx-background-color: #" + andorraMap.getBackgroundColor());
-        for (int i = 0; i < andorraMap.getImagePaths().size(); i++) {
-            Image image = new Image(andorraMap.getImagePaths().get(i));
-            ImageView imageView = new ImageView(image);
-            mapHolder.getChildren().add(imageView);
-            imageView.setX(andorraMap.getImageLocationsX().get(i));
-            imageView.setY(andorraMap.getImageLocationsY().get(i));
-        }
-        t++;
-        render();
-    }*/
     public void renderAfter() {
         DataManager dataManager = (DataManager) app.getDataComponent();
 
@@ -373,38 +387,6 @@ public class Workspace extends AppWorkspaceComponent {
         Controller controller = new Controller(app);
         ArrayList<Subregion> polygons = controller.getXAndY();
         dataManager.getMap().setSubregionsList(polygons);
-        /*final Task<Void> task = new Task<Void>() {
-            final int N_ITERATIONS = 30;
-
-            @Override
-            protected Void call() throws Exception {
-                for (int i = 0; i < N_ITERATIONS; i++) {
-                    updateProgress(i + 1, N_ITERATIONS);
-                    Thread.sleep(10);
-                }
-
-                return null;
-            }
-        };
-
-        final ProgressBar progress = new ProgressBar();
-        progress.progressProperty().bind(
-                task.progressProperty()
-        );
-        progress.progressProperty().addListener(observable -> {
-            if (progress.getProgress() >= 1 - EPSILON) {
-                progress.setStyle("-fx-accent: forestgreen;");
-            }
-            if (progress.getProgress() == 1) {
-                mapHolder.getChildren().remove(progress);
-            }
-        });
-
-        mapHolder.getChildren().add(progress);
-        final Thread thread = new Thread(task, "task-thread");
-        thread.setDaemon(true);
-        thread.start();*/
-
         controller.setPolygonColors();
         setScaleInitial();
         for (int i = 0; i < polygons.size(); i++) {
@@ -415,7 +397,7 @@ public class Workspace extends AppWorkspaceComponent {
             int subregionNumber = i + 1;
             dataManager.getMap().getSubregionsList().get(i).setName("Subregion " + subregionNumber);
         }
-        ObservableList<Subregion> observable = FXCollections.observableArrayList((dataManager.getMap().getSubregionsList()));
+        observable = FXCollections.observableArrayList((dataManager.getMap().getSubregionsList()));
         
         subregionTable.setItems(observable);
         for (int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++) {
@@ -426,10 +408,23 @@ public class Workspace extends AppWorkspaceComponent {
                     controller.setPolygonColors();
                     isFocused = false;
                 }
-                    subregion.getPolygon().setFill(Color.valueOf("#FFFF00"));
-                    subregionTable.getSelectionModel().select(subregion);
-                    isFocused = true;
-                
+                subregion.getPolygon().setFill(Color.valueOf("#FFFF00"));
+                subregionTable.getSelectionModel().select(subregion);
+                isFocused = true;
+                if(e.getClickCount() == 2){
+                    SubRegionDialog dialog = new SubRegionDialog();
+                    Polygon p2 = new Polygon();
+                    p2.getPoints().addAll(polygon.getPoints());
+                    p2.setStroke(polygon.getStroke());
+                    p2.setFill(Color.rgb(subregion.getRedColor(), subregion.getGreenColor(), subregion.getBlueColor()));
+                    p2.setStrokeWidth(polygon.getStrokeWidth());
+                    dialog.setRegionName(subregion.getName());
+                    dialog.setSubregionToEdit(subregion);
+                    dialog.setRegionPolygon(p2);
+                    dialog.showDialog();
+                    refreshTableView(subregionTable, colList, dataManager.getMap().getSubregionsList());
+                }
+
             });
         }
         
@@ -480,6 +475,22 @@ public class Workspace extends AppWorkspaceComponent {
         polygonGroup.setScaleX(dataManager.getMap().getZoomLevel());
         polygonGroup.setScaleY(dataManager.getMap().getZoomLevel());
     }
+    
+    public static String toRGBCode( Color color )
+    {
+        return String.format( "%02X%02X%02X",
+            (int)( color.getRed() * 255 ),
+            (int)( color.getGreen() * 255 ),
+            (int)( color.getBlue() * 255 ) );
+    }
+    
+    public static <T,U> void refreshTableView(TableView<T> tableView, List<TableColumn<T,U>> columns, List<T> rows) {        
+    tableView.getColumns().clear();
+    tableView.getColumns().addAll(columns);
+
+    ObservableList<T> list = FXCollections.observableArrayList(rows);
+    tableView.setItems(list);
+}
 
 
 }

@@ -15,9 +15,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import me.PropertyType;
+import me.data.Subregion;
 import properties_manager.PropertiesManager;
 
 /**
@@ -26,10 +29,41 @@ import properties_manager.PropertiesManager;
  */
 public class SubRegionDialog {
      Stage newSubStage;
+     String regionName;
+     Polygon regionPolygon;
+    StackPane polyHolder;
+    Subregion subregionToEdit;
+    Button okButton;
+    TextField nameField = new TextField();
+    TextField capitalField = new TextField();
+    TextField leaderField = new TextField();
+
+    public Subregion getSubregionToEdit() {
+        return subregionToEdit;
+    }
+
+    public void setSubregionToEdit(Subregion subregionToEdit) {
+        this.subregionToEdit = subregionToEdit;
+    }
+
+    public Polygon getRegionPolygon() {
+        return regionPolygon;
+    }
+
+    public void setRegionPolygon(Polygon regionPolygon) {
+        this.regionPolygon = regionPolygon;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
 
     public SubRegionDialog() {
         newSubStage = new Stage();
-        newSubStage.setScene(layoutGUI());
     }
     
     private Scene layoutGUI(){
@@ -43,10 +77,14 @@ public class SubRegionDialog {
         Button nextButton = new Button();
         Image nextButtonImage = new Image(props.getProperty(PropertyType.NEXT_ICON));
         nextButton.setGraphic(new ImageView(nextButtonImage));
-        Label subRegionName = new Label("SAMPLE SUBREGION");
+        Label subRegionName = new Label(regionName);
         subRegionHolderTop.getChildren().addAll(prevButton, subRegionName, nextButton);
         subRegionHolderTop.setPadding(new Insets(10, 5, 0, 5));
-        ImageView subregionImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB)));
+        polyHolder = new StackPane();
+        polyHolder.setMinSize(60, 120);
+        polyHolder.getChildren().add(regionPolygon);
+        polyHolder.setScaleX(30);
+        polyHolder.setScaleY(30);
         ImageView subregionFlagImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_FLAG)));
         ImageView subregionLeaderImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_LEADER)));
         HBox subregionImages = new HBox();
@@ -57,9 +95,6 @@ public class SubRegionDialog {
         Label nameLabel = new Label("Name: ");
         Label capitalLabel = new Label("Capital: ");
         Label leaderLabel = new Label("Leader: ");
-        TextField nameField = new TextField();
-        TextField capitalField = new TextField();
-        TextField leaderField = new TextField(); 
         infoHolder.add(nameLabel, 0, 0);
         infoHolder.add(capitalLabel, 0, 1);
         infoHolder.add(leaderLabel, 0, 2);
@@ -69,10 +104,10 @@ public class SubRegionDialog {
         infoHolder.setAlignment(Pos.CENTER);
         infoHolder.setHgap(20);
         infoHolder.setVgap(5);
-        Button okButton = new Button("OK");
+        okButton = new Button("OK");
         subRegionHolderTop.setSpacing(43);
         subRegionHolderTop.setAlignment(Pos.CENTER);
-        subRegionHolder.getChildren().addAll(subRegionHolderTop, subregionImage, subregionImages, infoHolder, okButton);
+        subRegionHolder.getChildren().addAll(subRegionHolderTop, polyHolder, subregionImages, infoHolder, okButton);
         subRegionHolder.setAlignment(Pos.TOP_CENTER);
         subRegionHolder.setSpacing(20);
         
@@ -83,8 +118,19 @@ public class SubRegionDialog {
         return newSubScene;
     }
     
+    public void initHandlers(){
+        okButton.setOnAction(e ->{
+            subregionToEdit.setName(nameField.getText());
+            subregionToEdit.setCapital(capitalField.getText());
+            subregionToEdit.setLeader(leaderField.getText());
+            newSubStage.close();
+        });
+    }
+    
     public void showDialog(){
-        newSubStage.show();
+        newSubStage.setScene(layoutGUI());
+        initHandlers();
+        newSubStage.showAndWait();
         
     }
 }

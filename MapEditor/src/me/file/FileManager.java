@@ -57,7 +57,7 @@ public class FileManager implements AppFileComponent {
 	for (int i = 0; i < editInfoLoad.size(); i++) {
 	    JsonObject jsonItem = editInfoLoad.getJsonObject(i);
 	    map = loadEditInfo(jsonItem);
-	    dataManager.addMap(map);
+	    dataManager.setMap(map);
 	}
         
         JsonArray mapInfoLoad = json.getJsonArray("map");
@@ -82,7 +82,7 @@ public class FileManager implements AppFileComponent {
      public Map loadEditInfo(JsonObject jsonItem) {
 	// GET THE DATA
 	String backgroundColor = jsonItem.getString("backgroundColor");
-        int borderThickness = jsonItem.getInt("borderThickness");
+        double borderThickness = jsonItem.getInt("borderThickness");
         String borderColor = jsonItem.getString("borderColor");
      
         
@@ -121,7 +121,7 @@ public class FileManager implements AppFileComponent {
          subregion.setRedColor(jsonItem.getInt("red"));
          subregion.setGreenColor(jsonItem.getInt("green"));
          subregion.setBlueColor(jsonItem.getInt("blue"));
-         dataManager.getSubregionList().add(subregion);
+         dataManager.getMap().getSubregionsList().add(subregion);
          
      }
      
@@ -184,8 +184,8 @@ public class FileManager implements AppFileComponent {
                         .add("Y", map.getImageLocationsY().get(i)).build();
                 imageArray.add(imageJson);                          
         }
-            for(int i = 0; i < dataManager.getSubregionList().size(); i++){
-                ArrayList<Subregion> regions = dataManager.getSubregionList();
+            for(int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++){
+                ArrayList<Subregion> regions = dataManager.getMap().getSubregionsList();
                 JsonObject regionInfoJson = Json.createObjectBuilder()
                         .add("name", regions.get(i).getName())
                         .add("capital", regions.get(i).getCapital())
