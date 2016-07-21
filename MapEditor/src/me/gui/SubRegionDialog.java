@@ -18,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 import me.PropertyType;
@@ -164,6 +165,7 @@ public class SubRegionDialog {
             subregionToEdit.setName(nameField.getText());
             subregionToEdit.setCapital(capitalField.getText());
             subregionToEdit.setLeader(leaderField.getText());
+            subregionToEdit.getPolygon().setFill(Color.rgb(subregionToEdit.getRedColor(), subregionToEdit.getGreenColor(), subregionToEdit.getBlueColor()));
             newSubStage.close();
         });
     }

@@ -34,6 +34,7 @@ public class DataManager implements AppDataComponent {
    double smallestX = 10000000;
    double maxY = 0;
    double smallestY = 10000000;
+   
 
     
     public DataManager(MapEditorApp initApp) {

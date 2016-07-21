@@ -121,7 +121,8 @@ public class FileManager implements AppFileComponent {
          subregion.setRedColor(jsonItem.getInt("red"));
          subregion.setGreenColor(jsonItem.getInt("green"));
          subregion.setBlueColor(jsonItem.getInt("blue"));
-         dataManager.getMap().getSubregionsList().add(subregion);
+         //dataManager.getMap().getSubregionsList().add(subregion);
+         dataManager.getMap().getLoadSub().add(subregion);
          
      }
      

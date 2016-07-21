@@ -13,6 +13,7 @@ import java.util.ArrayList;
  */
 public class Map {
     ArrayList<Subregion> subregionsList;
+    ArrayList<Subregion> loadSub;
     ArrayList<String> imagePaths;
     ArrayList<Integer> imageLocationsX;
     ArrayList<Integer> imageLocationsY;
@@ -23,9 +24,11 @@ public class Map {
     double scrollLocationX;
     double scrollLocationY;
     double zoomLevel;
+    double initialZoom;
 
     public Map() {
         colorList = new ArrayList<>();
+        loadSub = new ArrayList<>();
         subregionsList = new ArrayList<>();
         imagePaths = new ArrayList<>();
         imageLocationsX = new ArrayList<>();
@@ -36,7 +39,26 @@ public class Map {
         scrollLocationX = 0.0;
         scrollLocationY = 0.0;
         zoomLevel = 1.0;
+        initialZoom = 1.0;
     }
+
+    public ArrayList<Subregion> getLoadSub() {
+        return loadSub;
+    }
+
+    public void setLoadSub(ArrayList<Subregion> loadSub) {
+        this.loadSub = loadSub;
+    }
+
+    public double getInitialZoom() {
+        return initialZoom;
+    }
+
+    public void setInitialZoom(double initialZoom) {
+        this.initialZoom = initialZoom;
+    }
+    
+    
 
     public ArrayList<Integer> getColorList() {
         return colorList;

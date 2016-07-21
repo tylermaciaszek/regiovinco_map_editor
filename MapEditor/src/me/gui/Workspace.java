@@ -28,11 +28,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
@@ -46,6 +48,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -58,6 +61,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
+import javax.imageio.ImageIO;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.sampled.LineUnavailableException;
@@ -113,6 +117,8 @@ public class Workspace extends AppWorkspaceComponent {
     Button removeImageButton;
     static boolean loading = false;
     DropShadow ds = new DropShadow( 20, Color.AQUA );
+    Button saveButton;
+    int color;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -145,6 +151,7 @@ public class Workspace extends AppWorkspaceComponent {
         DataManager dataManager = (DataManager)app.getDataComponent();
         topToolbar = (FlowPane) app.getGUI().getAppPane().getTop();
         exportButton = new Button();
+        saveButton = (Button) topToolbar.getChildren().get(2);
         exportButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.EXPORT_ICON))));
         topToolbar.getChildren().add(exportButton);
         HBox editToolbar = new HBox();
@@ -181,7 +188,7 @@ public class Workspace extends AppWorkspaceComponent {
         ImageView zoomOut = new ImageView(new Image(props.getProperty(PropertyType.ZOOM_OUT)));
         ImageView zoomIn = new ImageView(new Image(props.getProperty(PropertyType.ZOOM_IN)));
         zoomIcons.getChildren().addAll(zoomOut, zoomIn);
-        zoomBar = new Slider(0, 250, 1);
+        zoomBar = new Slider(0, 5000, 1);
         zoomBar.setMajorTickUnit(1);
         zoomBar.setMinorTickCount(0);
         zoomBar.setSnapToTicks(true);
@@ -208,7 +215,7 @@ public class Workspace extends AppWorkspaceComponent {
         mapHolder = new StackPane();
         mapHolder.setPrefSize(802, 536);
         mapHolder.setMinSize(802, 536);
-        mapHolder.setMaxSize(800, 536);
+        mapHolder.setMaxSize(802, 536);
         pane.getChildren().add(mapHolder);
         mapHolder.getChildren().add(polygonGroup);
         return pane;
@@ -248,10 +255,10 @@ public class Workspace extends AppWorkspaceComponent {
         Button loadButton = (Button)topToolbar.getChildren().get(1);
      
         loadButton.addEventHandler(ActionEvent.ACTION, (e) -> {
-            System.out.print(loading);
             loading = true;
-            System.out.print(loading);
+            saveButton.setDisable(false);
         });
+        
         
         zoomBar.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             if (newValue.longValue() > oldValue.longValue()) {
@@ -296,9 +303,7 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.setMapParentDirectory(newDialog.getParentDir());
             dataManager.setMapName(newDialog.getName());
             new File("./work/"+dataManager.getMapName()).mkdirs();
-            dataManager.setWorkDir("./work/"+dataManager.getMapName()+"/");
-            new File(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName()).mkdirs();
-            dataManager.setExpDir(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName());
+            
              try {                
                 audioManager.loadAudio("anthem", dataManager.getWorkDir()+dataManager.getMapName()+" National Anthem.mid");
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
@@ -308,6 +313,28 @@ public class Workspace extends AppWorkspaceComponent {
             render();
             setScaleInitial();
 
+        });dataManager.setWorkDir("./work/"+dataManager.getMapName()+"\\");
+            new File(dataManager.getMapParentDirectory()+"\\"+dataManager.getMapName()).mkdirs();
+            dataManager.setExpDir(dataManager.getMapParentDirectory()+"\\"+dataManager.getMapName());
+        
+        app.getGUI().getPrimaryScene().setOnKeyPressed(e -> {
+            polygonGroup.requestFocus();
+           if(null != e.getCode())switch (e.getCode()) {
+                case UP:
+                    mapHolder.setTranslateY(mapHolder.getTranslateY() + 10);
+                    break;
+                case DOWN:
+                    mapHolder.setTranslateY(mapHolder.getTranslateY() - 10);
+                    break;
+                case RIGHT:
+                    mapHolder.setTranslateX(mapHolder.getTranslateX() - 10);
+                    break;
+                case LEFT:
+                    mapHolder.setTranslateX(mapHolder.getTranslateX() + 10);
+                    break;
+                default:
+                    break;
+            }
         });
       
         
@@ -369,8 +396,20 @@ public class Workspace extends AppWorkspaceComponent {
         });
 
         exportButton.setOnAction(e -> {
-            Path exportPath = Paths.get(dataManager.getExpDir()+"/");
-            System.out.print(exportPath.getParent());
+                WritableImage wi = new WritableImage(1000,1000);
+                System.out.print(mapHolder.getWidth());
+                WritableImage snapshot = mapHolder.snapshot(new SnapshotParameters(), wi);
+                File output = new File(dataManager.getExpDir()+"\\"+dataManager.getMapName()+".png");
+            try {
+                output.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(snapshot, null), "png", output);
+            } catch (IOException ex) {
+                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+            }
             //File[] filesArray = new File(dataManager.getWorkDir()).listFiles();
             /*for (int i = 0; i < filesArray.length; i++) {
                 try {
@@ -406,6 +445,7 @@ public class Workspace extends AppWorkspaceComponent {
             render();
             loading = false;
             Map map = dataManager.getMap();
+            System.out.print(map.getBorderThickness()/map.getZoomLevel());
             polygonGroup.setScaleX(map.getZoomLevel());
             polygonGroup.setScaleY(map.getZoomLevel());
             for (int i = 0; i < map.getSubregionsList().size(); i++) {
@@ -414,6 +454,12 @@ public class Workspace extends AppWorkspaceComponent {
             }
             changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
             mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
+            changeMapBorderColor.setValue(Color.valueOf("#"+map.getBorderColor()));
+            zoomBar.setValue(map.getZoomLevel()-map.getInitialZoom());
+            dataManager.setWorkDir("./work/"+dataManager.getMapName()+"\\");
+            dataManager.setExpDir(dataManager.getMapParentDirectory()+"\\"+dataManager.getMapName());
+            map.setSubregionsList(map.getLoadSub());
+            refreshTableView(subregionTable, colList, dataManager.getMap().getSubregionsList());
         }
 
     }
@@ -484,21 +530,27 @@ public class Workspace extends AppWorkspaceComponent {
 
             });
         }
-        
-         subregionTable.setRowFactory(e->{
-            TableRow<Subregion> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 1 && !row.isEmpty()) {
-                 if (isFocused) {
-                    controller.setPolygonColors();
-                    isFocused = false;
-                }
-               row.getItem().getPolygon().setFill(Color.valueOf("#FFFF00"));
-               isFocused = true;
-            }
-            Polygon polygon = row.getItem().getPolygon();
+
+        subregionTable.setRowFactory(e->{
+             TableRow<Subregion> row = new TableRow<>();
+             Map map = dataManager.getMap();
+             row.setOnMouseClicked(event -> {
+                 if (event.getClickCount() == 1 && !row.isEmpty()) {
+                     if (isFocused) {
+                         controller.setPolygonColors();
+                         isFocused = false;
+                     }
+                     row.getItem().getPolygon().setFill(Color.valueOf("#FFFF00"));
+                     isFocused = true;
+                 } else if (row.isEmpty()) {
+                     for (int i = 0; i < map.getSubregionsList().size(); i++) {
+                         color = map.getColorList().get(i);                      
+                         map.getSubregionsList().get(i).getPolygon().setFill(Color.rgb(color, color, color));
+                     }
+                 }
+                 Polygon polygon = row.getItem().getPolygon();
                Subregion subregion = row.getItem();
-               if (event.getClickCount() == 2) {
+               if (event.getClickCount() == 2 && !row.isEmpty()) {
                     SubRegionDialog dialog = new SubRegionDialog();
                     Polygon p2 = new Polygon();
                     p2.getPoints().addAll(polygon.getPoints());
@@ -540,11 +592,13 @@ public class Workspace extends AppWorkspaceComponent {
             polygonGroup.setScaleX(xScale);
             polygonGroup.setScaleY(xScale);
             initialZoom = xScale;
+            dataManager.getMap().setInitialZoom(initialZoom);
         }else{
             dataManager.getMap().setZoomLevel(yScale);
             polygonGroup.setScaleX(yScale);
             polygonGroup.setScaleY(yScale);
             initialZoom = yScale;
+            dataManager.getMap().setInitialZoom(initialZoom);
         }
 
     }

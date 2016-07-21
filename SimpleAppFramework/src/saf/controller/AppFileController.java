@@ -200,7 +200,7 @@ public class AppFileController {
 		    
 	// AND REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
 	// THE APPROPRIATE CONTROLS
-	app.getGUI().updateToolbarControls(saved);	
+	//app.getGUI().updateToolbarControls(saved);	
     }
     
     /**
@@ -320,7 +320,7 @@ public class AppFileController {
 		// MAKE SURE THE WORKSPACE IS ACTIVATED
 		app.getWorkspaceComponent().activateWorkspace(app.getGUI().getAppPane());
                 saved = true;
-                app.getGUI().updateToolbarControls(saved);
+                //app.getGUI().updateToolbarControls(saved);
             } catch (Exception e) {
                 AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
                 dialog.show(props.getProperty(LOAD_ERROR_TITLE), props.getProperty(LOAD_ERROR_MESSAGE));

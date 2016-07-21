@@ -2,7 +2,7 @@
 {
     "map":[
         {
-            "mapName":"Test",
+            "mapName":"Andorra",
             "mapParentDirectory":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\World\\Europe",
             "mapRawData":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\raw_map_data\\Andorra.json",
             "mapHeight":536.0,
@@ -11,9 +11,9 @@
     ],
     "Regions":[
         {
-            "name":"Subregion 1",
-            "capital":"",
-            "leader":"",
+            "name":"Tes5t",
+            "capital":"Test",
+            "leader":"Test",
             "red":218,
             "green":218,
             "blue":218
@@ -69,12 +69,12 @@
     ],
     "Edit Info":[
         {
-            "backgroundColor":"",
-            "borderThickness":1.0,
-            "borderColor":"000000",
+            "backgroundColor":"FFB366",
+            "borderThickness":50.0,
+            "borderColor":"4D66CC",
             "scrollX":0.0,
             "scrollY":0.0,
-            "zoom":805.467891161294
+            "zoom":804.467891161294
         }
     ],
     "Images":[
