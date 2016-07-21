@@ -343,14 +343,17 @@ public class Workspace extends AppWorkspaceComponent {
                 image = new ImageView(new Image(selectedFile.toURI().toURL().toString()));
                 dataManager.getImageList().add(image);
                 for (ImageView imageList : dataManager.getImageList()) {
-                    imageList.setOnMouseDragged(k ->{
+                    imageList.setOnMouseDragged(k -> {
                         imageList.setTranslateX(k.getX());
                         imageList.setTranslateY(k.getY());
                     });
-                    imageList.setOnMouseClicked(l ->{
+                    imageList.setOnMouseClicked(l -> {
+                        if (removeImageView != null) {
+                            removeImageView.setEffect(null);
+                        }
                         removeImageView = imageList;
-                        imageList.setEffect(ds);
-                });
+                        removeImageView.setEffect(ds);
+                    });
                 }
             } catch (MalformedURLException ex) {
                 Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
