@@ -51,7 +51,7 @@
             "blue":74
         },
         {
-            "name":"",
+            "name":"Subregion 6",
             "capital":"",
             "leader":"",
             "red":38,
@@ -69,12 +69,12 @@
     ],
     "Edit Info":[
         {
-            "backgroundColor":"",
-            "borderThickness":161.0,
-            "borderColor":"996699",
+            "backgroundColor":"E64D4D",
+            "borderThickness":1.0,
+            "borderColor":"000000",
             "scrollX":0.0,
             "scrollY":0.0,
-            "zoom":884.8329705263734
+            "zoom":805.467891161294
         }
     ],
     "Images":[

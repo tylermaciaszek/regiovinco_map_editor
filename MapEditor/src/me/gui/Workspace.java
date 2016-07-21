@@ -367,7 +367,7 @@ public class Workspace extends AppWorkspaceComponent {
         } catch (IOException ex) {
             Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(loading){
+        if (loading) {
             render();
             loading = false;
             Map map = dataManager.getMap();
@@ -377,8 +377,8 @@ public class Workspace extends AppWorkspaceComponent {
                 map.getSubregionsList().get(i).getPolygon().setStroke(Color.valueOf("#" + map.getBorderColor()));
                 map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness() / map.getZoomLevel());
             }
-            //changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
-            //mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));       
+            changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
+            mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
         }
 
     }
