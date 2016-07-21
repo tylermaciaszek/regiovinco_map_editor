@@ -5,6 +5,7 @@
  */
 package me.gui;
 
+import audio_manager.AudioManager;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXSlider;
@@ -13,6 +14,10 @@ import com.jfoenix.controls.JFXTreeTableView;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -52,6 +57,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Polygon;
 import javafx.stage.FileChooser;
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import saf.components.AppWorkspaceComponent;
 import me.MapEditorApp;
 import me.PropertyType;
@@ -231,6 +240,7 @@ public class Workspace extends AppWorkspaceComponent {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
+        AudioManager audioManager = new AudioManager();
         Button newButton = (Button)topToolbar.getChildren().get(0);    
         
         Button loadButton = (Button)topToolbar.getChildren().get(1);
@@ -285,6 +295,8 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.setMapName(newDialog.getName());
             new File("./work/"+dataManager.getMapName()).mkdirs();
             dataManager.setWorkDir("./work/"+dataManager.getMapName()+"/");
+            new File(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName()).mkdirs();
+            dataManager.setExpDir(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName());
             reloadWorkspace();
             render();
             setScaleInitial();
@@ -300,12 +312,19 @@ public class Workspace extends AppWorkspaceComponent {
             controller.launchChangeNameWindow();
         });
         playSubregionAnthemButton.setOnAction(e -> {
+            try {                
+                audioManager.loadAudio("anthem", dataManager.getWorkDir()+dataManager.getMapName()+" National Anthem.mid");
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
+                Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (playing) {
-                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PAUSE_ICON))));
+                audioManager.stop("anthem");
+                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PLAY_ICON))));
                 playing = false;
 
             } else {
-                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PLAY_ICON))));
+                audioManager.play("anthem", true);
+                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PAUSE_ICON))));
                 playing = true;
             }
         });
@@ -342,12 +361,22 @@ public class Workspace extends AppWorkspaceComponent {
             mapHolder.getChildren().remove(removeImageView);
 
         });
-        
+
         exportButton.setOnAction(e -> {
+            Path exportPath = Paths.get(dataManager.getExpDir()+"/");
+            System.out.print(exportPath.getParent());
+            //File[] filesArray = new File(dataManager.getWorkDir()).listFiles();
+            /*for (int i = 0; i < filesArray.length; i++) {
+                try {
+                    System.out.println(filesArray[i]);
+                    Files.copy(filesArray[i].toPath(), exportPath, StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException ex) {
+                    Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }*/
             try {
-                //DataManager dataManager = (DataManager) app.getDataComponent();
                 FileChooser fc = new FileChooser();
-                fc.setInitialDirectory(new File(PATH_WORK));
+                fc.setInitialDirectory(new File(dataManager.getExpDir()));
                 fc.setTitle(props.getProperty(SAVE_WORK_TITLE));
 
                 File selectedFile = fc.showSaveDialog(app.getGUI().getWindow());
@@ -461,6 +490,28 @@ public class Workspace extends AppWorkspaceComponent {
                row.getItem().getPolygon().setFill(Color.valueOf("#FFFF00"));
                isFocused = true;
             }
+            Polygon polygon = row.getItem().getPolygon();
+               Subregion subregion = row.getItem();
+               if (event.getClickCount() == 2) {
+                    SubRegionDialog dialog = new SubRegionDialog();
+                    Polygon p2 = new Polygon();
+                    p2.getPoints().addAll(polygon.getPoints());
+                    p2.setStroke(polygon.getStroke());
+                    p2.setFill(Color.rgb(subregion.getRedColor(), subregion.getGreenColor(), subregion.getBlueColor()));
+                    p2.setStrokeWidth(polygon.getStrokeWidth());
+                    dialog.setRegionName(subregion.getName());
+                    dialog.setSubregionToEdit(subregion);
+                    dialog.setRegionPolygon(p2);
+                    if (!subregion.getName().contains("Subregion") && subregion.getName() != null) {
+                        dialog.setFlagImage(dataManager.getWorkDir() + subregion.getName()+" Flag.png");
+                    }
+                    if (subregion.getLeader() != null && !"".equals(subregion.getLeader())) {
+                        dialog.setLeaderImage(dataManager.getWorkDir() + subregion.getLeader()+".png");
+                    }
+                    dialog.showDialog();
+                    refreshTableView(subregionTable, colList, dataManager.getMap().getSubregionsList());
+                }
+            
         });
             return row;
             

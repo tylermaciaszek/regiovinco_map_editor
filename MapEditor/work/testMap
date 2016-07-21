@@ -2,8 +2,8 @@
 {
     "map":[
         {
-            "mapName":"Andorra",
-            "mapParentDirectory":"",
+            "mapName":"Test",
+            "mapParentDirectory":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\World\\Europe",
             "mapRawData":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\raw_map_data\\Andorra.json",
             "mapHeight":536.0,
             "mapWidth":802.0
@@ -69,7 +69,7 @@
     ],
     "Edit Info":[
         {
-            "backgroundColor":"E64D4D",
+            "backgroundColor":"",
             "borderThickness":1.0,
             "borderColor":"000000",
             "scrollX":0.0,

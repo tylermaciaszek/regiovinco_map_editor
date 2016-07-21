@@ -90,6 +90,9 @@ public class SubRegionDialog {
     private Scene layoutGUI(){
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         Scene newSubScene;
+        nameField.setText(regionName);
+        leaderField.setText(subregionToEdit.getLeader());
+        capitalField.setText(subregionToEdit.getCapital());
         VBox subRegionHolder = new VBox();
         HBox subRegionHolderTop = new HBox();
         Button prevButton = new Button();

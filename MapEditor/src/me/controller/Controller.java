@@ -5,6 +5,8 @@
  */
 package me.controller;
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import javafx.scene.control.TextInputDialog;
@@ -115,6 +117,14 @@ public class Controller extends AppTemplate {
         dialog.setHeaderText(props.getProperty(PropertyType.CHANGE_MAP_NAME_HEADER));
         dialog.setContentText(props.getProperty(PropertyType.CHANGE_MAP_NAME_CONTEXT));
         dialog.showAndWait();
+        File oldExp = new File(dataManager.getExpDir());
+        File oldWork = new File(dataManager.getWorkDir());
+        dataManager.setMapName(dialog.getResult());
+        dataManager.setWorkDir("./work/"+dataManager.getMapName()+"/");
+        dataManager.setExpDir(dataManager.getMapParentDirectory()+"/"+dataManager.getMapName());
+        oldExp.renameTo(new File(dataManager.getExpDir()));
+        oldWork.renameTo(new File(dataManager.getWorkDir()));
+        
     }
 }
 

@@ -26,6 +26,7 @@ public class DataManager implements AppDataComponent {
    String mapParentDirectory;
    String rawMapData;
    String workDir;
+   String expDir;
    boolean hasCapitals;
    boolean hasLeaders;
    boolean hasFlags;
@@ -49,12 +50,23 @@ public class DataManager implements AppDataComponent {
         mapParentDirectory = "";
         rawMapData = "";
         workDir = "";
+        expDir = "";
         subregionList = new ArrayList();
         hasCapitals = true;
         hasLeaders = true;
         hasFlags = true;
     }
 
+    public String getExpDir() {
+        return expDir;
+    }
+
+    public void setExpDir(String expDir) {
+        this.expDir = expDir;
+    }
+
+    
+    
     public String getWorkDir() {
         return workDir;
     }
@@ -242,4 +254,6 @@ public class DataManager implements AppDataComponent {
         hasFlags = true;
       
     }
+
+    
 }
