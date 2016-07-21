@@ -5,6 +5,7 @@
  */
 package me.gui;
 
+import java.io.File;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -37,7 +38,27 @@ public class SubRegionDialog {
     TextField nameField = new TextField();
     TextField capitalField = new TextField();
     TextField leaderField = new TextField();
+    String leaderImage;
+    String flagImage;
+    ImageView subregionFlagImage;
+    ImageView subregionLeaderImage;
 
+    public String getLeaderImage() {
+        return leaderImage;
+    }
+
+    public void setLeaderImage(String leaderImage) {
+        this.leaderImage = leaderImage;
+    }
+
+    public String getFlagImage() {
+        return flagImage;
+    }
+
+    public void setFlagImage(String flagImage) {
+        this.flagImage = flagImage;
+    }
+    
     public Subregion getSubregionToEdit() {
         return subregionToEdit;
     }
@@ -85,8 +106,25 @@ public class SubRegionDialog {
         polyHolder.getChildren().add(regionPolygon);
         polyHolder.setScaleX(30);
         polyHolder.setScaleY(30);
-        ImageView subregionFlagImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_FLAG)));
-        ImageView subregionLeaderImage = new ImageView(new Image(props.getProperty(PropertyType.SAMPLE_SUB_LEADER)));
+        if (flagImage != null) {
+            File file = new File(flagImage);
+            System.out.print(file.toURI().toString());
+            subregionFlagImage = new ImageView(new Image(file.toURI().toString()));
+            subregionFlagImage.setFitHeight(100);
+            subregionFlagImage.setFitWidth(100);
+        } else {
+            subregionFlagImage = new ImageView();
+        }
+        if (leaderImage != null) {
+            File file = new File(leaderImage);
+            System.out.print(file.toURI().toString());
+            subregionLeaderImage = new ImageView(new Image(file.toURI().toString()));
+            subregionLeaderImage.setFitHeight(100);
+            subregionLeaderImage.setFitWidth(100);
+           
+        } else {
+            subregionLeaderImage = new ImageView();
+        }
         HBox subregionImages = new HBox();
         subregionImages.getChildren().addAll(subregionFlagImage, subregionLeaderImage);
         subregionImages.setSpacing(40);

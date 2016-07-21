@@ -82,7 +82,7 @@ public class FileManager implements AppFileComponent {
      public Map loadEditInfo(JsonObject jsonItem) {
 	// GET THE DATA
 	String backgroundColor = jsonItem.getString("backgroundColor");
-        double borderThickness = jsonItem.getInt("borderThickness");
+        int borderThickness = jsonItem.getInt("borderThickness");
         String borderColor = jsonItem.getString("borderColor");
      
         
@@ -95,7 +95,7 @@ public class FileManager implements AppFileComponent {
         newMap.setBorderColor(borderColor);
         newMap.setScrollLocationX(jsonItem.getInt("scrollX"));
         newMap.setScrollLocationY(jsonItem.getInt("scrollY"));
-        newMap.setZoomLevel(jsonItem.getInt("zoom"));
+        newMap.setZoomLevel((double)jsonItem.getInt("zoom"));
         
 	// ALL DONE, RETURN IT
 	return newMap;

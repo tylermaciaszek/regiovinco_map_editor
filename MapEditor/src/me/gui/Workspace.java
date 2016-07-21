@@ -97,9 +97,11 @@ public class Workspace extends AppWorkspaceComponent {
     double zoom = 0;
     double initialZoom = 0;
     Button addImageButton;
-    boolean loading = false;
     ObservableList<Subregion> observable;
     ArrayList colList;
+    private ImageView removeImageView;
+    Button removeImageButton;
+    static boolean loading = false;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -158,7 +160,7 @@ public class Workspace extends AppWorkspaceComponent {
         playSubregionAnthemButton.setGraphic(new ImageView(playImage));
         changeMapNameButton = new Button(props.getProperty(PropertyType.CHANGE_MAP_NAME));
         addImageButton = new Button();
-        Button removeImageButton = new Button();
+        removeImageButton = new Button();
         Image addImage = new Image(props.getProperty(PropertyType.ADD_IMAGE));
         Image removeImage = new Image(props.getProperty(PropertyType.REMOVE_IMAGE));
         addImageButton.setGraphic(new ImageView(addImage));
@@ -225,6 +227,7 @@ public class Workspace extends AppWorkspaceComponent {
     }
 
     public void initHandlers() {
+        
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         DataManager dataManager = (DataManager) app.getDataComponent();
         FileManager fileManager = new FileManager();
@@ -233,7 +236,9 @@ public class Workspace extends AppWorkspaceComponent {
         Button loadButton = (Button)topToolbar.getChildren().get(1);
      
         loadButton.addEventHandler(ActionEvent.ACTION, (e) -> {
+            System.out.print(loading);
             loading = true;
+            System.out.print(loading);
         });
         
         zoomBar.valueProperty().addListener((ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
@@ -278,6 +283,8 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.setRawMapData(newDialog.getRawData());
             dataManager.setMapParentDirectory(newDialog.getParentDir());
             dataManager.setMapName(newDialog.getName());
+            new File("./work/"+dataManager.getMapName()).mkdirs();
+            dataManager.setWorkDir("./work/"+dataManager.getMapName()+"/");
             reloadWorkspace();
             render();
             setScaleInitial();
@@ -319,12 +326,21 @@ public class Workspace extends AppWorkspaceComponent {
                         imageList.setTranslateX(k.getX());
                         imageList.setTranslateY(k.getY());
                     });
+                    imageList.setOnMouseClicked(l ->{
+                        removeImageView = imageList;
+                });
                 }
             } catch (MalformedURLException ex) {
                 Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
             }
             mapHolder.getChildren().add(image);
             
+        });
+        
+        removeImageButton.setOnAction(e->{
+            dataManager.getImageList().remove(removeImageView);
+            mapHolder.getChildren().remove(removeImageView);
+
         });
         
         exportButton.setOnAction(e -> {
@@ -361,7 +377,7 @@ public class Workspace extends AppWorkspaceComponent {
                 map.getSubregionsList().get(i).getPolygon().setStroke(Color.valueOf("#" + map.getBorderColor()));
                 map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness() / map.getZoomLevel());
             }
-            changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
+            //changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
             //mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));       
         }
 
@@ -411,7 +427,7 @@ public class Workspace extends AppWorkspaceComponent {
                 subregion.getPolygon().setFill(Color.valueOf("#FFFF00"));
                 subregionTable.getSelectionModel().select(subregion);
                 isFocused = true;
-                if(e.getClickCount() == 2){
+                if (e.getClickCount() == 2) {
                     SubRegionDialog dialog = new SubRegionDialog();
                     Polygon p2 = new Polygon();
                     p2.getPoints().addAll(polygon.getPoints());
@@ -421,6 +437,12 @@ public class Workspace extends AppWorkspaceComponent {
                     dialog.setRegionName(subregion.getName());
                     dialog.setSubregionToEdit(subregion);
                     dialog.setRegionPolygon(p2);
+                    if (!subregion.getName().contains("Subregion") && subregion.getName() != null) {
+                        dialog.setFlagImage(dataManager.getWorkDir() + subregion.getName()+" Flag.png");
+                    }
+                    if (subregion.getLeader() != null && !"".equals(subregion.getLeader())) {
+                        dialog.setLeaderImage(dataManager.getWorkDir() + subregion.getLeader()+".png");
+                    }
                     dialog.showDialog();
                     refreshTableView(subregionTable, colList, dataManager.getMap().getSubregionsList());
                 }

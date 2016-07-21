@@ -25,6 +25,7 @@ public class DataManager implements AppDataComponent {
    String mapName;
    String mapParentDirectory;
    String rawMapData;
+   String workDir;
    boolean hasCapitals;
    boolean hasLeaders;
    boolean hasFlags;
@@ -47,12 +48,23 @@ public class DataManager implements AppDataComponent {
         mapName = "";
         mapParentDirectory = "";
         rawMapData = "";
+        workDir = "";
         subregionList = new ArrayList();
         hasCapitals = true;
         hasLeaders = true;
         hasFlags = true;
     }
 
+    public String getWorkDir() {
+        return workDir;
+    }
+
+    public void setWorkDir(String workDir) {
+        this.workDir = workDir;
+    }
+
+    
+    
     public ArrayList<ImageView> getImageList() {
         return imageList;
     }
