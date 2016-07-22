@@ -43,7 +43,19 @@ public class SubRegionDialog {
     String flagImage;
     ImageView subregionFlagImage;
     ImageView subregionLeaderImage;
+     Button prevButton;
+      Button nextButton;
 
+    public Button getPrevButton() {
+        return prevButton;
+    }
+
+    public Button getNextButton() {
+        return nextButton;
+    }
+
+      
+      
     public String getLeaderImage() {
         return leaderImage;
     }
@@ -96,10 +108,10 @@ public class SubRegionDialog {
         capitalField.setText(subregionToEdit.getCapital());
         VBox subRegionHolder = new VBox();
         HBox subRegionHolderTop = new HBox();
-        Button prevButton = new Button();
+        prevButton = new Button();
         Image prevButtonImage = new Image(props.getProperty(PropertyType.PREV_ICON));
         prevButton.setGraphic(new ImageView(prevButtonImage));
-        Button nextButton = new Button();
+        nextButton = new Button();
         Image nextButtonImage = new Image(props.getProperty(PropertyType.NEXT_ICON));
         nextButton.setGraphic(new ImageView(nextButtonImage));
         Label subRegionName = new Label(regionName);
@@ -171,9 +183,10 @@ public class SubRegionDialog {
     }
     
     public void showDialog(){
-        newSubStage.setScene(layoutGUI());
+         newSubStage.setScene(layoutGUI());
         initHandlers();
         newSubStage.showAndWait();
         
     }
+
 }

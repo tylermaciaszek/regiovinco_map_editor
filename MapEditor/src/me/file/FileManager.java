@@ -112,8 +112,8 @@ public class FileManager implements AppFileComponent {
      public void loadImageInfo(JsonObject jsonItem, DataManager dataManager) {
          Map map = dataManager.getMap();
          map.getImagePaths().add(jsonItem.getString("imagePath"));
-         map.getImageLocationsX().add(jsonItem.getInt("X"));
-         map.getImageLocationsY().add(jsonItem.getInt("Y"));
+         map.getImageLocationsX().add((double)jsonItem.getInt("X"));
+         map.getImageLocationsY().add((double)jsonItem.getInt("Y"));
      }
      
      public void loadRegionInfo(JsonObject jsonItem, DataManager dataManager) {
@@ -275,11 +275,18 @@ public class FileManager implements AppFileComponent {
         for(int j = 0; j < dataManager.getMap().getSubregionsList().size(); j++) {
             if("".equals(dataManager.getMap().getSubregionsList().get(j).getCapital()))
                 dataManager.setHasCapitals(false);
-            if("".equals(dataManager.getMap().getSubregionsList().get(j).getLeader()))
+            File checkLeader = new File((dataManager.getWorkDir()+ regions.get(j).getLeader() + ".png"));
+            System.out.println(dataManager.getWorkDir()+ regions.get(j).getLeader() + ".png");
+            if(checkLeader.exists()){
+            } else {
+                System.out.println(regions.get(j).getLeader());
                 dataManager.setHasLeaders(false);
-            File check = new File(("./work/export/The World/Europe/" + dataManager.getMapName() + "/" + regions.get(j).getName() + " Flag.png"));
+            }
+            File check = new File((dataManager.getWorkDir()+ regions.get(j).getName() + " Flag.png"));
+            System.out.println(dataManager.getWorkDir()+ regions.get(j).getName() + " Flag.png");
             if(check.exists()){
             } else {
+                System.out.println(regions.get(j).getName());
                 dataManager.setHasFlags(false);
             }
         }

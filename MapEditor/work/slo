@@ -2,9 +2,9 @@
 {
     "map":[
         {
-            "mapName":"Andorra",
+            "mapName":"Slovakia",
             "mapParentDirectory":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\World\\Europe",
-            "mapRawData":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\raw_map_data\\Andorra.json",
+            "mapRawData":"C:\\Users\\Tyler\\Documents\\CSE 219 Final Project\\MapEditor\\work\\raw_map_data\\Slovakia.json",
             "mapHeight":536.0,
             "mapWidth":802.0
         }
@@ -14,52 +14,68 @@
             "name":"Subregion 1",
             "capital":"",
             "leader":"",
-            "red":218,
-            "green":218,
-            "blue":218
+            "red":226,
+            "green":226,
+            "blue":226
         },
         {
             "name":"Subregion 2",
             "capital":"",
             "leader":"",
-            "red":182,
-            "green":182,
-            "blue":182
+            "red":198,
+            "green":198,
+            "blue":198
         },
         {
             "name":"Subregion 3",
             "capital":"",
             "leader":"",
-            "red":146,
-            "green":146,
-            "blue":146
+            "red":170,
+            "green":170,
+            "blue":170
         },
         {
             "name":"Subregion 4",
             "capital":"",
             "leader":"",
-            "red":110,
-            "green":110,
-            "blue":110
+            "red":142,
+            "green":142,
+            "blue":142
         },
         {
             "name":"Subregion 5",
             "capital":"",
             "leader":"",
-            "red":74,
-            "green":74,
-            "blue":74
+            "red":114,
+            "green":114,
+            "blue":114
         },
         {
             "name":"Subregion 6",
             "capital":"",
             "leader":"",
-            "red":38,
-            "green":38,
-            "blue":38
+            "red":86,
+            "green":86,
+            "blue":86
         },
         {
             "name":"Subregion 7",
+            "capital":"",
+            "leader":"",
+            "red":58,
+            "green":58,
+            "blue":58
+        },
+        {
+            "name":"Subregion 8",
+            "capital":"",
+            "leader":"",
+            "red":30,
+            "green":30,
+            "blue":30
+        },
+        {
+            "name":"Subregion 9",
             "capital":"",
             "leader":"",
             "red":2,
@@ -69,12 +85,12 @@
     ],
     "Edit Info":[
         {
-            "backgroundColor":"990000",
-            "borderThickness":0.0,
-            "borderColor":"B34D1A",
+            "backgroundColor":"",
+            "borderThickness":0.15927049848768712,
+            "borderColor":"FFE699",
             "scrollX":0.0,
             "scrollY":0.0,
-            "zoom":2035.9123356057391
+            "zoom":62.786266728317415
         }
     ],
     "Images":[

@@ -15,8 +15,8 @@ public class Map {
     ArrayList<Subregion> subregionsList;
     ArrayList<Subregion> loadSub;
     ArrayList<String> imagePaths;
-    ArrayList<Integer> imageLocationsX;
-    ArrayList<Integer> imageLocationsY;
+    ArrayList<Double> imageLocationsX;
+    ArrayList<Double> imageLocationsY;
     ArrayList<Integer> colorList;
     String backgroundColor;
     String borderColor;
@@ -35,7 +35,7 @@ public class Map {
         imageLocationsY = new ArrayList<>();
         backgroundColor = "";
         borderColor = "000000";
-        borderThickness = 1;
+        borderThickness = 1.0;
         scrollLocationX = 0.0;
         scrollLocationY = 0.0;
         zoomLevel = 1.0;
@@ -112,19 +112,19 @@ public class Map {
         this.imagePaths = imagePaths;
     }
 
-    public ArrayList<Integer> getImageLocationsX() {
+    public ArrayList<Double> getImageLocationsX() {
         return imageLocationsX;
     }
 
-    public void setImageLocationsX(ArrayList<Integer> imageLocationsX) {
+    public void setImageLocationsX(ArrayList<Double> imageLocationsX) {
         this.imageLocationsX = imageLocationsX;
     }
 
-    public ArrayList<Integer> getImageLocationsY() {
+    public ArrayList<Double> getImageLocationsY() {
         return imageLocationsY;
     }
 
-    public void setImageLocationsY(ArrayList<Integer> imageLocationsY) {
+    public void setImageLocationsY(ArrayList<Double> imageLocationsY) {
         this.imageLocationsY = imageLocationsY;
     }
 

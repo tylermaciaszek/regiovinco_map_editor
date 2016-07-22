@@ -51,10 +51,10 @@ public class TestSaveAndorra extends Application {
             andorraMap.setBackgroundColor("DC6E00");
             andorraMap.setBorderColor("000000");
             andorraMap.setBorderThickness(1);
-            andorraMap.getImageLocationsX().add(8);
-            andorraMap.getImageLocationsY().add(9);
-            andorraMap.getImageLocationsX().add(581);
-            andorraMap.getImageLocationsY().add(390);
+            //andorraMap.getImageLocationsX().add(8);
+           // andorraMap.getImageLocationsY().add(9);
+            //andorraMap.getImageLocationsX().add(581);
+            //andorraMap.getImageLocationsY().add(390);
             andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorracrest.png");
             andorraMap.getImagePaths().add("file:./work/World/Europe/Andorra/andorraflag.png");
             andorraMap.setScrollLocationX(0.0);

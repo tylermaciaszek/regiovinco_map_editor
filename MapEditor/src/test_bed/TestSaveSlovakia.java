@@ -52,10 +52,10 @@ public class TestSaveSlovakia extends Application {
             slovakiaMap.setBackgroundColor("DC6E00");
             slovakiaMap.setBorderColor("000000");
             slovakiaMap.setBorderThickness(1);
-            slovakiaMap.getImageLocationsX().add(19);
-            slovakiaMap.getImageLocationsY().add(26);
-            slovakiaMap.getImageLocationsX().add(542);
-            slovakiaMap.getImageLocationsY().add(371);
+           // slovakiaMap.getImageLocationsX().add(19);
+            //slovakiaMap.getImageLocationsY().add(26);
+            //slovakiaMap.getImageLocationsX().add(542);
+            //slovakiaMap.getImageLocationsY().add(371);
             slovakiaMap.setScrollLocationX(0.0);
             slovakiaMap.setScrollLocationY(0.0);
             slovakiaMap.setZoomLevel(1);
