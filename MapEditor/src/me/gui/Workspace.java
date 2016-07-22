@@ -498,7 +498,7 @@ public class Workspace extends AppWorkspaceComponent {
                 map.getSubregionsList().get(i).getPolygon().setStroke(Color.valueOf("#" + map.getBorderColor()));
                 map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness());
             }
-            changeMapBorderColor.setValue(Color.valueOf("#"+map.getBackgroundColor()));
+            //changeMapBorderColor.setValue(Color.valueOf("#"+map.getBackgroundColor()));
             mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
             pane.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
             changeMapBorderColor.setValue(Color.valueOf("#"+map.getBorderColor()));

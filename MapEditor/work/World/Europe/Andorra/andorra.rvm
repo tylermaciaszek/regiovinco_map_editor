@@ -1,62 +1,48 @@
 
 {
     "name":"Andorra",
-    "subregions_have_capitals":true,
-    "subregions_have_flags":true,
-    "subregions_have_leaders":true,
+    "subregions_have_capitals":false,
+    "subregions_have_flags":false,
+    "subregions_have_leaders":false,
     "subregions":[
         {
-            "name":"Andorra La Vella",
-            "capital":"Test",
-            "leader":"Enric Casadevall Medrano",
+            "name":"Carillo",
             "red":218,
             "green":218,
             "blue":218
         },
         {
-            "name":"Carillo",
-            "capital":"test",
-            "leader":"Josep Areny",
+            "name":"Subregion 2",
             "red":182,
             "green":182,
             "blue":182
         },
         {
-            "name":"Encamp",
-            "capital":"test",
-            "leader":"Josep Pintat Forné",
+            "name":"Subregion 3",
             "red":146,
             "green":146,
             "blue":146
         },
         {
-            "name":"Escaldes-Engordany",
-            "capital":"test",
-            "leader":"Maria Rosa Ferrer Obiols",
+            "name":"Subregion 4",
             "red":110,
             "green":110,
             "blue":110
         },
         {
-            "name":"La Massanna",
-            "capital":"test",
-            "leader":"Miquel Alís Font",
+            "name":"Subregion 5",
             "red":74,
             "green":74,
             "blue":74
         },
         {
-            "name":"Ordino",
-            "capital":"test",
-            "leader":"Montserrat Capdevila Pallarés",
+            "name":"Subregion 6",
             "red":38,
             "green":38,
             "blue":38
         },
         {
-            "name":"Sant Julia de Loria",
-            "capital":"test",
-            "leader":"Ventura Espot",
+            "name":"Subregion 7",
             "red":2,
             "green":2,
             "blue":2
