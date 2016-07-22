@@ -84,6 +84,7 @@ import static saf.settings.AppPropertyType.NEW_ERROR_MESSAGE;
 import static saf.settings.AppPropertyType.NEW_ERROR_TITLE;
 import static saf.settings.AppPropertyType.SAVE_WORK_TITLE;
 import static saf.settings.AppStartupConstants.PATH_WORK;
+import saf.ui.AppMessageDialogSingleton;
 
 /**
  *
@@ -208,9 +209,11 @@ public class Workspace extends AppWorkspaceComponent {
         zoomIcons.setSpacing(80);
         zoomHolder.getChildren().addAll(zoomIcons, zoomBar);
         changeX = new TextField();
+        changeX.setFocusTraversable(false);
         changeX.setMaxWidth(50);
         changeX.setText("Width");
         changeY = new TextField();
+        changeY.setFocusTraversable(false);
         changeY.setText("Height");
         changeY.setMaxWidth(50);
         change = new Button("Change");
@@ -348,6 +351,11 @@ public class Workspace extends AppWorkspaceComponent {
             dataManager.setWorkDir("./work/" + dataManager.getMapName() + "\\");
             new File(dataManager.getMapParentDirectory() + "\\" + dataManager.getMapName()).mkdirs();
             dataManager.setExpDir(dataManager.getMapParentDirectory() + "\\" + dataManager.getMapName());
+             File soundCheck = new File(dataManager.getWorkDir() + dataManager.getMapName() + " National Anthem.mid");
+            if(!soundCheck.exists()){
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show("Sound Check", "Put Nation Anthem file in the work directory then close this to be able to play music");
+            }
             try {
                 audioManager.loadAudio("anthem", dataManager.getWorkDir() + dataManager.getMapName() + " National Anthem.mid");
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
@@ -508,8 +516,8 @@ public class Workspace extends AppWorkspaceComponent {
                 map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness());
             }
             //changeMapBorderColor.setValue(Color.valueOf("#"+map.getBackgroundColor()));
-            mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
-            pane.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
+            mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf("#"+map.getBackgroundColor()), CornerRadii.EMPTY, Insets.EMPTY)));
+            pane.setBackground(new Background(new BackgroundFill(Color.valueOf("#"+map.getBorderColor()), CornerRadii.EMPTY, Insets.EMPTY)));
             changeMapBorderColor.setValue(Color.valueOf("#"+map.getBorderColor()));
             zoomBar.setValue(map.getZoomLevel()-map.getInitialZoom());
             dataManager.setWorkDir("./work/"+dataManager.getMapName()+"\\");
@@ -543,7 +551,11 @@ public class Workspace extends AppWorkspaceComponent {
                 mapHolder.getChildren().add(image);
             }
             
-            
+            File soundCheck = new File(dataManager.getWorkDir() + dataManager.getMapName() + " National Anthem.mid");
+            if(!soundCheck.exists()){
+                AppMessageDialogSingleton dialog = AppMessageDialogSingleton.getSingleton();
+                dialog.show("Sound Check", "Put Nation Anthem file in the work directory then close this to be able to play music");
+            }
             
             try {
                 audioManager.loadAudio("anthem", dataManager.getWorkDir() + dataManager.getMapName() + " National Anthem.mid");

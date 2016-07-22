@@ -5,7 +5,9 @@
         <group>
             <file>file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/SimpleAppFramework/src/saf/ui/AppGUI.java</file>
             <file>file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/SimpleAppFramework/src/saf/controller/AppFileController.java</file>
+            <file>file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/SimpleAppFramework/src/saf/ui/AppMessageDialogSingleton.java</file>
             <file>file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/SimpleAppFramework/src/saf/settings/AppPropertyType.java</file>
+            <file>file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/SimpleAppFramework/src/saf/components/AppFileComponent.java</file>
         </group>
     </open-files>
 </project-private>
