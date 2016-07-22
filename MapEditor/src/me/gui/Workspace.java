@@ -164,7 +164,7 @@ public class Workspace extends AppWorkspaceComponent {
         exportButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.EXPORT_ICON))));
         topToolbar.getChildren().add(exportButton);
         HBox editToolbar = new HBox();
-        editToolbar.setSpacing(20);
+        editToolbar.setSpacing(5);
         Label mapColorLabel = new Label(props.getProperty(PropertyType.MAP_BACKGROUND_COLOR));
         Label borderColorLabel = new Label(props.getProperty(PropertyType.MAP_BORDER_COLOR));
         Label borderThicknessLabel = new Label(props.getProperty(PropertyType.MAP_THICKNESS));
@@ -325,7 +325,7 @@ public class Workspace extends AppWorkspaceComponent {
             Map map = dataManager.getMap();
             for(int i = 0; i < map.getSubregionsList().size(); i++){
                 map.getSubregionsList().get(i).getPolygon().setStroke(changeMapBorderColor.getValue());
-                map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness()/map.getZoomLevel());
+                //map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness());
                 map.setBorderColor(toRGBCode(changeMapBorderColor.getValue()));
             }
         });
@@ -498,7 +498,7 @@ public class Workspace extends AppWorkspaceComponent {
                 map.getSubregionsList().get(i).getPolygon().setStroke(Color.valueOf("#" + map.getBorderColor()));
                 map.getSubregionsList().get(i).getPolygon().setStrokeWidth(map.getBorderThickness());
             }
-            changeMapBackgroundColor.setValue(Color.valueOf("#" + map.getBackgroundColor()));
+            changeMapBorderColor.setValue(Color.valueOf("#"+map.getBackgroundColor()));
             mapHolder.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
             pane.setBackground(new Background(new BackgroundFill(Color.valueOf(toRGBCode(changeMapBackgroundColor.getValue())), CornerRadii.EMPTY, Insets.EMPTY)));
             changeMapBorderColor.setValue(Color.valueOf("#"+map.getBorderColor()));

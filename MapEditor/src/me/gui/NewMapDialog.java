@@ -37,8 +37,8 @@ import static saf.settings.AppStartupConstants.PATH_WORK;
 public class NewMapDialog {
     Stage newMapStage;
     Button okButton;
-    Label dataLabel;
-    Label parentLabel;
+    TextField dataLabel;
+    TextField parentLabel;
     Button chooseParentDirectory;
     Button chooseDataDirectory;
     AppTemplate app;
@@ -65,11 +65,13 @@ public class NewMapDialog {
         Label chooseParentLabel = new Label("Choose Parent Directory: ");
         chooseParentDirectory = new Button();
         chooseParentDirectory.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.FOLDER_ICON))));
-        parentLabel = new Label();
+        parentLabel = new TextField();
+        parentLabel.setEditable(false);
         Label chooseDataLabel = new Label("Choose Data File: ");
         chooseDataDirectory = new Button();
         chooseDataDirectory.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.FOLDER_ICON))));
-        dataLabel = new Label();
+        dataLabel = new TextField();
+        dataLabel.setEditable(false);
         okButton = new Button("OK");
         gridPane.add(mapNameLabel, 0, 1);
         gridPane.add(mapNameField, 1, 1);
@@ -83,7 +85,7 @@ public class NewMapDialog {
         gridPane.setAlignment(Pos.TOP_CENTER);
         gridPane.setHgap(5);
         gridPane.setVgap(20);
-        newMapScene = new Scene(gridPane, 300,200);
+        newMapScene = new Scene(gridPane, 370,200);
         return newMapScene;
     }
     
