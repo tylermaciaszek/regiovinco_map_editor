@@ -75,6 +75,7 @@ import me.MapEditorApp;
 import me.PropertyType;
 import me.controller.Controller;
 import me.data.DataManager;
+import me.data.ImageData;
 import me.data.Map;
 import me.data.Subregion;
 import me.file.FileManager;
@@ -128,6 +129,7 @@ public class Workspace extends AppWorkspaceComponent {
     TextField changeX;
     TextField changeY;
     Button change;
+    ImageData removeImageData;
 
     public Workspace(MapEditorApp initApp) {
         app = initApp;
@@ -335,26 +337,27 @@ public class Workspace extends AppWorkspaceComponent {
             pane.setBackground(new Background(new BackgroundFill(changeMapBackgroundColor.getValue(), CornerRadii.EMPTY, Insets.EMPTY)));
             dataManager.getMap().setBackgroundColor(toRGBCode(changeMapBackgroundColor.getValue()));
         });
-        
-        newButton.addEventHandler(ActionEvent.ACTION, (e)-> {
+    
+        newButton.addEventHandler(ActionEvent.ACTION, (e) -> {
             NewMapDialog newDialog = new NewMapDialog();
             newDialog.showDialog();
             dataManager.setRawMapData(newDialog.getRawData());
             dataManager.setMapParentDirectory(newDialog.getParentDir());
             dataManager.setMapName(newDialog.getName());
-            new File("./work/"+dataManager.getMapName()).mkdirs();
-            dataManager.setWorkDir("./work/"+dataManager.getMapName()+"\\");
-            new File(dataManager.getMapParentDirectory()+"\\"+dataManager.getMapName()).mkdirs();
-            dataManager.setExpDir(dataManager.getMapParentDirectory()+"\\"+dataManager.getMapName());
-             try {                
-                audioManager.loadAudio("anthem", dataManager.getWorkDir()+dataManager.getMapName()+" National Anthem.mid");
+            new File("./work/" + dataManager.getMapName()).mkdirs();
+            dataManager.setWorkDir("./work/" + dataManager.getMapName() + "\\");
+            new File(dataManager.getMapParentDirectory() + "\\" + dataManager.getMapName()).mkdirs();
+            dataManager.setExpDir(dataManager.getMapParentDirectory() + "\\" + dataManager.getMapName());
+            try {
+                audioManager.loadAudio("anthem", dataManager.getWorkDir() + dataManager.getMapName() + " National Anthem.mid");
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
                 Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
             }
             reloadWorkspace();
             render();
-            if(!loading)
-            setScaleInitial();
+            if (!loading) {
+                setScaleInitial();
+            }
 
         });
         
@@ -404,20 +407,25 @@ public class Workspace extends AppWorkspaceComponent {
             
             try {
                 image = new ImageView(new Image(selectedFile.toURI().toURL().toString()));
-                dataManager.getImageList().add(image);
-                map.getImageLocationsX().add(image.getX());
-                map.getImageLocationsY().add(image.getY());
-                for (ImageView imageList : dataManager.getImageList()) {
-                    imageList.setOnMouseDragged(k -> {
-                        imageList.setTranslateX(k.getX());
-                        imageList.setTranslateY(k.getY());
+                ImageData imageData = new ImageData(image, image.getLayoutX(), image.getLayoutY(), selectedFile.toURI().toString());
+                map.getImageData().add(imageData);
+                image.setLayoutX(imageData.getX());
+                image.setLayoutY(imageData.getY());
+                for (ImageData imageData1 : map.getImageData()) {
+                    imageData1.getImage().setOnMouseDragged(k -> {
+                        imageData1.getImage().setTranslateX(imageData1.getImage().getTranslateX() + k.getX());
+                        imageData1.getImage().setTranslateY(imageData1.getImage().getTranslateY()+ k.getY());
+                        imageData1.setX((int) imageData1.getImage().getTranslateX());
+                        imageData1.setY((int) imageData1.getImage().getTranslateY());
+                        
                     });
-                    imageList.setOnMouseClicked(l -> {
+                    imageData1.getImage().setOnMouseClicked(l -> {
                         if (removeImageView != null) {
                             removeImageView.setEffect(null);
                         }
-                        removeImageView = imageList;
+                        removeImageView = imageData1.getImage();
                         removeImageView.setEffect(ds);
+                        removeImageData = imageData1;
                     });
                 }
             } catch (MalformedURLException ex) {
@@ -444,6 +452,7 @@ public class Workspace extends AppWorkspaceComponent {
         
         removeImageButton.setOnAction(e->{
             dataManager.getImageList().remove(removeImageView);
+            dataManager.getMap().getImageData().remove(removeImageData);
             mapHolder.getChildren().remove(removeImageView);
 
         });
@@ -511,42 +520,42 @@ public class Workspace extends AppWorkspaceComponent {
                 map.getSubregionsList().get(i).setCapital(map.getLoadSub().get(i).getCapital());
             }
             refreshTableView(subregionTable, colList, dataManager.getMap().getSubregionsList());
-            System.out.println(map.getBorderThickness());
-            for (int i = 0; i < map.getImagePaths().size(); i++) {
-                File file = new File(map.getImagePaths().get(i));
-                ImageView image = null;
-                try {
-                    image = new ImageView(new Image(file.toURI().toURL().toString()));
-                    dataManager.getImageList().add(image);
-                    for (ImageView imageList : dataManager.getImageList()) {
-                    imageList.setOnMouseDragged(k -> {
-                        imageList.setTranslateX(k.getX());
-                        imageList.setTranslateY(k.getY());
+            for (int i = 0; i < map.getImageData().size(); i++) {
+                ImageView image = new ImageView(new Image(map.getImageData().get(i).getImagePath()));
+                System.out.print(image.toString());
+                dataManager.getImageList().add(image);
+                for (ImageData imageData1 : map.getImageData()) {
+                    imageData1.getImage().setOnMouseDragged(k -> {
+                        imageData1.getImage().setTranslateX(imageData1.getImage().getTranslateX() + k.getX());
+                        imageData1.getImage().setTranslateY(imageData1.getImage().getTranslateY()+ k.getY());
+                        imageData1.setX((int) imageData1.getImage().getTranslateX());
+                        imageData1.setY((int) imageData1.getImage().getTranslateY()); 
                     });
-                    imageList.setOnMouseClicked(l -> {
+                    imageData1.getImage().setOnMouseClicked(l -> {
                         if (removeImageView != null) {
                             removeImageView.setEffect(null);
                         }
-                        removeImageView = imageList;
+                        removeImageView = imageData1.getImage();
                         removeImageView.setEffect(ds);
+                        removeImageData = imageData1;
                     });
-                }
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 mapHolder.getChildren().add(image);
             }
-        try {                
-                audioManager.loadAudio("anthem", dataManager.getWorkDir()+dataManager.getMapName()+" National Anthem.mid");
+            
+            
+            
+            try {
+                audioManager.loadAudio("anthem", dataManager.getWorkDir() + dataManager.getMapName() + " National Anthem.mid");
             } catch (UnsupportedAudioFileException | IOException | LineUnavailableException | InvalidMidiDataException | MidiUnavailableException ex) {
                 Logger.getLogger(Workspace.class.getName()).log(Level.SEVERE, null, ex);
             }
-        PropertiesManager props = PropertiesManager.getPropertiesManager();
-        playSubregionAnthemButton.setOnAction(e -> {
-            if (playing) {
-                audioManager.stop("anthem");
-                playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PLAY_ICON))));
-                playing = false;
+            PropertiesManager props = PropertiesManager.getPropertiesManager();
+            playSubregionAnthemButton.setOnAction(e -> {
+                if (playing) {
+                    audioManager.stop("anthem");
+                    playSubregionAnthemButton.setGraphic(new ImageView(new Image(props.getProperty(PropertyType.PLAY_ICON))));
+                    playing = false;
 
             } else {
                 audioManager.play("anthem", true);
@@ -611,6 +620,9 @@ public class Workspace extends AppWorkspaceComponent {
                 isFocused = true;
                 if (e.getClickCount() == 2) {
                     SubRegionDialog dialog = new SubRegionDialog();
+                    //dialog.getPolyHolder().setScaleX(dataManager.getMap().getZoomLevel());
+                    //dialog.getPolyHolder().setScaleY(dataManager.getMap().getZoomLevel());
+                    dialog.setZoom(dataManager.getMap().getZoomLevel());
                     Polygon p2 = new Polygon();
                     p2.getPoints().addAll(polygon.getPoints());
                     p2.setStroke(polygon.getStroke());
@@ -659,6 +671,7 @@ public class Workspace extends AppWorkspaceComponent {
 
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
                     SubRegionDialog dialog = new SubRegionDialog();
+                    dialog.setZoom(dataManager.getMap().getZoomLevel());
                     Polygon p2 = new Polygon();
                     p2.getPoints().addAll(polygon.getPoints());
                     p2.setStroke(polygon.getStroke());

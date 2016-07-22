@@ -28,6 +28,7 @@ import javax.json.JsonWriter;
 import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 import me.data.DataManager;
+import me.data.ImageData;
 import me.data.Map;
 import me.data.Subregion;
 import saf.AppTemplate;
@@ -111,9 +112,15 @@ public class FileManager implements AppFileComponent {
      
      public void loadImageInfo(JsonObject jsonItem, DataManager dataManager) {
          Map map = dataManager.getMap();
-         map.getImagePaths().add(jsonItem.getString("imagePath"));
-         map.getImageLocationsX().add((double)jsonItem.getInt("X"));
-         map.getImageLocationsY().add((double)jsonItem.getInt("Y"));
+         ImageData image = new ImageData();
+         image.setImagePath(jsonItem.getString("imagePath"));
+         image.setX(jsonItem.getInt("X"));
+         image.setY(jsonItem.getInt("Y"));
+         map.getImageData().add(image);
+         System.out.println("Finished");
+         //map.getImagePaths().add(jsonItem.getString("imagePath"));
+        // map.getImageLocationsX().add((double)jsonItem.getInt("X"));
+        // map.getImageLocationsY().add((double)jsonItem.getInt("Y"));
      }
      
      public void loadRegionInfo(JsonObject jsonItem, DataManager dataManager) {
@@ -178,11 +185,11 @@ public class FileManager implements AppFileComponent {
 
             
           
-            for (int i = 0; i < map.getImagePaths().size(); i++) {
+            for (int i = 0; i < map.getImageData().size(); i++) {
                 JsonObject imageJson = Json.createObjectBuilder()
-                        .add("imagePath", map.getImagePaths().get(i))
-                        .add("X", map.getImageLocationsX().get(i))
-                        .add("Y", map.getImageLocationsY().get(i)).build();
+                        .add("imagePath", map.getImageData().get(i).getImagePath())
+                        .add("X", map.getImageData().get(i).getX())
+                        .add("Y", map.getImageData().get(i).getY()).build();
                 imageArray.add(imageJson);                          
         }
             for(int i = 0; i < dataManager.getMap().getSubregionsList().size(); i++){

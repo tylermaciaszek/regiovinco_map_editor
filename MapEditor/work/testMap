@@ -69,14 +69,24 @@
     ],
     "Edit Info":[
         {
-            "backgroundColor":"990000",
-            "borderThickness":0.0,
-            "borderColor":"B34D1A",
+            "backgroundColor":"",
+            "borderThickness":1.0,
+            "borderColor":"000000",
             "scrollX":0.0,
             "scrollY":0.0,
-            "zoom":2035.9123356057391
+            "zoom":805.467891161294
         }
     ],
     "Images":[
+        {
+            "imagePath":"file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/MapEditor/work/Andorra/Andorra%20la%20Vella%20Flag.png",
+            "X":260.0,
+            "Y":143.0
+        },
+        {
+            "imagePath":"file:/C:/Users/Tyler/Documents/CSE%20219%20Final%20Project/MapEditor/work/Andorra/Encamp%20Flag.png",
+            "X":291.0,
+            "Y":-128.0
+        }
     ]
 }

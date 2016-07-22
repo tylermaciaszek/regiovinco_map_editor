@@ -18,6 +18,7 @@ public class Map {
     ArrayList<Double> imageLocationsX;
     ArrayList<Double> imageLocationsY;
     ArrayList<Integer> colorList;
+    ArrayList<ImageData> imageData;
     String backgroundColor;
     String borderColor;
     double borderThickness;
@@ -33,6 +34,7 @@ public class Map {
         imagePaths = new ArrayList<>();
         imageLocationsX = new ArrayList<>();
         imageLocationsY = new ArrayList<>();
+        imageData = new ArrayList<>();
         backgroundColor = "";
         borderColor = "000000";
         borderThickness = 1.0;
@@ -40,6 +42,14 @@ public class Map {
         scrollLocationY = 0.0;
         zoomLevel = 1.0;
         initialZoom = 1.0;
+    }
+
+    public ArrayList<ImageData> getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(ArrayList<ImageData> imageData) {
+        this.imageData = imageData;
     }
 
     public ArrayList<Subregion> getLoadSub() {

@@ -45,6 +45,16 @@ public class SubRegionDialog {
     ImageView subregionLeaderImage;
      Button prevButton;
       Button nextButton;
+      double zoom;
+
+    public double getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(double zoom) {
+        this.zoom = zoom;
+    }
+     
 
     public Button getPrevButton() {
         return prevButton;
@@ -99,6 +109,12 @@ public class SubRegionDialog {
     public SubRegionDialog() {
         newSubStage = new Stage();
     }
+
+    public StackPane getPolyHolder() {
+        return polyHolder;
+    }
+    
+    
     
     private Scene layoutGUI(){
         PropertiesManager props = PropertiesManager.getPropertiesManager();
@@ -120,8 +136,9 @@ public class SubRegionDialog {
         polyHolder = new StackPane();
         polyHolder.setMinSize(60, 120);
         polyHolder.getChildren().add(regionPolygon);
-        polyHolder.setScaleX(30);
-        polyHolder.setScaleY(30);
+        System.out.print(zoom);
+        polyHolder.setScaleX(zoom/8);
+        polyHolder.setScaleY(zoom/8);
         if (flagImage != null) {
             File file = new File(flagImage);
             System.out.print(file.toURI().toString());
